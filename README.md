@@ -2,7 +2,9 @@
 
 Siedler von Catan
 •	MUSTHAVE
+  
   o	Spielfeld (Minimal-Graphik)
+  
   o	Platzierung von 
     	Siedlungen
     	Städten
