@@ -1,7 +1,7 @@
 # Expats
 
-## Installation
+### Installation
 
 
 
-## Spielregeln
+### Spielregeln
