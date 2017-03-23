@@ -9,6 +9,6 @@ public class Water extends Hex {
     public Water(int id) {
         super(id);
         type = "Water";
-        Material material = new Material(0,0,0,0,0); //TODO: add coresponding Material
+        Material material = new Material(new int[]{0,0,0,0,0}); //TODO: add coresponding Material
     }
 }
