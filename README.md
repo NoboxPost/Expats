@@ -36,3 +36,16 @@
 6. public **methods**
 7. private **methods**
 6. get & set **methods**
+
+### Javadoc
+
+> IntelliJ Keymap Fix Doc Shortcut
+
+#### Classes
+- [classname] + is resposible for + [X]
+- @author
+
+#### Methods (Ausnahme: get & set)
+- [Mmethodname] + does/creates/sets... + [X]
+- @param
+- @return
