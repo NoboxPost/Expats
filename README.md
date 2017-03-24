@@ -49,3 +49,49 @@
 - [Mmethodname] + does/creates/sets... + [X]
 - @param
 - @return
+
+
+## Anforderungen
+### MUSTHAVE
+#### Spielfeld (Minimal-Graphik)
+
+#### Platzierung von 
+- Siedlungen
+- Städten
+- Strassen
+- Nummern
+
+#### Räubermechanik
+
+#### Anz. Spieler (auf einem PC spielbar)
+
+
+#### 2-Würfel Spielablauf, Ressourcenhandling, Siegbedingung
+
+#### Längste Strasse
+
+
+### NICETOHAVE
+
+#### Spielhandel
+
+#### Action-Karten
+- Meiste Ritterkarten
+- Addon
+
+#### Multiplayer
+
+#### Spielfeldgenerator
+- Nummern
+- Kleine Inseln
+- Grosse Inseln
+- Kontinent
+- Entdeckung
+
+#### Seeräuber-Erweiterung
+
+#### KI
+
+#### Bessere Graphik
+
+#### Handel
