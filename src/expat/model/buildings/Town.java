@@ -1,4 +1,4 @@
-package ExpatsOfEngehalde.Buildings;
+package expat.model.buildings;
 
 
 /**

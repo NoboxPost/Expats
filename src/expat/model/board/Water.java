@@ -1,6 +1,6 @@
-package ExpatsOfEngehalde.Board;
+package expat.model.board;
 
-import ExpatsOfEngehalde.Materials.Material;
+import expat.model.Material;
 
 /**
  * Created by vanonir on 22.03.2017.

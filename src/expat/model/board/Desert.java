@@ -1,5 +1,5 @@
-package ExpatsOfEngehalde.Board;
-import ExpatsOfEngehalde.Materials.Material;
+package expat.model.board;
+import expat.model.Material;
 
 /**
  * Created by vanonir on 23.03.2017.

@@ -1,8 +1,8 @@
-package ExpatsOfEngehalde.Buildings;
+package expat.model.buildings;
 
-import ExpatsOfEngehalde.Board.Hex;
-import ExpatsOfEngehalde.Materials.Material;
-import ExpatsOfEngehalde.Player;
+import expat.model.board.Hex;
+import expat.model.Material;
+import expat.model.Player;
 
 /**
  * Created by vanonir on 22.03.2017.
