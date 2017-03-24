@@ -18,10 +18,12 @@ public class App {
     public App(ControllerMainStage mainController, ControllerBoardPane boardController) {
         this.boardController = boardController;
         this.mainController = mainController;
+        generateBoard();
     }
 
     public Board generateBoard() {
         BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoard(8,6);
         return null;
     }
 }

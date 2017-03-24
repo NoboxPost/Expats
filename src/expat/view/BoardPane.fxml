@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane ?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" fx:controller="expat.control.ControllerBoardPane">
-   <children>
-      <Label layoutX="283.0" layoutY="190.0" text="Label TEST" />
-   </children>
+
+<AnchorPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="265.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerBoardPane">
+
 </AnchorPane>
