@@ -1,6 +1,6 @@
-package ExpatsOfEngehalde;
+package expat.view;
 
-import ExpatsOfEngehalde.Board.Hex;
+import expat.model.board.Hex;
 
 /**
  * Created by vanonir on 22.03.2017.

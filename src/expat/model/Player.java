@@ -1,6 +1,4 @@
-package ExpatsOfEngehalde;
-
-import ExpatsOfEngehalde.Materials.Material;
+package expat.model;
 
 /**
  * Created by vanonir on 22.03.2017.

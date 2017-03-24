@@ -1,4 +1,4 @@
-package ExpatsOfEngehalde.Board;
+package expat.model.board;
 
 /**
  * Created by vanonir on 22.03.2017.
