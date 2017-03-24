@@ -74,6 +74,8 @@
 ### NICETOHAVE
 
 #### Spielhandel
+- 4:1 Standard
+- 3:1 random Hafen + 2:1 mterial Hafen
 
 #### Action-Karten
 - Meiste Ritterkarten
