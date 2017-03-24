@@ -1,7 +1,7 @@
-package ExpatsOfEngehalde.Board;
+package expat.model.board;
 
-import ExpatsOfEngehalde.Buildings.Building;
-import ExpatsOfEngehalde.Raider;
+import expat.model.buildings.Building;
+import expat.model.Raider;
 
 /**
  * Created by vanonir on 22.03.2017.

@@ -1,4 +1,4 @@
-package ExpatsOfEngehalde.Materials;
+package expat.model;
 
 /**
  * Created by vanonir on 22.03.2017.
@@ -18,6 +18,12 @@ public class Material {
         }
         return true;
     }
+    public boolean addMaterial(Material materialToAdd,int multiplier) {
+        for (int i = 0 ; i<5;i++){
+            materialAmount[i]+= (materialToAdd.getMaterialAmount()[i]*2);
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
@@ -28,3 +34,4 @@ public class Material {
         return materialAmount;
     }
 }
+   
