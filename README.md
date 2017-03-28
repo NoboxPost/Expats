@@ -19,6 +19,10 @@
     public class ControllerRoulette implements Initializable {
        ...
     }
+    
+    public class ModelBuildingGenerator {
+        ...
+    }
 
 #### Objects
 
