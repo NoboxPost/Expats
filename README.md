@@ -6,7 +6,7 @@
 
 #### Methods
 
-[verb]+^[what it does]
+[verb]+[what it does]
 
     public void createButtons(){
         ...
@@ -14,7 +14,7 @@
     
  #### Classes
  
- ^[what it is]+^[where it comes from]
+ ^[what it is]+[where it comes from]
  
     public class ControllerRoulette implements Initializable {
        ...
@@ -22,7 +22,7 @@
 
 #### Objects
 
-[what it is]+^[where it comes from]
+[what it is]+[purpose]
 
     public Pane paneRouletteTable;
     
