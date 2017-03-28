@@ -14,7 +14,7 @@
     
  #### Classes
  
- ^[what it is]+[where it comes from]
+ [What it is]+[where it comes from]
  
     public class ControllerRoulette implements Initializable {
        ...
