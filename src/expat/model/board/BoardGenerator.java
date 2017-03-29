@@ -5,5 +5,13 @@ package expat.model.board;
  */
 public class BoardGenerator {
     private Board board;
+    private  int xSize, ySize;
     private Hex[] hexes;
+
+    public Board generateBoard(int xSize,int ySize) {
+        this.xSize = xSize;
+        this.ySize = ySize;
+        hexes = new Hex[xSize*ySize];
+        return null;
+    }
 }

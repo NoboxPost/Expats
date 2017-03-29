@@ -6,7 +6,7 @@
 
 #### Methods
 
-[verb]+^[what it does]
+[verb]+[what it does]
 
     public void createButtons(){
         ...
@@ -14,15 +14,19 @@
     
  #### Classes
  
- ^[what it is]+^[where it comes from]
+ [What it is]+[where it comes from]
  
     public class ControllerRoulette implements Initializable {
        ...
     }
+    
+    public class ModelBuildingGenerator {
+        ...
+    }
 
 #### Objects
 
-[what it is]+^[where it comes from]
+[what it is]+[purpose]
 
     public Pane paneRouletteTable;
     
@@ -42,10 +46,58 @@
 > IntelliJ Keymap Fix Doc Shortcut
 
 #### Classes
-- [classname] + is resposible for + [X]
+- [classname] + is responsible for + [X]
 - @author
 
 #### Methods (Ausnahme: get & set)
-- [Mmethodname] + does/creates/sets... + [X]
+- [methodname] + does/creates/sets... + [X]
 - @param
 - @return
+
+
+## Anforderungen
+### MUSTHAVE
+#### Spielfeld (Minimal-Graphik)
+
+#### Platzierung von 
+- Siedlungen
+- Städten
+- Strassen
+- Nummern
+
+#### Räubermechanik
+
+#### Anz. Spieler (auf einem PC spielbar)
+
+
+#### 2-Würfel Spielablauf, Ressourcenhandling, Siegbedingung
+
+#### Längste Strasse
+
+
+### NICETOHAVE
+
+#### Spielhandel
+- 4:1 Standard
+- 3:1 random Hafen + 2:1 mterial Hafen
+
+#### Action-Karten
+- Meiste Ritterkarten
+- Addon
+
+#### Multiplayer
+
+#### Spielfeldgenerator
+- Nummern
+- Kleine Inseln
+- Grosse Inseln
+- Kontinent
+- Entdeckung
+
+#### Seeräuber-Erweiterung
+
+#### KI
+
+#### Bessere Graphik
+
+#### Handel
