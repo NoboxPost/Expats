@@ -1,7 +1,10 @@
 *.class
 
 /out
+
 /.idea
+!.idea/fileTemplates/includes
+
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
