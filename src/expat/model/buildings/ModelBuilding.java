@@ -7,7 +7,7 @@ import expat.model.ModelPlayer;
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class Building {
+public class ModelBuilding {
     private ModelHex[] Neighbours;
     private java.util.List<ModelMaterial> buildingCosts;
     private int winPoints;

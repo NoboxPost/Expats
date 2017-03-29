@@ -1,7 +1,6 @@
 package expat.model;
 
-import expat.control.ControllerBoardPane;
-import expat.control.ControllerMainStage;
+import expat.control.*;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardGenerator;
 
@@ -10,13 +9,19 @@ import expat.model.board.ModelBoardGenerator;
  */
 public class ModelApp {
     private ControllerBoardPane boardController;
+    private ControllerPanePlayer playerController;
+    private ControllerPaneAction actionController;
+    private ControllerPaneMates matesController;
     private ControllerMainStage mainController;
     private ModelBoardGenerator boardGenerator;
     private ModelBoard board;
     private ModelPlayer[] players;
 
-    public ModelApp(ControllerMainStage mainController, ControllerBoardPane boardController) {
+    public ModelApp(ControllerMainStage mainController, ControllerBoardPane boardController, ControllerPaneMates matesController, ControllerPaneAction actionController, ControllerPanePlayer playerController) {
         this.boardController = boardController;
+        this.actionController = actionController;
+        this.matesController = matesController;
+        this.playerController = playerController;
         this.mainController = mainController;
         ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
         this.board = boardGenerator.generateBoard(9,7);

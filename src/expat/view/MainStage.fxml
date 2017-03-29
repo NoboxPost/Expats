@@ -6,12 +6,38 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerMainStage">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="expat.control.ControllerMainStage">
     <center>
         <Pane BorderPane.alignment="CENTER">
-         <children>
-             <fx:include fx:id="boardPane" source="BoardPane.fxml" />
-         </children>
+            <children>
+                <fx:include fx:id="boardPane" source="BoardPane.fxml"/>
+            </children>
         </Pane>
     </center>
+    <top>
+        <VBox BorderPane.alignment="CENTER"/>
+    </top>
+    <left>
+        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <fx:include fx:id="vBoxPlayer" source="VBoxPlayer.fxml"/>
+            </children>
+        </Pane>
+    </left>
+    <right>
+        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <fx:include fx:id="vBoxMates" source="VBoxMates.fxml"/>
+            </children>
+        </Pane>
+    </right>
+    <bottom>
+        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <fx:include fx:id="anchorPaneAction" source="AnchorPaneAction.fxml"/>
+            </children>
+        </Pane>
+    </bottom>
 </BorderPane>
