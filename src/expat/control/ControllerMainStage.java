@@ -1,8 +1,7 @@
 package expat.control;
 
-import expat.model.App;
+import expat.model.ModelApp;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 
@@ -14,12 +13,12 @@ public class ControllerMainStage {
     @FXML public BorderPane borderPane;
     @FXML private AnchorPane boardPane;
     @FXML public ControllerBoardPane controllerBoardPane;
-    private App app;
+    private ModelApp app;
 
 
     public void initialize() {
 
-        app = new App(this, controllerBoardPane);
+        app = new ModelApp(this, controllerBoardPane);
 
     }
 }

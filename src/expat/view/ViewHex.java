@@ -1,8 +1,6 @@
 package expat.view;
 
-import expat.model.board.Hex;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 
@@ -17,7 +15,7 @@ public class ViewHex extends Polygon {
     double size = 100;
     Image wool = new Image("expat/img/Wiese_Sheep.png"); //TODO; set better path, use String variable;
 
-    public ViewHex(double xOffset, double yOffset) {// TODO: Implement Hex as Parameter and CoordinateCalculator which calculates die actual position of the hex and returns xOffset and yOffset OR calculate offset for whole child.
+    public ViewHex(double xOffset, double yOffset) {// TODO: Implement ModelHex as Parameter and CoordinateCalculator which calculates die actual position of the hex and returns xOffset and yOffset OR calculate offset for whole child.
         this.xOffset = xOffset;
         this.yOffset = yOffset;
 

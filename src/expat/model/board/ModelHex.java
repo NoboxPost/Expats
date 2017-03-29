@@ -1,21 +1,21 @@
 package expat.model.board;
 
-import expat.model.Material;
+import expat.model.ModelMaterial;
 
 /**
  * Created by vanonir on 22.03.2017.
  */
-public abstract class Hex {
+public abstract class ModelHex {
 
     protected String type;
     protected int xCoord;
     protected int yCoord;
     protected boolean raided = false;
-    protected Material material;
+    protected ModelMaterial material;
     protected int diceNumber;
 
 
-    public Hex(int xCoord,int yCoord) {
+    public ModelHex(int xCoord, int yCoord) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
     }
@@ -32,7 +32,7 @@ public abstract class Hex {
             raided = true;
         }
     }
-    public Material getMaterial(){
+    public ModelMaterial getMaterial(){
         return material;
     }
     public String getType(){return type;}
