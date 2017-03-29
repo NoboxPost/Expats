@@ -10,4 +10,6 @@ public class ModelBoard {
     private ModelHex[] Hexes;
     private Building[] buildings;
     private ModelRaider raider;
+
+
 }

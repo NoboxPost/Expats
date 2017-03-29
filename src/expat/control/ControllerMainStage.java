@@ -12,7 +12,7 @@ public class ControllerMainStage {
 
     @FXML public BorderPane borderPane;
     @FXML private AnchorPane boardPane;
-    @FXML public ControllerBoardPane controllerBoardPane;
+    @FXML private ControllerBoardPane controllerBoardPane;
     private ModelApp app;
 
 

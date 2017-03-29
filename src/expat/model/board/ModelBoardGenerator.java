@@ -6,12 +6,21 @@ package expat.model.board;
 public class ModelBoardGenerator {
     private ModelBoard board;
     private  int xSize, ySize;
-    private ModelHex[] hexes;
+    private ModelHex[][] hexes;
 
-    public ModelBoard generateBoard(int xSize, int ySize) {
+    public ModelHex[][] generateHexes(int xSize, int ySize) {
         this.xSize = xSize;
         this.ySize = ySize;
-        hexes = new ModelHex[xSize*ySize];
-        return null;
+        hexes = new ModelHex[xSize][ySize];
+        for (int x = 0; x<xSize;x++){
+            for (int y = 0;y<ySize;y++){
+                hexes[x][y] = new ModelWater(x,y); // TODO: change ModelWater to ModelHex, as soon as ModelHex isn't abstract anymore.
+
+            }
+        }
+
+
+
+        return hexes;
     }
 }

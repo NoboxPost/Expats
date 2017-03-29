@@ -23,7 +23,7 @@ public class ModelApp {
 
     public ModelBoard generateBoard() {
         ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
-        boardGenerator.generateBoard(8,6);
-        return null;
+        boardGenerator.generateHexes(8,6);
+        return null; //TODO: change this
     }
 }
