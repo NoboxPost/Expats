@@ -13,7 +13,7 @@ import java.util.List;
 public class ViewHexFactory {
     private int hexSize;
     private CoordinateCalculator coordCalculator;
-    String[] imageUrls = new String[]{"expat/img/Water.png", "expat/img/Wiese_Sheep.png",};
+    String[] imageUrls = new String[]{"expat/img/Water.png","expat/img/Desert.png","expat/img/Clay.png","expat/img/Grain.png","expat/img/Stone.png","expat/img/Wood.png", "expat/img/Wool.png",};
     Image[] images;
     ImagePattern[] imagePatterns;
     String[] types = new String[]{"Water", "Desert", "Clay", "Grain", "Stone", "Wood", "Wool"};
