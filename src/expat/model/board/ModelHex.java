@@ -5,13 +5,14 @@ import expat.model.ModelMaterial;
 /**
  * Created by vanonir on 22.03.2017.
  */
-public abstract class ModelHex {
+public class ModelHex {
 
-    protected String type;
+    protected String type = "Water";
     protected int xCoord;
     protected int yCoord;
+    protected boolean raidable= false;
     protected boolean raided = false;
-    protected ModelMaterial material;
+    protected ModelMaterial material = new ModelMaterial(new int[]{0,0,0,0,0});
     protected int diceNumber;
 
 
@@ -20,21 +21,36 @@ public abstract class ModelHex {
         this.yCoord = yCoord;
     }
 
-
-    public boolean isRaided(){
-        return raided;
+    public boolean asignDiceNumber(int newDiceNumber){
+        if (diceNumber == 0){
+            if (newDiceNumber>=1&&newDiceNumber<=12){
+                diceNumber = newDiceNumber;
+                return true;
+            }else {return false;}
+        }else {
+            return false;
+        }
     }
 
-    public void block(){
-        if (raided){
-            raided = false;
-        }else {
-            raided = true;
+    public boolean raid(){
+        if (!raidable) {
+            if (raided){
+                raided = false;
+            }else {
+                raided = true;
+            }
+            return true;
+        } else {
+            return false;
         }
     }
     public ModelMaterial getMaterial(){
         return material;
     }
     public String getType(){return type;}
+
+    public boolean checkIfRaided(){
+        return raided;
+    }
 
 }
