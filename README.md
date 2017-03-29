@@ -46,11 +46,11 @@
 > IntelliJ Keymap Fix Doc Shortcut
 
 #### Classes
-- [classname] + is responsible for + [X]
+- is responsible for + [X]
 - @author
 
 #### Methods (Ausnahme: get & set)
-- [methodname] + does/creates/sets... + [X]
+- does/creates/sets... + [X]
 - @param
 - @return
 

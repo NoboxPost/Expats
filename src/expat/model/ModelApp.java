@@ -2,27 +2,27 @@ package expat.model;
 
 import expat.control.ControllerBoardPane;
 import expat.control.ControllerMainStage;
-import expat.model.board.Board;
-import expat.model.board.BoardGenerator;
+import expat.model.board.ModelBoard;
+import expat.model.board.ModelBoardGenerator;
 
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class App {
+public class ModelApp {
     private ControllerBoardPane boardController;
     private ControllerMainStage mainController;
-    private BoardGenerator boardGenerator;
-    private expat.model.board.Board board;
-    private Player[] players;
+    private ModelBoardGenerator boardGenerator;
+    private ModelBoard board;
+    private ModelPlayer[] players;
 
-    public App(ControllerMainStage mainController, ControllerBoardPane boardController) {
+    public ModelApp(ControllerMainStage mainController, ControllerBoardPane boardController) {
         this.boardController = boardController;
         this.mainController = mainController;
         generateBoard();
     }
 
-    public Board generateBoard() {
-        BoardGenerator boardGenerator = new BoardGenerator();
+    public ModelBoard generateBoard() {
+        ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
         boardGenerator.generateBoard(8,6);
         return null;
     }

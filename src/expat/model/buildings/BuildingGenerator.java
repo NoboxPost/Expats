@@ -1,12 +1,12 @@
 package expat.model.buildings;
 
-import expat.model.board.Hex;
+import expat.model.board.ModelHex;
 
 /**
  * Created by vanonir on 22.03.2017.
  */
 public class BuildingGenerator {
-    public Building generateBuilding(Hex[] Neighbours) {
+    public Building generateBuilding(ModelHex[] Neighbours) {
         return null;
     }
 

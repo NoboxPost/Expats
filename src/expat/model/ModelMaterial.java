@@ -3,22 +3,22 @@ package expat.model;
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class Material {
-    private String[] materialNames = new String[]{"Clay", "Grain", "Stone", "Wood", "Wool"};
+public class ModelMaterial {
+    private String[] materialNames = new String[]{"Clay", "ModelGrain", "ModelStone", "ModelWood", "ModelWool"};
     private int[] materialAmount = new int[5];
 
-    public Material(int[] materialAmount) {
+    public ModelMaterial(int[] materialAmount) {
         this.materialAmount = materialAmount;
     }
 
 
-    public boolean addMaterial(Material materialToAdd) {
+    public boolean addMaterial(ModelMaterial materialToAdd) {
         for (int i = 0 ; i<5;i++){
             materialAmount[i]+= materialToAdd.getMaterialAmount()[i];
         }
         return true;
     }
-    public boolean addMaterial(Material materialToAdd,int multiplier) {
+    public boolean addMaterial(ModelMaterial materialToAdd, int multiplier) {
         for (int i = 0 ; i<5;i++){
             materialAmount[i]+= (materialToAdd.getMaterialAmount()[i]*2);
         }
@@ -34,4 +34,3 @@ public class Material {
         return materialAmount;
     }
 }
-   

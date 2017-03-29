@@ -1,14 +1,8 @@
 package expat.control;
 
-import expat.model.board.Board;
-import expat.model.board.Desert;
-import expat.model.board.Hex;
 import expat.view.ViewHex;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 
 
 /**
