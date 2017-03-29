@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="expat.control.ControllerMainStage">
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="boardPane" source="BoardPane.fxml"/>
+                <fx:include fx:id="anchorPaneBoard" source="anchorPaneBoard.fxml"/>
             </children>
         </Pane>
     </center>

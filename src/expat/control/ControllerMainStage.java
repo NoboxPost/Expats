@@ -11,12 +11,12 @@ import javafx.scene.layout.VBox;
  */
 public class ControllerMainStage {
 
-    @FXML public BorderPane borderPane;
-    @FXML private AnchorPane boardPane;
+    @FXML private BorderPane borderPane;
+    @FXML private AnchorPane anchorPaneBoard;
     @FXML private VBox vBoxPlayer;
     @FXML private VBox vBoxMates;
     @FXML private AnchorPane anchorPaneAction;
-    @FXML private ControllerBoardPane controllerBoardPane;
+    @FXML private ControllerAnchorPaneBoard controllerAnchorPaneBoard;
     @FXML private ControllerPaneAction controllerPaneAction;
     @FXML private ControllerPaneMates controllerPaneMates;
     @FXML private ControllerPanePlayer controllerPanePlayer;
@@ -25,7 +25,7 @@ public class ControllerMainStage {
 
     public void initialize() {
 
-        app = new ModelApp(this, controllerBoardPane, controllerPaneMates, controllerPaneAction, controllerPanePlayer);
-
+        app = new ModelApp(this, controllerAnchorPaneBoard, controllerPaneMates, controllerPaneAction, controllerPanePlayer);
+        controllerAnchorPaneBoard.drawBoard(app.getBoard());
     }
 }

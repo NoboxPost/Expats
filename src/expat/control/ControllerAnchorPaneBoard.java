@@ -11,13 +11,15 @@ import javafx.scene.layout.AnchorPane;
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class ControllerBoardPane {
+public class ControllerAnchorPaneBoard {
     private ControllerMainStage controllerMainStage;
 
     @FXML private AnchorPane anchorPaneBoard;
 
     public void initialize(){
-        System.out.println("1");
+        ModelBoardGenerator generator = new ModelBoardGenerator();
+        ViewHexFactory hexFactory = new ViewHexFactory(200);
+        anchorPaneBoard.getChildren().addAll(hexFactory.generateViewHexList(generator.generateHexes(9,7)));
 
     }
     public void drawBoard(ModelBoard modelBoard){
