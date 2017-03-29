@@ -1,5 +1,8 @@
 package expat.model.board;
 
+import expat.model.ModelRaider;
+import expat.model.buildings.Building;
+
 /**
  * Created by vanonir on 22.03.2017.
  */
@@ -22,5 +25,18 @@ public class ModelBoardGenerator {
 
 
         return hexes;
+    }
+
+    public ModelBoard generateBoard(int xSize,int ySize) {
+        hexes = generateHexes(xSize,ySize);
+//        Building[] buildings = new Building[0]; //TODO: Implement Buildigns
+//        ModelRaider raider= new ModelRaider(); //TODO: Implement Raider
+//        buildings[0] = new Building();
+        board = new ModelBoard(hexes);
+        return board ;
+    }
+
+    public ModelBoard getBoard() {
+        return board;
     }
 }

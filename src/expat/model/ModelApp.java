@@ -18,12 +18,17 @@ public class ModelApp {
     public ModelApp(ControllerMainStage mainController, ControllerBoardPane boardController) {
         this.boardController = boardController;
         this.mainController = mainController;
-        generateBoard();
+        ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
+        this.board = boardGenerator.generateBoard(9,7);
     }
 
-    public ModelBoard generateBoard() {
+    public void generateBoard() {
         ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
-        boardGenerator.generateHexes(8,6);
-        return null; //TODO: change this
+        this.board = boardGenerator.generateBoard(9,7);
+
+    }
+
+    public ModelBoard getBoard() {
+        return board;
     }
 }

@@ -1,8 +1,9 @@
 package expat.control;
 
+import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardGenerator;
 import expat.model.board.ModelHex;
-import expat.view.ViewHex;
+import expat.view.ViewHexFactory;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
@@ -11,21 +12,21 @@ import javafx.scene.layout.AnchorPane;
  * Created by vanonir on 22.03.2017.
  */
 public class ControllerBoardPane {
+    private ControllerMainStage controllerMainStage;
 
-    @FXML private AnchorPane board;
+    @FXML private AnchorPane anchorPaneBoard;
 
     public void initialize(){
+        System.out.println("1");
 
-        ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
-        ModelHex[][] hexes = boardGenerator.generateHexes(8,6);
+    }
+    public void drawBoard(ModelBoard modelBoard){
+        anchorPaneBoard.getChildren().removeAll();
+        ViewHexFactory hexFactory = new ViewHexFactory(200);
+        anchorPaneBoard.getChildren().addAll(hexFactory.generateViewHexList(modelBoard.getHexes()));
+    }
 
-
-
-//        ViewHex myHex = new ViewHex(200,0,0);
-//        board.getChildren().addAll(myHex);
-//        ViewHex myHex2 = new ViewHex(200,150,80);
-//        board.getChildren().addAll(myHex2);
-//        ViewHex myHex3 = new ViewHex(75,50);
-//        board.getChildren().addAll(myHex3);
+    public void init(ControllerMainStage controllerMainStage) {
+        this.controllerMainStage=controllerMainStage;
     }
 }

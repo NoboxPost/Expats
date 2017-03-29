@@ -14,7 +14,4 @@
          </children>
         </Pane>
     </center>
-   <top>
-      <VBox BorderPane.alignment="CENTER" />
-   </top>
 </BorderPane>
