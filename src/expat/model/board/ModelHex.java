@@ -52,8 +52,17 @@ public class ModelHex {
     public boolean checkIfRaided(){
         return raided;
     }
+
+    public int getDiceNumber() {
+        return diceNumber;
+    }
+
     public int[] getCoords(){
         return new int[]{xCoord,yCoord};
+    }
+    public void setTypeAndDiceNumber(String type, int diceNumber){
+        this.type = type;
+        this.diceNumber = diceNumber;
     }
 
 }
