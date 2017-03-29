@@ -7,5 +7,5 @@ package expat.control;
  *
  * @author gallatib
  */
-public class ControllerPaneAction {
+public class PaneMatesController {
 }

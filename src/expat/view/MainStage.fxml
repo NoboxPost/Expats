@@ -6,37 +6,38 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="expat.control.ControllerMainStage">
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="anchorPaneBoard" source="anchorPaneBoard.fxml"/>
+                <fx:include fx:id="paneBoard" source="PaneBoard.fxml"/>
             </children>
         </Pane>
     </center>
     <top>
-        <VBox BorderPane.alignment="CENTER"/>
+        <VBox BorderPane.alignment="CENTER">
+        </VBox>
     </top>
     <left>
         <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="vBoxPlayer" source="VBoxPlayer.fxml"/>
+                <fx:include fx:id="panePlayer" source="PanePlayer.fxml"/>
             </children>
         </Pane>
     </left>
     <right>
         <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="vBoxMates" source="VBoxMates.fxml"/>
+                <fx:include fx:id="paneMates" source="PaneMates.fxml"/>
             </children>
         </Pane>
     </right>
     <bottom>
         <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="anchorPaneAction" source="AnchorPaneAction.fxml"/>
+                <fx:include fx:id="paneAction" source="PaneAction.fxml"/>
             </children>
         </Pane>
     </bottom>

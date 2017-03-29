@@ -11,21 +11,24 @@ import javafx.scene.layout.VBox;
  */
 public class ControllerMainStage {
 
-    @FXML private BorderPane borderPane;
-    @FXML private AnchorPane anchorPaneBoard;
-    @FXML private VBox vBoxPlayer;
-    @FXML private VBox vBoxMates;
-    @FXML private AnchorPane anchorPaneAction;
-    @FXML private ControllerAnchorPaneBoard controllerAnchorPaneBoard;
-    @FXML private ControllerPaneAction controllerPaneAction;
-    @FXML private ControllerPaneMates controllerPaneMates;
-    @FXML private ControllerPanePlayer controllerPanePlayer;
+    @FXML BorderPane borderPane;
+    @FXML AnchorPane paneBoard;
+    @FXML VBox panePlayer;
+    @FXML VBox paneMates;
+    @FXML AnchorPane paneAction;
+    @FXML
+    PaneBoardController paneBoardController;
+    @FXML
+    PaneActionController paneActionController;
+    @FXML
+    PaneMatesController paneMatesController;
+    @FXML
+    PanePlayerController panePlayerController;
     private ModelApp app;
 
 
     public void initialize() {
-
-        app = new ModelApp(this, controllerAnchorPaneBoard, controllerPaneMates, controllerPaneAction, controllerPanePlayer);
-        controllerAnchorPaneBoard.drawBoard(app.getBoard());
+        app = new ModelApp(this, paneBoardController, paneMatesController, paneActionController, panePlayerController);
+        paneBoardController.drawBoard(app.getBoard());
     }
 }

@@ -8,16 +8,16 @@ import expat.model.board.ModelBoardGenerator;
  * Created by vanonir on 22.03.2017.
  */
 public class ModelApp {
-    private ControllerAnchorPaneBoard boardController;
-    private ControllerPanePlayer playerController;
-    private ControllerPaneAction actionController;
-    private ControllerPaneMates matesController;
+    private PaneBoardController boardController;
+    private PanePlayerController playerController;
+    private PaneActionController actionController;
+    private PaneMatesController matesController;
     private ControllerMainStage mainController;
     private ModelBoardGenerator boardGenerator;
     private ModelBoard board;
     private ModelPlayer[] players;
 
-    public ModelApp(ControllerMainStage mainController, ControllerAnchorPaneBoard boardController, ControllerPaneMates matesController, ControllerPaneAction actionController, ControllerPanePlayer playerController) {
+    public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
         this.boardController = boardController;
         this.actionController = actionController;
         this.matesController = matesController;

@@ -1,6 +1,6 @@
 package expat;
 
-import expat.model.ModelApp;
+import expat.control.ControllerMainStage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +21,6 @@ public class Main extends Application {
             primaryStage.setScene(new Scene(root, 800, 600));
             primaryStage.setMaximized(true); //TODO: eventually change to setFullscreen(true)
             primaryStage.show();
-            loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
