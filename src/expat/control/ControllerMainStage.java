@@ -27,5 +27,7 @@ public class ControllerMainStage {
 
         app = new ModelApp(this, controllerBoardPane, controllerPaneMates, controllerPaneAction, controllerPanePlayer);
 
+
+
     }
 }
