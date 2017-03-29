@@ -1,7 +1,7 @@
 package expat.model.board;
 
 import expat.model.ModelRaider;
-import expat.model.buildings.Building;
+import expat.model.buildings.ModelBuilding;
 
 /**
  * Created by vanonir on 22.03.2017.

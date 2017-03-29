@@ -30,7 +30,6 @@ public class ModelApp {
     public void generateBoard() {
         ModelBoardGenerator boardGenerator = new ModelBoardGenerator();
         this.board = boardGenerator.generateBoard(9,7);
-
     }
 
     public ModelBoard getBoard() {

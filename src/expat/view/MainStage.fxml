@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="expat.control.ControllerMainStage">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerMainStage">
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="paneBoard" source="PaneBoard.fxml"/>
+                <fx:include fx:id="paneBoard" source="PaneBoard.fxml" />
             </children>
         </Pane>
     </center>
     <top>
         <VBox BorderPane.alignment="CENTER">
-        </VBox>
+         <BorderPane.margin>
+            <Insets bottom="50.0" />
+         </BorderPane.margin></VBox>
     </top>
     <left>
-        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <Pane prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="panePlayer" source="PanePlayer.fxml"/>
+                <fx:include fx:id="panePlayer" source="PanePlayer.fxml" />
             </children>
+         <BorderPane.margin>
+            <Insets left="20.0" right="50.0" />
+         </BorderPane.margin>
         </Pane>
     </left>
     <right>
         <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="paneMates" source="PaneMates.fxml"/>
+                <fx:include fx:id="paneMates" source="PaneMates.fxml" />
             </children>
+         <BorderPane.margin>
+            <Insets right="20.0" />
+         </BorderPane.margin>
         </Pane>
     </right>
     <bottom>
-        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <Pane prefHeight="200.0" style="-fx-background-color: lightgray;" BorderPane.alignment="CENTER">
             <children>
-                <fx:include fx:id="paneAction" source="PaneAction.fxml"/>
+                <fx:include fx:id="paneAction" source="PaneAction.fxml" />
             </children>
         </Pane>
     </bottom>
