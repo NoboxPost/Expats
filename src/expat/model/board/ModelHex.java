@@ -52,5 +52,8 @@ public class ModelHex {
     public boolean checkIfRaided(){
         return raided;
     }
+    public int[] getCoords(){
+        return new int[]{xCoord,yCoord};
+    }
 
 }
