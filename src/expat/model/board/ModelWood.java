@@ -11,4 +11,7 @@ public class ModelWood extends ModelHex {
         type = "Wood";
         material = new ModelMaterial(new int[]{0,0,0,1,0}); //TODO: add corresponding ModelMaterial
     }
+
 }
+
+
