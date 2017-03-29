@@ -8,14 +8,16 @@ import expat.model.Material;
 public abstract class Hex {
 
     protected String type;
-    protected int id;
+    protected int xCoord;
+    protected int yCoord;
     protected boolean raided = false;
     protected Material material;
     protected int diceNumber;
 
 
-    public Hex(int id) {
-        this.id = id;
+    public Hex(int xCoord,int yCoord) {
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
     }
 
 
