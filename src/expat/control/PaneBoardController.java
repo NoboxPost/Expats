@@ -19,7 +19,7 @@ public class PaneBoardController {
 
     @FXML
     private AnchorPane anchorPaneBoard;
-    private int hexSize = 150;
+    private int hexSize = 200;
 
     public void initialize() {
 

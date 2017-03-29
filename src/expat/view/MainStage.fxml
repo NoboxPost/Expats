@@ -9,11 +9,11 @@
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerMainStage">
     <center>
-        <Pane BorderPane.alignment="CENTER">
-            <children>
+        <ScrollPane BorderPane.alignment="CENTER">
+
                 <fx:include fx:id="paneBoard" source="PaneBoard.fxml" />
-            </children>
-        </Pane>
+
+        </ScrollPane>
     </center>
     <top>
         <VBox BorderPane.alignment="CENTER">

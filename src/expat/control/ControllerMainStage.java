@@ -4,6 +4,7 @@ import expat.model.ModelApp;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -12,7 +13,8 @@ import javafx.scene.layout.VBox;
 public class ControllerMainStage {
 
     @FXML BorderPane borderPane;
-    @FXML AnchorPane paneBoard;
+    @FXML
+    AnchorPane paneBoard;
     @FXML VBox panePlayer;
     @FXML VBox paneMates;
     @FXML AnchorPane paneAction;
