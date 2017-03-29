@@ -3,7 +3,7 @@
 /out
 
 /.idea
-!.idea/fileTemplates/includes
+!/.idea/fileTemplates/includes
 
 
 # Mobile Tools for Java (J2ME)
