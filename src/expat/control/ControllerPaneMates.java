@@ -1,4 +1,4 @@
-package expat.model.buildings;
+package expat.control;
 
 /**
  * is responsible for
@@ -7,5 +7,5 @@ package expat.model.buildings;
  *
  * @author gallatib
  */
-public class Test {
+public class ControllerPaneMates {
 }

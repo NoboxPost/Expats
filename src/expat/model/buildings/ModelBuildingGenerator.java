@@ -5,8 +5,8 @@ import expat.model.board.ModelHex;
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class BuildingGenerator {
-    public Building generateBuilding(ModelHex[] Neighbours) {
+public class ModelBuildingGenerator {
+    public ModelBuilding generateBuilding(ModelHex[] Neighbours) {
         return null;
     }
 

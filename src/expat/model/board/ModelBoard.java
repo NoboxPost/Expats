@@ -1,6 +1,6 @@
 package expat.model.board;
 
-import expat.model.buildings.Building;
+import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;
 
 /**
@@ -8,7 +8,7 @@ import expat.model.ModelRaider;
  */
 public class ModelBoard {
     private ModelHex[] Hexes;
-    private Building[] buildings;
+    private ModelBuilding[] buildings;
     private ModelRaider raider;
 
 
