@@ -44,18 +44,22 @@ public class PaneBoardController {
                 if (event.getDeltaY() == 0) {
                     return;
                 }
-
-                double scaleSize = (event.getDeltaY() > 0) ? SCALE_NUMBER : 1 / SCALE_NUMBER;
-
-
-                anchorPaneBoard.setScaleX(anchorPaneBoard.getScaleX() * scaleSize);
-                anchorPaneBoard.setScaleY(anchorPaneBoard.getScaleY() * scaleSize);
-                stackPane.setPrefHeight(anchorPaneBoard.getHeight() * anchorPaneBoard.getScaleY());
-                stackPane.setPrefWidth(anchorPaneBoard.getWidth() * anchorPaneBoard.getScaleX());
-
-
+                else if (event.getDeltaY() > 0 && anchorPaneBoard.getScaleY() < 1.8){
+                    scaleAnchorPaneBoard(SCALE_NUMBER);
+                }
+                else if(event.getDeltaY() < 0 && anchorPaneBoard.getScaleY() > 0.5){
+                    scaleAnchorPaneBoard(1 / SCALE_NUMBER);
+                }
             }
         });
+    }
+
+    public void scaleAnchorPaneBoard(double scaleSize){
+        anchorPaneBoard.setScaleX(anchorPaneBoard.getScaleX() * scaleSize);
+        anchorPaneBoard.setScaleY(anchorPaneBoard.getScaleY() * scaleSize);
+        stackPane.setPrefHeight(anchorPaneBoard.getHeight() * anchorPaneBoard.getScaleY());
+        stackPane.setPrefWidth(anchorPaneBoard.getWidth() * anchorPaneBoard.getScaleX());
+        System.out.println(anchorPaneBoard.getScaleX() + " " + anchorPaneBoard.getScaleY());
     }
 
     public void hexClicked(ActionEvent event) { //TODO: Raider
