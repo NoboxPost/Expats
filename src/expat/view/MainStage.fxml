@@ -9,11 +9,11 @@
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerMainStage">
     <center>
-        <ScrollPane BorderPane.alignment="CENTER">
-           <content>
+        <ScrollPane fx:id="scrollPaneCenter" hbarPolicy="NEVER" pannable="true" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+         <content>
    
-                   <fx:include fx:id="paneBoard" source="PaneBoard.fxml" />
-           </content>
+                         <fx:include fx:id="paneBoard" source="PaneBoard.fxml" />
+         </content>
 
         </ScrollPane>
     </center>
@@ -21,7 +21,15 @@
         <VBox BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="50.0" />
-         </BorderPane.margin></VBox>
+         </BorderPane.margin>
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </HBox>
+         </children></VBox>
     </top>
     <left>
         <Pane prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
