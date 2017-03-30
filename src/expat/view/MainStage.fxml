@@ -9,7 +9,7 @@
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerMainStage">
     <center>
-        <ScrollPane fx:id="scrollPaneCenter" hbarPolicy="NEVER" pannable="true" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="scrollPaneCenter" hbarPolicy="ALWAYS" pannable="true" prefHeight="1200.0" prefWidth="1400.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
          <content>
    
                          <fx:include fx:id="paneBoard" source="PaneBoard.fxml" />

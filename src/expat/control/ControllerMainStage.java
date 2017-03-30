@@ -2,7 +2,6 @@ package expat.control;
 
 import expat.model.ModelApp;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
@@ -15,12 +14,16 @@ import javafx.scene.layout.VBox;
 public class ControllerMainStage {
     @FXML
     private ScrollPane scrollPaneCenter;
-    @FXML BorderPane borderPane;
+    @FXML
+    BorderPane borderPane;
     @FXML
     StackPane paneBoard;
-    @FXML VBox panePlayer;
-    @FXML VBox paneMates;
-    @FXML AnchorPane paneAction;
+    @FXML
+    VBox panePlayer;
+    @FXML
+    VBox paneMates;
+    @FXML
+    AnchorPane paneAction;
     @FXML
     PaneBoardController paneBoardController;
     @FXML
@@ -38,11 +41,12 @@ public class ControllerMainStage {
         paneBoardController.init(this);
 
     }
-    public void adjustScrollPaneCenter(double height, double width){
-//        scrollPaneCenter.setMinViewportHeight(1000);
-//        scrollPaneCenter.setMinViewportWidth(1000);
-        }
-        //System.out.print(scrollPaneCenter.getViewportBounds());
 
+    public void adjustScrollPaneCenter(double width, double height) {
+        scrollPaneCenter.setHvalue(width);
+        scrollPaneCenter.setVvalue(height);
+        System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
 
+    }
 }
+
