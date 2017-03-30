@@ -18,7 +18,9 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             Parent root = loader.load(getClass().getResource("view/MainStage.fxml"));
             primaryStage.setTitle("Expats of Engehalde");
-            primaryStage.setScene(new Scene(root, 800, 600));
+            Scene primaryScene = new Scene(root, 800, 600);
+            primaryStage.setScene(primaryScene);
+            primaryScene.getStylesheets().addAll(this.getClass().getResource("view/style.css").toExternalForm());
             primaryStage.setMaximized(true); //TODO: eventually change to setFullscreen(true)
             primaryStage.show();
         } catch (IOException e) {

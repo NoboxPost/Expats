@@ -1,0 +1,10 @@
+.viewdicenumber{
+    -fx-background-color: #d6b373;
+    -fx-background-radius: 100em;
+    -fx-background-insets: -2px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}

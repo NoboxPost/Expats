@@ -6,6 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+
+import javax.swing.text.StyledEditorKit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,13 @@ public class ViewDiceButtonFactory {
         Button button = (Button) viewDiceNumber;
         button.setCursor(Cursor.HAND);
         button.setOnAction(paneBoardController::hexClicked);
+        button.getStyleClass().add("viewdicenumber");
+        button.setMinHeight(hexSize*0.25);
+        button.setPrefHeight(hexSize*0.25);
+        button.setMaxHeight(hexSize*0.25);
+        button.setMinWidth(hexSize*0.25);
+        button.setPrefWidth(hexSize*0.25);
+        button.setMaxWidth(hexSize*0.25);
         pane.getChildren().add(button);
         pane.setLayoutX(coords[0]);
         pane.setLayoutY(coords[1]);
