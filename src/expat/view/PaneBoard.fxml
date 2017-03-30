@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -7,6 +9,19 @@
 
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #738eb9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.PaneBoardController">
 <children>
-            <AnchorPane fx:id="anchorPaneBoard" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" StackPane.alignment="CENTER" />
+    <AnchorPane fx:id="anchorPaneBoard" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" StackPane.alignment="CENTER" >
+        <children>
+            <Polygon fill="WHITE" points="50,0,150,0,200,80,150,160,50,160,0,80" stroke="BLACK"/>
+            <Polygon fill="WHITE" layoutX="150.0" layoutY="80.0" points="50,0,150,0,200,80,150,160,50,160,0,80"
+                     stroke="BLACK"/>
+            <Polygon fill="WHITE" layoutY="160.0" points="50,0,150,0,200,80,150,160,50,160,0,80" stroke="BLACK"/>
+            <Polygon fill="WHITE" layoutX="150.0" layoutY="240.0" points="50,0,150,0,200,80,150,160,50,160,0,80"
+                     stroke="BLACK"/>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="150.0" layoutY="160.0"
+                       x="-20.0" y="-20.0">
+            </ImageView>
+        </children>
+    </AnchorPane>
+
 </children>
 </StackPane>

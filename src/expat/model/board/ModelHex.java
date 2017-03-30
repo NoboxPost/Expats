@@ -2,6 +2,8 @@ package expat.model.board;
 
 import expat.model.ModelMaterial;
 
+
+
 /**
  * Created by vanonir on 22.03.2017.
  */
@@ -12,8 +14,13 @@ public class ModelHex {
     protected int yCoord;
     protected boolean raidable= false;
     protected boolean raided = false;
+
+
+
+    protected boolean allowsBuildings = false;
     protected ModelMaterial material = new ModelMaterial(new int[]{0,0,0,0,0});
     protected int diceNumber;
+
 
 
     public ModelHex(int xCoord, int yCoord) {
@@ -62,7 +69,36 @@ public class ModelHex {
     }
     public void setTypeAndDiceNumber(String type, int diceNumber){
         this.type = type;
+        if (!type.equals("Water")){
+            allowsBuildings = true;
+        }else {
+            allowsBuildings =false;
+        }
+        int[] mat;
+        switch (type){
+            case "Clay":
+                 mat = new int[]{1,0,0,0,0};
+                 break;
+            case "Grain":
+                mat = new int[]{0,1,0,0,0};
+                break;
+            case "Stone":
+                mat = new int[]{0,0,1,0,0};
+                break;
+            case "Wood":
+                mat = new int[]{0,0,0,1,0};
+                break;
+            case "Wool":
+                mat = new int[]{0,0,0,0,1};
+                break;
+            default:
+                mat = new int[]{0,0,0,0,0};
+        }
+        this.material = new ModelMaterial(mat);
         this.diceNumber = diceNumber;
+    }
+    public boolean getAllowsBuildings() {
+        return allowsBuildings;
     }
 
 }

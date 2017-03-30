@@ -1,6 +1,7 @@
 package expat.control;
 
 import expat.model.board.ModelBoard;
+import expat.view.ViewBuildingFactory;
 import expat.view.ViewDiceButtonFactory;
 import expat.view.ViewDiceNumber;
 import expat.view.ViewHexFactory;
@@ -60,8 +61,10 @@ public class PaneBoardController {
                 }
             }
         });
-
-
+        ViewDiceButtonFactory diceLabelFactory = new ViewDiceButtonFactory(hexSize,this);
+        anchorPaneBoard.getChildren().addAll(diceLabelFactory.generateDiceButtons(modelBoard.getHexes()));
+        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(hexSize);
+        anchorPaneBoard.getChildren().addAll(viewBuildingFactory.generateBuildings(modelBoard.getHexes()));
     }
 
     public void scaleAnchorPaneBoard(double scaleSize){
