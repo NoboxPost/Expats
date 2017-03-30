@@ -4,7 +4,7 @@ package expat.model;
  * Created by vanonir on 22.03.2017.
  */
 public class ModelMaterial {
-    private String[] materialNames = new String[]{"Clay", "ModelGrain", "ModelStone", "ModelWood", "ModelWool"};
+    private String[] materialNames = new String[]{"Clay", "Grain", "Stone", "Wood", "Wool"};
     private int[] materialAmount = new int[5];
 
     public ModelMaterial(int[] materialAmount) {
