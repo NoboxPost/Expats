@@ -36,5 +36,6 @@ public class PaneBoardController {
     public void hexClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
         System.out.println(button.getCoords()[0]+" "+button.getCoords()[1]);
+        System.out.println(button.getFont());
     }
 }
