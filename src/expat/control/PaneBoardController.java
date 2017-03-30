@@ -9,10 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.transform.Scale;
 
 
 /**
@@ -25,7 +23,9 @@ public class PaneBoardController {
     @FXML
     private AnchorPane anchorPaneBoard;
     private int hexSize = 200;
-    private double SCALE_NUMBER = 1.1;
+    private double SCALE_NUMBER = 1.05;
+    private double mousePositionX;
+    private double mousePositionY;
 
     public void initialize() {
 
@@ -42,14 +42,21 @@ public class PaneBoardController {
             @Override
             public void handle(ScrollEvent event) {
                 event.consume();
+                System.out.println("StackpaneWidth: " + stackPane.getWidth() + " StackpaneHeight: " + stackPane.getHeight() + " getSceneX: " + event.getSceneX() + " getSceneY: " + event.getSceneY() + " getScreenX: " + event.getScreenX() + " getScreenY: " + event.getScreenY() + " getX: " + event.getX() + " getY: " + event.getY());
+
+                mousePositionX = event.getX()/1400;
+                mousePositionY = event.getY()/1200;
+
 
                 if (event.getDeltaY() == 0) {
                     return;
                 }
-                else if (event.getDeltaY() > 0 && anchorPaneBoard.getScaleY() < 1.8){
+                //1.8
+                else if (event.getDeltaY() > 0 && anchorPaneBoard.getScaleY() < 3){
                     scaleAnchorPaneBoard(SCALE_NUMBER);
                 }
-                else if(event.getDeltaY() < 0 && anchorPaneBoard.getScaleY() > 0.5){
+                //0.5
+                else if(event.getDeltaY() < 0 && anchorPaneBoard.getScaleY() > 0.1){
                     scaleAnchorPaneBoard(1 / SCALE_NUMBER);
                 }
             }
@@ -65,7 +72,8 @@ public class PaneBoardController {
         anchorPaneBoard.setScaleY(anchorPaneBoard.getScaleY() * scaleSize);
         stackPane.setPrefHeight(anchorPaneBoard.getHeight() * anchorPaneBoard.getScaleY());
         stackPane.setPrefWidth(anchorPaneBoard.getWidth() * anchorPaneBoard.getScaleX());
-        System.out.println(anchorPaneBoard.getScaleX() + " " + anchorPaneBoard.getScaleY());
+        //System.out.println(anchorPaneBoard.getScaleX() + " " + anchorPaneBoard.getScaleY());
+        controllerMainStage.adjustScrollPaneCenter(mousePositionX, mousePositionY);
     }
 
     public void hexClicked(ActionEvent event) { //TODO: Raider
