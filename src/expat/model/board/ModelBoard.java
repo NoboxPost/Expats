@@ -26,8 +26,7 @@ public class ModelBoard {
                 if(hex.getDiceNumber()==diceNumber){
                     for(ModelBuilding building: buildings){
                         if(building.isFlanking(hex)){
-                            hex.getMaterial();
-                            //building.getType();
+                            building.giveMaterialToOwner(hex.getMaterial());
                         }
                     }
                 }

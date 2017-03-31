@@ -41,4 +41,14 @@ public class ModelBuilding {
             return false;
         }
     }
+
+    public void giveMaterialToOwner(ModelMaterial material){
+        if(!type.equals("empty")){
+            //TODO: town/settlement player gewusel
+        }
+    }
+
+    public String getType() {
+        return type;
+    }
 }
