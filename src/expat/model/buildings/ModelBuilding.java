@@ -9,11 +9,15 @@ import expat.model.ModelPlayer;
  */
 public class ModelBuilding {
     private ModelHex[] neighbours = new ModelHex[3];
-    private ModelMaterial material;
+    private String type = "empty";
+    private int xBuildingCoord, yBuildingCoord;
     private int winPoints;
     protected ModelPlayer owner;
 
-
+    public ModelBuilding(int xBuildingCoord, int yBuildingCoord) {
+        this.xBuildingCoord = xBuildingCoord;
+        this.yBuildingCoord = yBuildingCoord;
+    }
 
     public boolean isFlanking(ModelHex hexNeighbour){
         for (ModelHex hex: neighbours){
@@ -23,13 +27,18 @@ public class ModelBuilding {
         }
         return false;
     }
-    public void addNeighbour(ModelHex hex1,ModelHex hex2, ModelHex hex3){
-        boolean isAllreadySet = false;
-        for (ModelHex hex: neighbours){
+    public boolean addNeighbour(ModelHex hex){
+        if (neighbours[2]!=null){
+            return false;
+        }else {
+            for (int i = 0; i < neighbours.length; i++) {
+                if (neighbours[i] == null) {
+                    neighbours[i] = hex;
+                    return true;
+                }
 
+            }
+            return false;
         }
-        neighbours[0] = hex1;
-        neighbours[1] = hex2;
-        neighbours[2] = hex3;
     }
 }
