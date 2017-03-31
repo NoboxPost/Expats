@@ -39,8 +39,9 @@ public class ControllerMainStage {
 
     public void initialize() {
         app = new ModelApp(this, paneBoardController, paneMatesController, paneActionController, panePlayerController);
+        paneBoardController.init(this,app);
         paneBoardController.drawBoard(app.getBoard());
-        paneBoardController.init(this);
+
     }
 
     public void adjustScrollPaneCenter(double width, double height) {

@@ -9,6 +9,7 @@ import expat.model.ModelPlayer;
  */
 public class ModelBuilding {
     private ModelHex[] neighbours = new ModelHex[3];
+    private String[] types = new String[]{"empty","Settlement","Town"};
     private String type = "empty";
     private int xBuildingCoord, yBuildingCoord;
     private int winPoints;
@@ -21,7 +22,7 @@ public class ModelBuilding {
 
     public boolean isFlanking(ModelHex hexNeighbour){
         for (ModelHex hex: neighbours){
-            if (hex.equals(hexNeighbour)){//TODO: Test if equals realy works. Performance?
+            if (hex.equals(hexNeighbour)){//TODO: Test if equals really works. Performance?
                 return true;
             }
         }
@@ -50,5 +51,11 @@ public class ModelBuilding {
 
     public String getType() {
         return type;
+    }
+    public int[] getCoords(){
+        return new int[]{xBuildingCoord,yBuildingCoord};
+    }
+    public void changeBuildingType(){
+        type = type.equals("empty")? "Settlement":"empty";
     }
 }

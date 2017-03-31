@@ -1,7 +1,6 @@
 package expat.view;
 
 import expat.model.board.ModelHex;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 
@@ -13,7 +12,7 @@ import java.util.List;
  */
 public class ViewHexFactory {
     private int hexSize;
-    private CoordinateCalculator coordCalculator;
+    private ViewCoordinateCalculator coordCalculator;
     String[] imageUrls = new String[]{"expat/img/Water.png","expat/img/Desert.png","expat/img/Clay.png","expat/img/Grain.png","expat/img/Stone.png","expat/img/Wood.png", "expat/img/Wool.png",};
     Image[] images;
     ImagePattern[] imagePatterns;
@@ -26,7 +25,7 @@ public class ViewHexFactory {
      */
     public ViewHexFactory(int hexSize) {
         this.hexSize = hexSize;
-        coordCalculator = new CoordinateCalculator(hexSize);
+        coordCalculator = new ViewCoordinateCalculator(hexSize);
 
 
         images = new Image[imageUrls.length];
@@ -52,7 +51,7 @@ public class ViewHexFactory {
                 break;
             }
         }
-        Double[] coords = coordCalculator.calcCoords(modelHex);
+        Double[] coords = coordCalculator.calcHexCoords(modelHex);
         ViewHex viewHex = new ViewHex(hexSize, coords[0], coords[1], imagePatterns[index]);
         return viewHex;
     }
