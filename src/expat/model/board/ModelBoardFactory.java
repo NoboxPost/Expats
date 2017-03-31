@@ -1,12 +1,13 @@
 package expat.model.board;
 
+import expat.model.ModelRaider;
 import expat.model.buildings.ModelBuilding;
 import expat.model.buildings.ModelBuildingFactory;
 
 import java.util.ArrayList;
 
 /**
- * is responsible for
+ * is responsible for the generation of the board.
  * <p>
  * created on 30.03.2017
  *
@@ -28,8 +29,8 @@ public class ModelBoardFactory {
         hexes = hexFactory.generateHexes(xSize,ySize);
         ModelBuildingFactory buildingFactory = new ModelBuildingFactory(xSize,ySize,hexes);
         buildings = buildingFactory.generateBuildings();
-//        ModelRaider raider= new ModelRaider(); //TODO: Implement Raider
-        board = new ModelBoard(hexes,buildings);
+        ModelRaider raider= new ModelRaider(); //TODO: Implement raider functionality
+        board = new ModelBoard(hexes,buildings,raider);
         return board;
     }
 }
