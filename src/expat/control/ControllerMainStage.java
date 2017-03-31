@@ -1,12 +1,14 @@
 package expat.control;
 
 import expat.model.ModelApp;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  * Created by vanonir on 22.03.2017.
@@ -39,13 +41,13 @@ public class ControllerMainStage {
         app = new ModelApp(this, paneBoardController, paneMatesController, paneActionController, panePlayerController);
         paneBoardController.drawBoard(app.getBoard());
         paneBoardController.init(this);
-
     }
 
     public void adjustScrollPaneCenter(double width, double height) {
         scrollPaneCenter.setHvalue(width);
         scrollPaneCenter.setVvalue(height);
-        System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
+        // TODO: entfernen (Testing): System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
+
 
     }
 }

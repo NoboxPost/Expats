@@ -14,7 +14,6 @@ public class ModelApp {
     private PaneActionController actionController;
     private PaneMatesController matesController;
     private ControllerMainStage mainController;
-    private ModelHexFactory boardGenerator;
     private ModelBoard board;
     private ModelPlayer[] players;
 
@@ -28,8 +27,37 @@ public class ModelApp {
         this.board = boardGenerator.generateBoard();
     }
 
+    /**
+     * 1. dice
+     * 2. resource distribution
+     */
+    public void resourceStep(){
+        ModelThrowDice throwDice = new ModelThrowDice();
+        board.resourceOnDiceEvent(throwDice.getRandomDiceNumber());
 
-    public ModelBoard getBoard() {
-        return board;
+
+
     }
+
+    /**
+     * 1. domestic trade (playertrade)
+     * 2. sea trade (2:1, 3:1, 4:1)
+     */
+    public void tradeStep(){
+
+    }
+
+    /**
+     * 1. rolled 7 (no resources, >7 cards drop, raider move, resource robbery)
+     * 2. play development cards (knights, development, victory)
+     */
+    public void specialStep(){
+
+    }
+
+    public void gameOver(){
+
+    }
+
+    public ModelBoard getBoard() {return board;}
 }
