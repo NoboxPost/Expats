@@ -16,7 +16,6 @@ public class ModelBuilding {
 
 
     public boolean isFlanking(ModelHex hexNeighbour){
-
         for (ModelHex hex: neighbours){
             if (hex.equals(hexNeighbour)){//TODO: Test if equals realy works. Performance?
                 return true;

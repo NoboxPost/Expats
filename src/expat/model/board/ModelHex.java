@@ -14,9 +14,6 @@ public class ModelHex {
     protected int yCoord;
     protected boolean raidable= false;
     protected boolean raided = false;
-
-
-
     protected boolean allowsBuildings = false;
     protected ModelMaterial material = new ModelMaterial(new int[]{0,0,0,0,0});
     protected int diceNumber;

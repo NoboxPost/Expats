@@ -18,7 +18,21 @@ public class ModelBoard {
         this.hexes = hexes;
         this.buildings = buildings;
         this.raider = raider;
+    }
 
+    public void resourceOnDiceEvent(int diceNumber){
+        for(ModelHex[] hexline : hexes){
+            for(ModelHex hex : hexline){
+                if(hex.getDiceNumber()==diceNumber){
+                    for(ModelBuilding building: buildings){
+                        if(building.isFlanking(hex)){
+                            hex.getMaterial();
+                            //building.getType();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public ModelHex[][] getHexes() {
