@@ -8,8 +8,8 @@ import expat.model.ModelPlayer;
  * Created by vanonir on 22.03.2017.
  */
 public class ModelBuilding {
-    private ModelHex[] Neighbours;
-    private java.util.List<ModelMaterial> buildingCosts;
+    private ModelHex[] neighbours = new ModelHex[3];
+    private ModelMaterial material;
     private int winPoints;
     protected ModelPlayer owner;
 
@@ -17,11 +17,20 @@ public class ModelBuilding {
 
     public boolean isFlanking(ModelHex hexNeighbour){
 
-        for (ModelHex hex:Neighbours){
+        for (ModelHex hex: neighbours){
             if (hex.equals(hexNeighbour)){//TODO: Test if equals realy works. Performance?
                 return true;
             }
         }
         return false;
+    }
+    public void addNeighbour(ModelHex hex1,ModelHex hex2, ModelHex hex3){
+        boolean isAllreadySet = false;
+        for (ModelHex hex: neighbours){
+
+        }
+        neighbours[0] = hex1;
+        neighbours[1] = hex2;
+        neighbours[2] = hex3;
     }
 }
