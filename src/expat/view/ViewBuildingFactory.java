@@ -1,9 +1,9 @@
 package expat.view;
 
-import expat.model.board.ModelHex;
+import expat.control.PaneBoardController;
+import expat.model.buildings.ModelBuilding;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,60 +15,113 @@ import java.util.List;
  *
  * @author vanonir
  */
-@Deprecated
+
 public class ViewBuildingFactory {
-    private CoordinateCalculator coordinateCalculator;
+    private ViewCoordinateCalculator viewCoordinateCalculator;
+    PaneBoardController paneBoardController;
     private int hexSize;
 
-    public ViewBuildingFactory(int hexSize) {
+    public ViewBuildingFactory(int hexSize, PaneBoardController paneBoardController) {
+        this.paneBoardController = paneBoardController;
         this.hexSize = hexSize;
-        coordinateCalculator = new CoordinateCalculator(hexSize);
+        viewCoordinateCalculator = new ViewCoordinateCalculator(hexSize);
     }
+    public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings){
+        List<ViewBuilding> viewBuildings= new ArrayList<ViewBuilding>();
 
-
-    public List<ImageView> generateBuildings(ModelHex[][] hexes){
-        List<ImageView> buildings= new ArrayList<ImageView>();
-        int width = hexes.length;
-        int height = hexes[0].length;
-        for (int x = 0;x<width;x++) {
-            for (int y = 0 ; y<height;y++) {
-                if (true){
-                    buildings = (generateEmptyBuildingsForOneHex(hexes[x][y],buildings));
-                }
+        for (ModelBuilding modelBuilding : modelBuildings) {
+            if (modelBuilding.getType().equals("empty")){
+                 int[] modelBuildingCoords = modelBuilding.getCoords();
+                ViewBuilding viewBuilding = generateEmptyBuilding(modelBuildingCoords[0],modelBuildingCoords[1]);
+                viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
+                Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+                viewBuilding.setLayoutX(pixelCoords[0]);
+                viewBuilding.setLayoutY(pixelCoords[1]);
+                viewBuildings.add(viewBuilding);
+            }else if (modelBuilding.getType().equals("Settlement")){
+                int[] modelBuildingCoords = modelBuilding.getCoords();
+                ViewBuilding viewBuilding = generateSettlement(modelBuildingCoords[0],modelBuildingCoords[1]);
+                viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
+                Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+                viewBuilding.setLayoutX(pixelCoords[0]);
+                viewBuilding.setLayoutY(pixelCoords[1]);
+                viewBuildings.add(viewBuilding);
             }
         }
-        return buildings;
+
+
+
+        return viewBuildings;
     }
-    public List<ImageView> generateEmptyBuildingsForOneHex(ModelHex hex,List<ImageView> buildings) {
-        Double[] hexCoord = coordinateCalculator.calcCoords(hex);
-        double hexCoordX = hexCoord[0];
-        double hexCoordY = hexCoord[1];
 
-        ImageView imageView, imageView1, imageView2;
-
-        if (hexCoordX==0){
-            imageView =generateEmptyBuilding();
-            imageView.setLayoutX(hexCoordX);
-            imageView.setLayoutY(hexCoordY+(hexSize*0.4));
-            buildings.add(imageView);
-        }
-        imageView1 = generateEmptyBuilding();
-        imageView1.setLayoutX(hexCoordX+(hexSize*0.25));
-        imageView1.setLayoutY(hexCoordY);
-        buildings.add(imageView1);
-
-        imageView2 = generateEmptyBuilding();
-        imageView2.setLayoutX(hexCoordX+(hexSize*0.75));
-        imageView2.setLayoutY(hexCoordY);
-        buildings.add(imageView2);
-
-        return buildings;
-    }
-    public ImageView generateEmptyBuilding(){
+    public ViewBuilding generateEmptyBuilding(int xCoord, int yCoord){
         Image img= new Image("expat/img/Building_Empty.png");
-        ImageView imageView = new ImageView(img);
-        imageView.setX(-(hexSize*0.1));
-        imageView.setY(-(hexSize*0.1));
-        return imageView;
+        ViewBuilding viewBuilding = new ViewBuilding(img,xCoord,yCoord);
+        viewBuilding.setX(-(hexSize*0.1));
+        viewBuilding.setY(-(hexSize*0.1));
+        viewBuilding.setCursor(Cursor.HAND);
+
+        return viewBuilding;
     }
+    public ViewBuilding generateSettlement(int xCoord,int yCoord){
+        Image img= new Image("expat/img/Settlement.png");
+        ViewBuilding viewBuilding = new ViewBuilding(img,xCoord,yCoord);
+        viewBuilding.setX(-(hexSize*0.1));
+        viewBuilding.setY(-(hexSize*0.1));
+        viewBuilding.setCursor(Cursor.HAND);
+        return viewBuilding;
+
+
+    }
+
+
 }
+
+
+
+//    public List<ImageView> generateBuildings(ModelHex[][] hexes){
+//        List<ImageView> buildings= new ArrayList<ImageView>();
+//        int width = hexes.length;
+//        int height = hexes[0].length;
+//        for (int x = 0;x<width;x++) {
+//            for (int y = 0 ; y<height;y++) {
+//                if (true){
+//                    buildings = (generateEmptyBuildingsForOneHex(hexes[x][y],buildings));
+//                }
+//            }
+//        }
+//        return buildings;
+//    }
+//    public List<ImageView> generateEmptyBuildingsForOneHex(ModelHex hex,List<ImageView> buildings) {
+//        Double[] hexCoord = viewCoordinateCalculator.calcHexCoords(hex);
+//        double hexCoordX = hexCoord[0];
+//        double hexCoordY = hexCoord[1];
+//
+//        ImageView imageView, imageView1, imageView2;
+//
+//        if (hexCoordX==0){
+//            imageView =generateEmptyBuilding();
+//            imageView.setLayoutX(hexCoordX);
+//            imageView.setLayoutY(hexCoordY+(hexSize*0.4));
+//            buildings.add(imageView);
+//        }
+//        imageView1 = generateEmptyBuilding();
+//        imageView1.setLayoutX(hexCoordX+(hexSize*0.25));
+//        imageView1.setLayoutY(hexCoordY);
+//        buildings.add(imageView1);
+//
+//        imageView2 = generateEmptyBuilding();
+//        imageView2.setLayoutX(hexCoordX+(hexSize*0.75));
+//        imageView2.setLayoutY(hexCoordY);
+//        buildings.add(imageView2);
+//
+//        return buildings;
+//    }
+//    public ImageView generateEmptyBuilding(){
+//        Image img= new Image("expat/img/Building_Empty.png");
+//        ImageView imageView = new ImageView(img);
+//        imageView.setX(-(hexSize*0.1));
+//        imageView.setY(-(hexSize*0.1));
+//        return imageView;
+//    }
+//}

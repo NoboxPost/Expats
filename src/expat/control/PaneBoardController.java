@@ -1,13 +1,12 @@
 package expat.control;
 
+import expat.model.ModelApp;
 import expat.model.board.ModelBoard;
-import expat.view.ViewBuildingFactory;
-import expat.view.ViewDiceButtonFactory;
-import expat.view.ViewDiceNumber;
-import expat.view.ViewHexFactory;
+import expat.view.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -26,6 +25,7 @@ public class PaneBoardController {
     private double SCALE_NUMBER = 1.05;
     private double mousePositionX;
     private double mousePositionY;
+    private ModelApp app;
 
     public void initialize() {
         attachScrollHandler();
@@ -37,17 +37,26 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().addAll(hexFactory.generateViewHexList(modelBoard.getHexes()));
         ViewDiceButtonFactory diceButtonFactory = new ViewDiceButtonFactory(HEXSIZE, this);
         anchorPaneBoard.getChildren().addAll(diceButtonFactory.generateDiceButtons(modelBoard.getHexes()));
-        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE);
-        anchorPaneBoard.getChildren().addAll(viewBuildingFactory.generateBuildings(modelBoard.getHexes()));
+        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE,this);
+        anchorPaneBoard.getChildren().addAll(viewBuildingFactory.generateBuildings(modelBoard.getBuildings()));
     }
 
     public void hexClicked(ActionEvent event) { //TODO: Raider
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
-        System.out.println(button.getCoords()[0] + " " + button.getCoords()[1]);
+        System.out.println("DiceNumber clicked :"+button.getCoords()[0] + " " + button.getCoords()[1]);
+    }
+    public void emptyBuildingSpotClicked(MouseEvent event){
+        ViewBuilding building = (ViewBuilding)event.getSource();
+        app.getBoard().changeBuilding(building.getBuildingCoord()[0],building.getBuildingCoord()[1]);
+        System.out.println("Empty Building clicked "+building.getBuildingCoord()[0]+" "+building.getBuildingCoord()[1]);
+        drawBoard(app.getBoard());
+
     }
 
-    public void init(ControllerMainStage controllerMainStage) {
+
+    public void init(ControllerMainStage controllerMainStage,ModelApp app) {
         this.controllerMainStage = controllerMainStage;
+        this.app = app;
     }
 
     private void attachScrollHandler(){

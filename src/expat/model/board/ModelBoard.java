@@ -23,7 +23,7 @@ public class ModelBoard {
     public void resourceOnDiceEvent(int diceNumber){
         for(ModelHex[] hexline : hexes){
             for(ModelHex hex : hexline){
-                if(hex.getDiceNumber()==diceNumber){
+                if(hex.getDiceNumber()==diceNumber){ //TODO: check if raided,
                     for(ModelBuilding building: buildings){
                         if(building.isFlanking(hex)){
                             building.giveMaterialToOwner(hex.getMaterial());
@@ -44,5 +44,14 @@ public class ModelBoard {
 
     public ModelRaider getRaider() {
         return raider;
+    }
+
+    public void changeBuilding(int xCoord,int yCoord){
+        for (ModelBuilding building:buildings) {
+            if (building.getCoords()[0]==xCoord&&building.getCoords()[1]==yCoord){
+                building.changeBuildingType();
+            }
+
+        }
     }
 }
