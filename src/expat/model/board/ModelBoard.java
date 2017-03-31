@@ -14,14 +14,22 @@ public class ModelBoard {
     private ArrayList<ModelBuilding> buildings;
     private ModelRaider raider;
 
-    public ModelBoard(ModelHex[][] hexes , ArrayList<ModelBuilding> buildings){//, ModelRaider raider) {
+    public ModelBoard(ModelHex[][] hexes , ArrayList<ModelBuilding> buildings, ModelRaider raider) {
         this.hexes = hexes;
         this.buildings = buildings;
-//        this.raider = raider;
+        this.raider = raider;
 
     }
 
     public ModelHex[][] getHexes() {
         return hexes;
+    }
+
+    public ArrayList<ModelBuilding> getBuildings() {
+        return buildings;
+    }
+
+    public ModelRaider getRaider() {
+        return raider;
     }
 }

@@ -43,5 +43,5 @@ public class CoordinateCalculator {
 
     public int[] calcCoords(ModelHex hex1, ModelHex hex2, ModelHex hex3) {
         return null;
-    }
+    } //TODO: remove if not used.
 }
