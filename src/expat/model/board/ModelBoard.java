@@ -32,8 +32,8 @@ public class ModelBoard {
      * @param diceNumber
      */
     public void resourceOnDiceEvent(int diceNumber){
-        for(ModelHex[] hexline : hexes){
-            for(ModelHex hex : hexline){
+        for(ModelHex[] hexLine : hexes){
+            for(ModelHex hex : hexLine){
                 if(hex.getDiceNumber()==diceNumber){ //TODO: check if raided,
                     for(ModelBuilding building: buildings){
                         if(building.isFlanking(hex)){

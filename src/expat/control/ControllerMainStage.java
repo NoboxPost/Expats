@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 /**
- * the main scene that works as collection-pool for all included scenes and starts the App
+ * the main scene that works as collection-pool for all included scenes and also starts the App
  * <p>
  * created on 22.03.2017
  *
