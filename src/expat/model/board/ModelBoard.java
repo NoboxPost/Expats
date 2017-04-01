@@ -7,7 +7,11 @@ import expat.model.buildings.ModelBuilding;
 import java.util.ArrayList;
 
 /**
- * Created by vanonir on 22.03.2017.
+ * is responsible for the actual game board that includes hexes, buildings and a raider
+ * <p>
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
 public class ModelBoard {
     private ModelHex[][] hexes;
@@ -20,9 +24,16 @@ public class ModelBoard {
         this.raider = raider;
     }
 
+    /**
+     * 1. checks all the hexes on board an compares them to the rolled dice number
+     * 2. checks all the buildings flanking those specific hexes and checks whether the hex is raided or not
+     * 3. calls the building class to distribute the diced materials
+     *
+     * @param diceNumber
+     */
     public void resourceOnDiceEvent(int diceNumber){
-        for(ModelHex[] hexline : hexes){
-            for(ModelHex hex : hexline){
+        for(ModelHex[] hexLine : hexes){
+            for(ModelHex hex : hexLine){
                 if(hex.getDiceNumber()==diceNumber){ //TODO: check if raided,
                     for(ModelBuilding building: buildings){
                         if(building.isFlanking(hex)){

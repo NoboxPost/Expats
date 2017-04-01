@@ -11,8 +11,15 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 /**
- * Created by vanonir on 22.03.2017.
+ * the main scene that works as collection-pool for all included scenes and also starts the App
+ * <p>
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
+
+//TODO: Mainstage? Or MainPane/Scene?
+
 public class ControllerMainStage {
     @FXML
     private ScrollPane scrollPaneCenter;
@@ -44,6 +51,11 @@ public class ControllerMainStage {
 
     }
 
+    /**
+     * adjusts the scrollbar when zooming
+     * @param width
+     * @param height
+     */
     public void adjustScrollPaneCenter(double width, double height) {
         scrollPaneCenter.setHvalue(width);
         scrollPaneCenter.setVvalue(height);

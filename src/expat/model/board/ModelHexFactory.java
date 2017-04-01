@@ -4,7 +4,11 @@ import expat.model.ModelRaider;
 import expat.model.buildings.ModelBuilding;
 
 /**
- * Created by vanonir on 22.03.2017.
+ * is responsible for the creation of a hexagonal field
+ * <p>
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
 public class ModelHexFactory {
 
