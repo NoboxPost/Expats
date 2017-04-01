@@ -1,7 +1,8 @@
 package expat.control;
 
 /**
- * is responsible for
+ * the left hand pane that works as an oversight of the actual player,
+ * including his material-cards, his victory points and his development cards
  * <p>
  * created on 29.03.2017
  *

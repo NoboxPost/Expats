@@ -5,7 +5,11 @@ import expat.model.ModelMaterial;
 
 
 /**
- * Created by vanonir on 22.03.2017.
+ * is responsible for the single hexagonal field on a game board
+ * <p>
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
 public class ModelHex {
 
@@ -25,6 +29,12 @@ public class ModelHex {
         this.yCoord = yCoord;
     }
 
+    /**
+     * random generator for dice numbers on a hex
+     *
+     * @param newDiceNumber
+     * @return assigning boolean
+     */
     public boolean asignDiceNumber(int newDiceNumber){
         if (diceNumber == 0){
             if (newDiceNumber>=1&&newDiceNumber<=12){
@@ -36,8 +46,14 @@ public class ModelHex {
         }
     }
 
+    /**
+     *changes a hex to raided when the raider is moved to that specific field
+     *
+     * @return assigning boolean
+     */
     public boolean raid(){
         if (!raidable) {
+            //TODO: NOT NOT (not false), double-negative, is it that way because water is default?
             if (raided){
                 raided = false;
             }else {
@@ -48,22 +64,24 @@ public class ModelHex {
             return false;
         }
     }
-    public ModelMaterial getMaterial(){
-        return material;
-    }
-    public String getType(){return type;}
 
-    public boolean checkIfRaided(){
-        return raided;
-    }
-
-    public int getDiceNumber() {
-        return diceNumber;
-    }
-
-    public int[] getCoords(){
-        return new int[]{xCoord,yCoord};
-    }
+    /**
+     * assigns the type and the dice number to a hex
+     *<p>
+     *     hex-types:
+     *     - water (default)
+     *     - clay
+     *     - grain
+     *     - stone
+     *     - wood
+     *     - wool
+     *
+     *     dice-numbers:
+     *     - 2-12
+     *
+     * @param type
+     * @param diceNumber
+     */
     public void setTypeAndDiceNumber(String type, int diceNumber){
         this.type = type;
         if (!type.equals("Water")){
@@ -74,8 +92,8 @@ public class ModelHex {
         int[] mat;
         switch (type){
             case "Clay":
-                 mat = new int[]{1,0,0,0,0};
-                 break;
+                mat = new int[]{1,0,0,0,0};
+                break;
             case "Grain":
                 mat = new int[]{0,1,0,0,0};
                 break;
@@ -94,6 +112,26 @@ public class ModelHex {
         this.material = new ModelMaterial(mat);
         this.diceNumber = diceNumber;
     }
+
+    public ModelMaterial getMaterial(){
+        return material;
+    }
+
+    public String getType(){return type;}
+
+    public boolean checkIfRaided(){
+        return raided;
+    }
+    //TODO: get method rename and the methods should be rearranged
+
+    public int getDiceNumber() {
+        return diceNumber;
+    }
+
+    public int[] getCoords(){
+        return new int[]{xCoord,yCoord};
+    }
+
     public boolean getAllowsBuildings() {
         return allowsBuildings;
     }

@@ -14,7 +14,11 @@ import javafx.scene.layout.StackPane;
 
 
 /**
- * Created by vanonir on 22.03.2017.
+ * the center scene where the game board is loaded and scrolling is handled
+ * <p>
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
 public class PaneBoardController {
     public StackPane stackPane;

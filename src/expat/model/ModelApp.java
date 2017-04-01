@@ -6,7 +6,21 @@ import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHexFactory;
 
 /**
- * Created by vanonir on 22.03.2017.
+ * is responsible for the game procedure
+ * <p>
+ *     therefore it's a collection of:
+ *     - all the FXML-controlles
+ *     - the board
+ *     - all the players
+ *     <p>
+ *         this class is built intentionally like the player procedure
+ *         - dice and material distirbution
+ *         - trading
+ *         - building
+ *         - events
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
 public class ModelApp {
     private PaneBoardController boardController;
@@ -28,8 +42,10 @@ public class ModelApp {
     }
 
     /**
+     * is the first player-step that distributes materials
+     * <p>
      * 1. dice
-     * 2. resource distribution
+     * 2. material distribution
      */
     public void resourceStep(){
         ModelThrowDice throwDice = new ModelThrowDice();
@@ -40,6 +56,8 @@ public class ModelApp {
     }
 
     /**
+     * is the second player-step that handles trading
+     * <p>
      * 1. domestic trade (playertrade)
      * 2. sea trade (2:1, 3:1, 4:1)
      */
@@ -48,6 +66,8 @@ public class ModelApp {
     }
 
     /**
+     * is the third player-step that handles special events
+     * <p>
      * 1. rolled 7 (no resources, >7 cards drop, raider move, resource robbery)
      * 2. play development cards (knights, development, victory)
      */
@@ -55,8 +75,10 @@ public class ModelApp {
 
     }
 
+    /**
+     * handles the end of the game
+     */
     public void gameOver(){
-
     }
 
     public ModelBoard getBoard() {return board;}
