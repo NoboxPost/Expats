@@ -2,13 +2,10 @@ package expat.view;
 
 import expat.control.PaneBoardController;
 import expat.model.board.ModelHex;
-import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +19,13 @@ import java.util.List;
 public class ViewDiceButtonFactory {
     private final PaneBoardController paneBoardController;
     private int hexSize;
-    private CoordinateCalculator coordCalculator ;
+    private ViewCoordinateCalculator coordCalculator ;
 
 
     public ViewDiceButtonFactory(int hexSize, PaneBoardController paneBoardController) {
         this.hexSize = hexSize;
         this.paneBoardController = paneBoardController;
-        coordCalculator = new CoordinateCalculator(hexSize);
+        coordCalculator = new ViewCoordinateCalculator(hexSize);
     }
     public List<StackPane> generateDiceButtons(ModelHex[][] hexes){
         List<StackPane> buttonPanes= new ArrayList<StackPane>();
@@ -42,7 +39,7 @@ public class ViewDiceButtonFactory {
         return buttonPanes;
     }
     public StackPane generateDiceButton(ModelHex hex){
-        Double[] coords = coordCalculator.calcCoords(hex);
+        Double[] coords = coordCalculator.calcHexCoords(hex);
         StackPane pane = new StackPane();
         pane.setPrefHeight(hexSize*0.8);
         pane.setPrefWidth(hexSize);

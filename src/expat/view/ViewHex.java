@@ -24,7 +24,7 @@ public class ViewHex extends Polygon {
      * @param xOffset is the horizontal offset in pixel from with 0 being on the left side of the screen.
      * @param yOffset is the vertical offset
      */
-    public ViewHex(int size, double xOffset, double yOffset, ImagePattern pattern) {// TODO: Implement Hex as Parameter and CoordinateCalculator which calculates die actual position of the hex and returns xOffset and yOffset OR calculate offset for whole child.
+    public ViewHex(int size, double xOffset, double yOffset, ImagePattern pattern) {// TODO: Implement Hex as Parameter and ViewCoordinateCalculator which calculates die actual position of the hex and returns xOffset and yOffset OR calculate offset for whole child.
         this.size = size;
         this.xOffset = xOffset;
         this.yOffset = yOffset;

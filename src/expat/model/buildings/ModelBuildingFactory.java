@@ -93,7 +93,7 @@ public class ModelBuildingFactory {
             modelBuildings.add(middleRightBuilding);
         }
         if (positionsToFill[4]) {
-            ModelBuilding bottomRightBuilding = new ModelBuilding(BuildingCoords[0]+6, BuildingCoords[4]+4);
+            ModelBuilding bottomRightBuilding = new ModelBuilding(BuildingCoords[0]+6, BuildingCoords[1]+4);
             bottomRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             bottomRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord + 1]);
             if (xHexCoord % 2 == 0) {
@@ -105,7 +105,7 @@ public class ModelBuildingFactory {
 
         }
         if (positionsToFill[5]) {
-            ModelBuilding bottomLeftBuilding = new ModelBuilding(BuildingCoords[0]+2, BuildingCoords[4]+4);
+            ModelBuilding bottomLeftBuilding = new ModelBuilding(BuildingCoords[0]+2, BuildingCoords[1]+4);
             bottomLeftBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             bottomLeftBuilding.addNeighbour(hexes[xHexCoord][yHexCoord + 1]);
             if (xHexCoord % 2 == 0) {

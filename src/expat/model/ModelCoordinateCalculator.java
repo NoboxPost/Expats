@@ -45,7 +45,7 @@ public class ModelCoordinateCalculator {
         int[] intArray = new int[2];
         intArray[0] = xHexCoord * 6;
         intArray[1] = yHexCoord * 4;
-        intArray[1] += xHexCoord % 2 == 0 ? 0 : 1;
+        intArray[1] += xHexCoord % 2 == 0 ? 0 : 2;
         return intArray;
     }
 
