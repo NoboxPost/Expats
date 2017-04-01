@@ -5,6 +5,8 @@ import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHexFactory;
 
+import java.util.ArrayList;
+
 /**
  * is responsible for the game procedure
  * <p>
@@ -79,6 +81,11 @@ public class ModelApp {
             //TODO: do something. take one random material from a player.
         }
     }
+    /**
+     * changes player, so next player can doo all stepps.
+     *
+     */
+    public void nextPlayer(){
 
     /**
      * handles the end of the game
