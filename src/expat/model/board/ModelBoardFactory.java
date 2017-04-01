@@ -38,8 +38,8 @@ public class ModelBoardFactory {
     public ModelBoard generateBoard() {
         ModelHexFactory hexFactory = new ModelHexFactory();
         hexes = hexFactory.generateHexes(xSize,ySize);
-        //ModelBuildingFactory buildingFactory = new ModelBuildingFactory(xSize,ySize,hexes);
-        //buildings = buildingFactory.generateBuildings();
+        ModelBuildingFactory buildingFactory = new ModelBuildingFactory(xSize,ySize,hexes);
+        buildings = buildingFactory.generateBuildings();
         ModelRaider raider= new ModelRaider(); //TODO: Implement raider functionality
         board = new ModelBoard(hexes,buildings,raider);
         return board;
