@@ -85,12 +85,15 @@ public class ModelApp {
      * changes player, so next player can doo all stepps.
      *
      */
-    public void nextPlayer(){
+    public void nextPlayer() {
+    }
 
     /**
      * handles the end of the game
      */
     public void gameOver(){
+
+
     }
 
     public ModelBoard getBoard() {
