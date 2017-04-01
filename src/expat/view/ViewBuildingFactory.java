@@ -3,6 +3,7 @@ package expat.view;
 import expat.control.PaneBoardController;
 import expat.model.buildings.ModelBuilding;
 import javafx.scene.Cursor;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -26,49 +27,52 @@ public class ViewBuildingFactory {
         this.hexSize = hexSize;
         viewCoordinateCalculator = new ViewCoordinateCalculator(hexSize);
     }
-    public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings){
-        List<ViewBuilding> viewBuildings= new ArrayList<ViewBuilding>();
+
+    public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings) {
+        List<ViewBuilding> viewBuildings = new ArrayList<ViewBuilding>();
 
         for (ModelBuilding modelBuilding : modelBuildings) {
-            if (modelBuilding.getType().equals("empty")){
-                 int[] modelBuildingCoords = modelBuilding.getCoords();
-                ViewBuilding viewBuilding = generateEmptyBuilding(modelBuildingCoords[0],modelBuildingCoords[1]);
-                viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
-                Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
-                viewBuilding.setLayoutX(pixelCoords[0]);
-                viewBuilding.setLayoutY(pixelCoords[1]);
-                viewBuildings.add(viewBuilding);
-            }else if (modelBuilding.getType().equals("Settlement")){
-                int[] modelBuildingCoords = modelBuilding.getCoords();
-                ViewBuilding viewBuilding = generateSettlement(modelBuildingCoords[0],modelBuildingCoords[1]);
-                viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
-                Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
-                viewBuilding.setLayoutX(pixelCoords[0]);
-                viewBuilding.setLayoutY(pixelCoords[1]);
-                viewBuildings.add(viewBuilding);
-            }
-        }
+            int[] modelBuildingCoords = modelBuilding.getCoords();
+            ViewBuilding viewBuilding;
+            if (modelBuilding.getType().equals("Town")) {
+                viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
 
+            } else if (modelBuilding.getType().equals("Settlement")) {
+
+                viewBuilding = generateSettlement(modelBuildingCoords[0], modelBuildingCoords[1]);
+            } else {
+                viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
+            }
+            viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
+            Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+            viewBuilding.setLayoutX(pixelCoords[0]);
+            viewBuilding.setLayoutY(pixelCoords[1]);
+            viewBuildings.add(viewBuilding);
+            //viewBuilding.setEffect(); TODO: set color depending on owner
+        }
 
 
         return viewBuildings;
     }
 
-    public ViewBuilding generateEmptyBuilding(int xCoord, int yCoord){
-        Image img= new Image("expat/img/Building_Empty.png");
-        ViewBuilding viewBuilding = new ViewBuilding(img,xCoord,yCoord);
-        viewBuilding.setX(-(hexSize*0.1));
-        viewBuilding.setY(-(hexSize*0.1));
+    public ViewBuilding generateEmptyBuilding(int xCoord, int yCoord) {
+        Image img = new Image("expat/img/Building_Empty.png");
+        ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
+        viewBuilding.setX(-(hexSize * 0.1));
+        viewBuilding.setY(-(hexSize * 0.1));
         viewBuilding.setCursor(Cursor.HAND);
 
         return viewBuilding;
     }
-    public ViewBuilding generateSettlement(int xCoord,int yCoord){
-        Image img= new Image("expat/img/Settlement.png");
-        ViewBuilding viewBuilding = new ViewBuilding(img,xCoord,yCoord);
-        viewBuilding.setX(-(hexSize*0.1));
-        viewBuilding.setY(-(hexSize*0.1));
+
+    public ViewBuilding generateSettlement(int xCoord, int yCoord) {
+
+        Image img = new Image("expat/img/Settlement.png");
+        ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
+        viewBuilding.setX(-(hexSize * 0.1));
+        viewBuilding.setY(-(hexSize * 0.1));
         viewBuilding.setCursor(Cursor.HAND);
+
         return viewBuilding;
 
 
@@ -76,7 +80,6 @@ public class ViewBuildingFactory {
 
 
 }
-
 
 
 //    public List<ImageView> generateBuildings(ModelHex[][] hexes){

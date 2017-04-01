@@ -5,6 +5,8 @@ import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHexFactory;
 
+import java.util.ArrayList;
+
 /**
  * Created by vanonir on 22.03.2017.
  */
@@ -16,7 +18,7 @@ public class ModelApp {
     private ControllerMainStage mainController;
     private ModelBoard board;
     private int diceNumber;
-    private ModelPlayer[] players;
+    private ArrayList<ModelPlayer> players;
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
         this.boardController = boardController;
@@ -59,7 +61,17 @@ public class ModelApp {
             //TODO: do something. take one random material from a player.
         }
     }
+    /**
+     * changes player, so next player can doo all stepps.
+     *
+     */
+    public void nextPlayer(){
 
+    }
+
+    /**
+     * calculates all winpoints and checks if somebody has won.
+     */
     public void gameOver() {
 
     }

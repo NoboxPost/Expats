@@ -43,6 +43,10 @@ public class ModelBuildingFactory {
 
     /**
      * Generates all buildings for a given hex and appends them to the ArrayList modelBuilding field.
+     * Runs through all corners of a hex and builds an empty building spot if needed. (depending on given booleanArray).
+     * @param positionsToFill an boolean array with length of 6 contains true if an empty building spot need to be built.
+     * @param xHexCoord coordinate of the corresponding hex
+     * @param yHexCoord coordinate of the corresponding hex.
      */
     public void generateEmptyBuildingSpots(boolean[] positionsToFill, int xHexCoord, int yHexCoord) {
         int[] BuildingCoords = coordinateCalculator.hexCoordToBuildingCoord(hexes[xHexCoord][yHexCoord]);
@@ -63,9 +67,9 @@ public class ModelBuildingFactory {
             topLeftBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             topLeftBuilding.addNeighbour(hexes[xHexCoord][yHexCoord - 1]);
             if (xHexCoord % 2 == 0) {
-                topLeftBuilding.addNeighbour(hexes[xHexCoord-1][yHexCoord-1]);
+                topLeftBuilding.addNeighbour(hexes[xHexCoord - 1][yHexCoord - 1]);
             } else {
-                topLeftBuilding.addNeighbour(hexes[xHexCoord-1][yHexCoord]);
+                topLeftBuilding.addNeighbour(hexes[xHexCoord - 1][yHexCoord]);
             }
             modelBuildings.add(topLeftBuilding);
         }
@@ -74,44 +78,44 @@ public class ModelBuildingFactory {
             topRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             topRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord - 1]);
             if (xHexCoord % 2 == 0) {
-                topRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord-1]);
+                topRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord - 1]);
             } else {
-                topRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord]);
+                topRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord]);
             }
             modelBuildings.add(topRightBuilding);
         }
         if (positionsToFill[3]) {
-            ModelBuilding middleRightBuilding = new ModelBuilding(BuildingCoords[0]+8, BuildingCoords[1] + 2);
+            ModelBuilding middleRightBuilding = new ModelBuilding(BuildingCoords[0] + 8, BuildingCoords[1] + 2);
             middleRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             if (xHexCoord % 2 == 0) {
-                middleRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord-1]);
-                middleRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord]);
+                middleRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord - 1]);
+                middleRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord]);
             } else {
-                middleRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord]);
-                middleRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord+1]);
+                middleRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord]);
+                middleRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord + 1]);
             }
             modelBuildings.add(middleRightBuilding);
         }
         if (positionsToFill[4]) {
-            ModelBuilding bottomRightBuilding = new ModelBuilding(BuildingCoords[0]+6, BuildingCoords[1]+4);
+            ModelBuilding bottomRightBuilding = new ModelBuilding(BuildingCoords[0] + 6, BuildingCoords[1] + 4);
             bottomRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             bottomRightBuilding.addNeighbour(hexes[xHexCoord][yHexCoord + 1]);
             if (xHexCoord % 2 == 0) {
-                bottomRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord]);
+                bottomRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord]);
             } else {
-                bottomRightBuilding.addNeighbour(hexes[xHexCoord+1][yHexCoord+1]);
+                bottomRightBuilding.addNeighbour(hexes[xHexCoord + 1][yHexCoord + 1]);
             }
             modelBuildings.add(bottomRightBuilding);
 
         }
         if (positionsToFill[5]) {
-            ModelBuilding bottomLeftBuilding = new ModelBuilding(BuildingCoords[0]+2, BuildingCoords[1]+4);
+            ModelBuilding bottomLeftBuilding = new ModelBuilding(BuildingCoords[0] + 2, BuildingCoords[1] + 4);
             bottomLeftBuilding.addNeighbour(hexes[xHexCoord][yHexCoord]);
             bottomLeftBuilding.addNeighbour(hexes[xHexCoord][yHexCoord + 1]);
             if (xHexCoord % 2 == 0) {
-                bottomLeftBuilding.addNeighbour(hexes[xHexCoord-1][yHexCoord]);
+                bottomLeftBuilding.addNeighbour(hexes[xHexCoord - 1][yHexCoord]);
             } else {
-                bottomLeftBuilding.addNeighbour(hexes[xHexCoord-1][yHexCoord+1]);
+                bottomLeftBuilding.addNeighbour(hexes[xHexCoord - 1][yHexCoord + 1]);
             }
             modelBuildings.add(bottomLeftBuilding);
         }
