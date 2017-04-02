@@ -35,6 +35,7 @@ public class ViewCoordinateCalculator {
             returnIntArray[1]+=hexSize*0.4;
         return returnIntArray;
     }
+
     public Double[] calcBuildingCoords(int[] coords){
         Double[] returnArray = new Double[2];
         returnArray[0] = coords[0]* hexSize*0.125;

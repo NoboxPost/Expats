@@ -15,6 +15,6 @@ public class ModelBuildingAction {
         this.materials = materials;
         this.buildingType = buildingType;
         // TODO: depending on buildingType, show possible locations for types
-        //TODO: switch case for building and COST!, COST is not handled by building, so need to do i here.
+        // TODO: switch case for building and COST!, COST is not handled by building, so need to do i here.
     }
 }
