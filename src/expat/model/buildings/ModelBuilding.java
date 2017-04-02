@@ -13,6 +13,7 @@ public class ModelBuilding {
     private String type = "empty";
     private int xBuildingCoord, yBuildingCoord;
     private int winPoints;
+    private int resourceMultiplier = 1;
     protected ModelPlayer owner;
 
     public ModelBuilding(int xBuildingCoord, int yBuildingCoord) {
@@ -45,8 +46,23 @@ public class ModelBuilding {
 
     public void giveMaterialToOwner(ModelMaterial material){
         if(!type.equals("empty")){
-            //TODO: town/settlement player gewusel
+            for (int i = 0;i<resourceMultiplier;i++){
+                owner.addMaterial(material);
+            }
         }
+    }
+
+    public void buildSettlement(ModelPlayer owner){
+        this.owner = owner;
+        type = "Settlement";
+        winPoints = 1;
+        resourceMultiplier = 1;
+    }
+    public void buildTown(ModelPlayer owner){
+        this.owner = owner;
+        type = "Town";
+        winPoints = 2;
+        resourceMultiplier = 2;
     }
 
     public String getType() {
@@ -59,3 +75,4 @@ public class ModelBuilding {
         type = type.equals("empty")? "Settlement":"empty";
     }
 }
+

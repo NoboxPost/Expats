@@ -14,16 +14,53 @@ public class ModelConnection {
     private ModelHex[] neighbours = new ModelHex[2];
     private String[] types = new String[]{"empty","Road","Ship"};
     private String type = "empty";
-    private boolean onWater=false;
+    private boolean onWater=true;
     private int xBuildingCoord, yBuildingCoord;
     protected ModelPlayer owner;
+    private String orientation;
 
-
-    public void onWater(){
-        onWater=true;
+    public ModelConnection(int xBuildingCoord, int yBuildingCoord, String orientation) {
+        this.xBuildingCoord = xBuildingCoord;
+        this.yBuildingCoord = yBuildingCoord;
+        this.orientation = orientation;
     }
+
+
     public boolean getOnWater(){
         return onWater;
+    }
+
+
+    public boolean addNeighbour(ModelHex hex){
+        if (neighbours[1]!=null){
+            return false;
+        }else {
+            for (int i = 0; i < neighbours.length; i++) {
+                if (neighbours[i] == null) {
+                    neighbours[i] = hex;
+                    if (!hex.getType().equals("Water")){
+                        onWater=false;
+                    }
+                    return true;
+                }
+
+            }
+            return false;
+        }
+    }
+
+    private void buildRoad(ModelPlayer owner){
+        this.owner = owner;
+    }
+
+
+    public int[] getCoords() {
+
+        return new int[]{xBuildingCoord,yBuildingCoord};
+    }
+
+    public String getOrientation() {
+        return orientation;
     }
 }
 

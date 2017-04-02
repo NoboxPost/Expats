@@ -17,6 +17,10 @@ public class ModelPlayer {
         materialPool.addMaterial(materialToAdd);
     }
 
+    public void reduceMaterial(ModelMaterial materialToReduce){
+        materialPool.reduceMaterial(materialToReduce);
+    }
+
     public void playerMaterialToString(){
 
     }

@@ -46,6 +46,8 @@ public class ModelHexFactory {
         hexes[6][4].setTypeAndDiceNumber("Wool",10);
         hexes[4][5].setTypeAndDiceNumber("Stone",11);
 
+        //hexes[7][5].setTypeAndDiceNumber("Stone",8);
+
 
         return hexes;
     }
