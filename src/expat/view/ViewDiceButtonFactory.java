@@ -38,6 +38,7 @@ public class ViewDiceButtonFactory {
         }
         return buttonPanes;
     }
+
     public StackPane generateDiceButton(ModelHex hex){
         Double[] coords = coordCalculator.calcHexCoords(hex);
         StackPane pane = new StackPane();
@@ -47,17 +48,49 @@ public class ViewDiceButtonFactory {
         Button button = (Button) viewDiceNumber;
         button.setCursor(Cursor.HAND);
         button.setOnAction(paneBoardController::hexClicked);
-        button.getStyleClass().add("viewdicenumber");
         button.setMinHeight(hexSize*0.25);
         button.setPrefHeight(hexSize*0.25);
         button.setMaxHeight(hexSize*0.25);
         button.setMinWidth(hexSize*0.25);
         button.setPrefWidth(hexSize*0.25);
         button.setMaxWidth(hexSize*0.25);
+        styleDiceNumber(hex, button);
         pane.getChildren().add(button);
         pane.setLayoutX(coords[0]);
         pane.setLayoutY(coords[1]);
         return pane;
+    }
+
+    /**
+     * adds a css-style-class to each dice number so you can style them separately
+     * (numbers with higher possibility are bigger, larger and red)
+     *
+     * @param hex
+     * @param button
+     */
+    private void styleDiceNumber(ModelHex hex, Button button){
+        switch (hex.getDiceNumber()){
+            case 2: button.getStyleClass().add("viewdicenumber2");
+                    break;
+            case 3: button.getStyleClass().add("viewdicenumber3");
+                    break;
+            case 4: button.getStyleClass().add("viewdicenumber4");
+                    break;
+            case 5: button.getStyleClass().add("viewdicenumber5");
+                    break;
+            case 6: button.getStyleClass().add("viewdicenumber6");
+                    break;
+            case 8: button.getStyleClass().add("viewdicenumber8");
+                    break;
+            case 9: button.getStyleClass().add("viewdicenumber9");
+                    break;
+            case 10: button.getStyleClass().add("viewdicenumber10");
+                    break;
+            case 11: button.getStyleClass().add("viewdicenumber11");
+                    break;
+            case 12: button.getStyleClass().add("viewdicenumber12");
+                    break;
+        }
     }
 
 }
