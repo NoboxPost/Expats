@@ -41,8 +41,12 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().addAll(hexFactory.generateViewHexList(modelBoard.getHexes()));
         ViewDiceButtonFactory diceButtonFactory = new ViewDiceButtonFactory(HEXSIZE, this);
         anchorPaneBoard.getChildren().addAll(diceButtonFactory.generateDiceButtons(modelBoard.getHexes()));
+        ViewConnectionFactory viewConnectionFactory= new ViewConnectionFactory(HEXSIZE,this);
+        anchorPaneBoard.getChildren().addAll(viewConnectionFactory.generateConnections(modelBoard.getConnections()));
         ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE,this);
         anchorPaneBoard.getChildren().addAll(viewBuildingFactory.generateBuildings(modelBoard.getBuildings()));
+        ViewRaiderFactory viewRaiderFactory = new ViewRaiderFactory(HEXSIZE, this);
+        anchorPaneBoard.getChildren().add(viewRaiderFactory.generateRaider(modelBoard.getRaider()));
     }
 
     public void hexClicked(ActionEvent event) { //TODO: Raider

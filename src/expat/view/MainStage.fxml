@@ -23,7 +23,7 @@
             <Insets bottom="50.0" />
          </BorderPane.margin>
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" text="Button" />
                   <Button mnemonicParsing="false" text="Button" />
@@ -52,7 +52,7 @@
         </Pane>
     </right>
     <bottom>
-        <Pane prefHeight="200.0" style="-fx-background-color: lightgray;" BorderPane.alignment="CENTER">
+        <Pane prefHeight="30.0" style="-fx-background-color: lightgray;" BorderPane.alignment="CENTER">
             <children>
                 <fx:include fx:id="paneAction" source="PaneAction.fxml" />
             </children>

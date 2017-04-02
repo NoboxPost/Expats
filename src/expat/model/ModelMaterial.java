@@ -18,13 +18,17 @@ public class ModelMaterial {
         }
         return true;
     }
-    public boolean addMaterial(ModelMaterial materialToAdd, int multiplier) {
-        for (int i = 0 ; i<5;i++){
-            materialAmount[i]+= (materialToAdd.getMaterialAmount()[i]*2);
-        }
-        return true;
-    }
 
+    public boolean reduceMaterial(ModelMaterial materialToReduce) {
+        for (int i = 0; i < 5; i++) {
+            if (materialAmount[i]- materialToReduce.getMaterialAmount()[i]>=0) {
+                materialAmount[i] -= (materialToReduce.getMaterialAmount()[i]);
+            }else {
+                return false;
+            }
+        }
+        return false; //TODO: Reduces all materials untill below 0, need to check whole array before some changes are done.
+    }
     @Override
     public String toString() {
         return super.toString();
@@ -33,4 +37,5 @@ public class ModelMaterial {
     private int[] getMaterialAmount() {
         return materialAmount;
     }
+
 }

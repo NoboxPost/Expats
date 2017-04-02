@@ -3,6 +3,8 @@ package expat.model.board;
 import expat.model.ModelRaider;
 import expat.model.buildings.ModelBuilding;
 import expat.model.buildings.ModelBuildingFactory;
+import expat.model.buildings.ModelConnection;
+import expat.model.buildings.ModelConnectionFactory;
 
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class ModelBoardFactory {
     private ModelHex[][] hexes;
     private ArrayList<ModelBuilding> buildings;
+    private ArrayList<ModelConnection> connections;
     private int xSize, ySize;
     private ModelBoard board;
 
@@ -40,8 +43,10 @@ public class ModelBoardFactory {
         hexes = hexFactory.generateHexes(xSize,ySize);
         ModelBuildingFactory buildingFactory = new ModelBuildingFactory(xSize,ySize,hexes);
         buildings = buildingFactory.generateBuildings();
-        ModelRaider raider= new ModelRaider(); //TODO: Implement raider functionality
-        board = new ModelBoard(hexes,buildings,raider);
+        ModelConnectionFactory connectionFactory = new ModelConnectionFactory(xSize,ySize,hexes);
+        connections = connectionFactory.generateConnections();
+        ModelRaider raider= new ModelRaider(hexes[4][3]); //TODO: Implement raider functionality
+        board = new ModelBoard(hexes,buildings,connections,raider);
         return board;
     }
 }

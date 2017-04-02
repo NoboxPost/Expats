@@ -3,6 +3,7 @@ package expat.model.board;
 import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;
 import expat.model.buildings.ModelBuilding;
+import expat.model.buildings.ModelConnection;
 
 import java.util.ArrayList;
 
@@ -16,12 +17,14 @@ import java.util.ArrayList;
 public class ModelBoard {
     private ModelHex[][] hexes;
     private ArrayList<ModelBuilding> buildings;
+    private ArrayList<ModelConnection> modelConnections;
     private ModelRaider raider;
 
-    public ModelBoard(ModelHex[][] hexes , ArrayList<ModelBuilding> buildings, ModelRaider raider) {
+    public ModelBoard(ModelHex[][] hexes , ArrayList<ModelBuilding> buildings,ArrayList<ModelConnection>connections, ModelRaider raider) {
         this.hexes = hexes;
         this.buildings = buildings;
         this.raider = raider;
+        this.modelConnections= connections;
     }
 
     /**
@@ -62,7 +65,10 @@ public class ModelBoard {
             if (building.getCoords()[0]==xCoord&&building.getCoords()[1]==yCoord){
                 building.changeBuildingType();
             }
-
         }
+    }
+
+    public ArrayList<ModelConnection> getConnections() {
+        return modelConnections;
     }
 }
