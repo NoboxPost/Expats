@@ -45,6 +45,16 @@ public class ModelApp {
     }
 
     /**
+     * handles the beginning of the game
+     * <p>
+     *     - players choose the position of their first two settlements
+     *     - they get the materials from all flanking hexes
+     */
+    public void gameBegin(){
+
+    }
+
+    /**
      * is the first player-step that distributes materials
      * <p>
      * 1. dice

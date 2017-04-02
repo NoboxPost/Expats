@@ -65,7 +65,6 @@ public class ModelBoard {
             if (building.getCoords()[0]==xCoord&&building.getCoords()[1]==yCoord){
                 building.changeBuildingType();
             }
-
         }
     }
 
