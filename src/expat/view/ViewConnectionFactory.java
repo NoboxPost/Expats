@@ -3,7 +3,10 @@ package expat.view;
 import expat.control.PaneBoardController;
 import expat.model.buildings.ModelConnection;
 import javafx.scene.Cursor;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -26,15 +29,18 @@ public class ViewConnectionFactory {
         for (ModelConnection modelConnection : modelConnections) {
             int[] modelBuildingCoords = modelConnection.getCoords();
             if (!modelConnection.getOnWater()) {
-                ViewConnection viewConnection = generateRoad(modelBuildingCoords[0],modelBuildingCoords[1]);
+                ViewConnection viewConnection = generateRoad(modelBuildingCoords[0], modelBuildingCoords[1]);
                 Double[] coords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
-                if (modelConnection.getOrientation().equals("up")){
+                if (modelConnection.getOrientation().equals("up")) {
                     viewConnection.setRotate(-60);
-                }else if (modelConnection.getOrientation().equals("down")){
+                } else if (modelConnection.getOrientation().equals("down")) {
                     viewConnection.setRotate(60);
                 }
                 viewConnection.setLayoutX(coords[0]);
                 viewConnection.setLayoutY(coords[1]);
+                if (modelConnection.getOwner()!=null) {
+                    viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
+                }
                 viewConnections.add(viewConnection);
             }
 
@@ -42,6 +48,41 @@ public class ViewConnectionFactory {
 
 
         return viewConnections;
+    }
+
+    private ColorAdjust generatePlayerColorEffect(String color) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        switch (color.toLowerCase()) {
+            case "green":
+                colorAdjust.setHue(0.3);
+                colorAdjust.setSaturation(0.5);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "red":
+                colorAdjust.setHue(-0.23);
+                colorAdjust.setSaturation(0.8);
+                colorAdjust.setBrightness(-0.1);
+                break;
+            case "blue":
+                colorAdjust.setHue(0.95);
+                colorAdjust.setSaturation(0.8);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "orange":
+                colorAdjust.setHue(-0.1);
+                colorAdjust.setSaturation(0.9);
+                colorAdjust.setBrightness(-0.1);
+                break;
+            case "yellow":
+                colorAdjust.setHue(0.005);
+                colorAdjust.setSaturation(1);
+                colorAdjust.setBrightness(-0.1);
+                break;
+            default:
+
+        }
+        return colorAdjust;
+
     }
 
 
