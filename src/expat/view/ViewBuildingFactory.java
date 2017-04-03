@@ -67,7 +67,7 @@ public class ViewBuildingFactory {
 
     public ViewBuilding generateSettlement(int xCoord, int yCoord) {
 
-        Image img = new Image("expat/img/Settlement.png");
+        Image img = new Image("expat/img/BuildingUncolored.png");
         ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
         viewBuilding.setX(-(hexSize * 0.1));
         viewBuilding.setY(-(hexSize * 0.1));

@@ -49,8 +49,9 @@ public class ModelConnection {
         }
     }
 
-    private void buildRoad(ModelPlayer owner){
+    public void buildRoad(String type,ModelPlayer owner){
         this.owner = owner;
+        this.type = type;
     }
 
 

@@ -30,6 +30,9 @@ public class ModelPlayer {
         return color;
     }
 
+    public ModelMaterial getMaterial() {
+        return materialPool;
+    }
 }
 
 

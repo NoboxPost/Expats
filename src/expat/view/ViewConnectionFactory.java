@@ -38,9 +38,10 @@ public class ViewConnectionFactory {
                 }
                 viewConnection.setLayoutX(coords[0]);
                 viewConnection.setLayoutY(coords[1]);
-                if (true){//modelConnection.getOwner()!=null) { //TODO: auskommentieren.
-                    viewConnection.setEffect(generatePlayerColorEffect("yellow"));//modelConnection.getOwner().getColor()));
+                if (modelConnection.getOwner()!=null) { //TODO: auskommentieren.
+                    viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
                 }
+                viewConnection.setOnMouseReleased(paneBoardController::connectionClicked);
                 viewConnection.getStyleClass().add("road");
                 viewConnections.add(viewConnection);
             }
@@ -80,6 +81,10 @@ public class ViewConnectionFactory {
                 colorAdjust.setBrightness(-0.1);
                 break;
             default:
+                colorAdjust.setHue(0);
+                colorAdjust.setSaturation(0);
+                colorAdjust.setBrightness(0);
+                break;
 
         }
         return colorAdjust;
