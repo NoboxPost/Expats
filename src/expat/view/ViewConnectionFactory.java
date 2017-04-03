@@ -4,7 +4,9 @@ import expat.control.PaneBoardController;
 import expat.model.buildings.ModelConnection;
 import javafx.scene.Cursor;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
+import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -42,7 +44,6 @@ public class ViewConnectionFactory {
                     viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
                 }
                 viewConnection.setOnMouseReleased(paneBoardController::connectionClicked);
-                viewConnection.getStyleClass().add("road");
                 viewConnections.add(viewConnection);
             }
 

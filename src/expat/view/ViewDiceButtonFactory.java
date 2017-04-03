@@ -44,6 +44,7 @@ public class ViewDiceButtonFactory {
         StackPane pane = new StackPane();
         pane.setPrefHeight(hexSize*0.8);
         pane.setPrefWidth(hexSize);
+        pane.getStyleClass().add("diceButtonPane");
         ViewDiceNumber viewDiceNumber = new ViewDiceNumber(""+hex.getDiceNumber(),hex.getCoords()[0],hex.getCoords()[1]);
         Button button = (Button) viewDiceNumber;
         button.setCursor(Cursor.HAND);

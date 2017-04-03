@@ -1,7 +1,9 @@
 package expat.view;
 
 import expat.model.board.ModelHex;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
 import java.util.ArrayList;
@@ -40,6 +42,9 @@ public class ViewHexFactory {
 
     /**
      * Generates a ViewHex which is a subclass of javafx.scene.shape.polygon and returns it, it can be added as a child.
+     * <p>
+     *     adds a yellow shadow to each hex that is not water
+     *
      * @param modelHex is the modelHex which contains the type of the hex, aswell as its Position.
      * @return returns a javafx.scene.shape.polygon which can be added as a child to any pane.
      */
@@ -53,6 +58,19 @@ public class ViewHexFactory {
         }
         Double[] coords = coordCalculator.calcHexCoords(modelHex);
         ViewHex viewHex = new ViewHex(hexSize, coords[0], coords[1], imagePatterns[index]);
+
+        if (!modelHex.getType().equals("Water")){
+            InnerShadow innerShadow = new InnerShadow();
+            innerShadow.setHeight(73);
+            innerShadow.setWidth(122);
+            innerShadow.setChoke(0.35);
+            innerShadow.setColor(Color.web("#ffe485"));
+            //TODO: evt #000000
+            innerShadow.setRadius(48);
+
+            viewHex.setEffect(innerShadow);
+        }
+
         return viewHex;
     }
 
