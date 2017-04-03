@@ -32,14 +32,16 @@ public class ModelBuildingAction {
      *
      * @param coords
      */
-    public void createBuilding(int[]coords,String type){
-        if (type.equals("Road")){
+    public boolean createBuilding(int[]coords,String type){
+        if (type.equals("Road")&&buildingType.equals("Road")){
             for (ModelConnection connection :
                     connections) {
                 if (connection.getCoords()[0]==coords[0]&&connection.getCoords()[1]==coords[1]){
                     connection.buildRoad(buildingType,player);
+                    return true;
                 }
             }
         }
+        return false;
     }
 }

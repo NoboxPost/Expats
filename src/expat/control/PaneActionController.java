@@ -77,6 +77,7 @@ public class PaneActionController {
     }
 
     private void generateBuilding(String type, ImageView imageView){
+        drawBuildStep();
         System.out.println("generateBuilding");
         app.newBuildingAction(type);
         //TODO: Draw frame around ImageView;
