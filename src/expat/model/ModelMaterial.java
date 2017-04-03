@@ -29,9 +29,16 @@ public class ModelMaterial {
         }
         return false; //TODO: Reduces all materials untill below 0, need to check whole array before some changes are done.
     }
-    @Override
+
     public String toString() {
-        return super.toString();
+        String materialString = "";
+
+        for(int i = 0; i<5; i++){
+            materialString += Integer.toString(materialAmount[i]);
+            materialString += " " + materialNames[i];
+            materialString += '\n';
+        }
+        return materialString;
     }
 
     private int[] getMaterialAmount() {

@@ -112,6 +112,7 @@ public class ModelApp {
     public void nextPlayer() {
         players.add(players.poll());
         nowPlaying = players.peek();
+        playerController.setPlayerInformation(nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
     }
 
     /**
@@ -125,10 +126,17 @@ public class ModelApp {
 
     public void newBuildingAction(String type) {
         buildingAction = new ModelBuildingAction(nowPlaying,type,board.getBuildings(),board.getConnections());
+        System.out.println(type);
     }
-    public void injectNewBuildingCoords(int[] coords,String type){
+
+    public void injectNewBuildingCoords(int[] coords, String type){
+        System.out.println(type);
+
         if (buildingAction!=null) {
             buildingAction.createBuilding(coords, type);
+            if (buildingAction.getBuildingType()=="Settlement" || buildingAction.getBuildingType()=="Town"){
+                nowPlaying.changeVictoryPoints(1);
+            }
             buildingAction = null;
             actionController.drawBuildStep();
         }

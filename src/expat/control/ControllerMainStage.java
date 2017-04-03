@@ -48,6 +48,7 @@ public class ControllerMainStage {
         app = new ModelApp(this, paneBoardController, paneMatesController, paneActionController, panePlayerController);
         paneBoardController.init(this,app);
         paneActionController.init(this,app);
+        panePlayerController.init(this, app);
         paneBoardController.drawBoard(app.getBoard());
         app.gameBegin();
 

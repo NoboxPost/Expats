@@ -45,8 +45,8 @@ public class PaneActionController {
         this.app= app;
     }
     public void drawDiceStep(){
-
     }
+
     public void drawBuildStep(){
         middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
@@ -92,6 +92,7 @@ public class PaneActionController {
     private void generateBuilding(String type, ImageView imageView){
         drawBuildStep();
         System.out.println("generateBuilding");
+        System.out.println(type);
         app.newBuildingAction(type);
         //TODO: Draw frame around ImageView;
     }
