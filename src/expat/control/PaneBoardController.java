@@ -119,6 +119,7 @@ public class PaneBoardController {
 
     public void hexClicked(ActionEvent event) { //TODO: Raider
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
+        app.moveRaider(button.getCoords());
         System.out.println("DiceNumber clicked :"+button.getCoords()[0] + " " + button.getCoords()[1]);
     }
     public void emptyBuildingSpotClicked(MouseEvent event){

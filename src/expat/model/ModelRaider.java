@@ -23,7 +23,7 @@ public class ModelRaider {
      *
      * @param hex
      */
-    private void moveRaider(ModelHex hex){
+    public void moveRaider(ModelHex hex){
         this.hex.raid();
         hex.raid();
         this.hex = hex;
