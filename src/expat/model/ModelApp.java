@@ -124,7 +124,7 @@ public class ModelApp {
     public void injectNewBuildingCoords(int[] coords,String type){
         if (buildingAction!=null) {
             buildingAction.createBuilding(coords, type);
-            boardController.drawBoard(board); //TODO: change to refresh
+            boardController.refreshBoardElements(board);
             buildingAction = null;
         }
     }

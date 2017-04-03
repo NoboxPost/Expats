@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 
@@ -21,13 +22,13 @@ import javafx.scene.layout.Pane;
  * @author gallatib
  */
 public class PaneActionController {
-    @FXML private Button btnNextStep;
-    @FXML private Button btnEndTurn;
-    @FXML private AnchorPane rightActionPane;
-    @FXML private Pane middleActionPane;
-    @FXML private Pane leftActionPane;
+    public Button btnNextStep;
+    public Button btnEndTurn;
+    public AnchorPane rightActionPane;
+    public HBox middleActionPane;
+    public Pane leftActionPane;
     private ControllerMainStage controllerMainStage;
-    @FXML private AnchorPane action;
+    public AnchorPane action;
     ModelApp app;
 
 
@@ -39,7 +40,7 @@ public class PaneActionController {
 
     }
     public void drawBuildStep(){
-        middleActionPane.getChildren().removeAll();
+        middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
         ImageView townImageView= new ImageView(town);
         townImageView.setFitHeight(80);
