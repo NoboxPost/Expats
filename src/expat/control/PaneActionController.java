@@ -26,14 +26,14 @@ public class PaneActionController {
 
     }
     public void drawBuildTurn(){
-//        action.getChildren().removeAll();
-//        Image settlement =new Image("expat/img/Settlement.png");
-//        ImageView settelmentImageView= new ImageView(settlement);
-//        Image road = new Image("expat/img/Connection.png");
-//        ImageView roadImageView = new ImageView(road);
-//        HBox hBox = new HBox();
-//        Region regionLeft= new Region();
-//        hBox.getChildren().addAll(regionLeft,settelmentImageView,roadImageView);
-//        action.getChildren().add(hBox);
+        action.getChildren().removeAll();
+        Image settlement =new Image("expat/img/Settlement.png");
+        ImageView settelmentImageView= new ImageView(settlement);
+        Image road = new Image("expat/img/Connection.png");
+        ImageView roadImageView = new ImageView(road);
+        HBox hBox = new HBox();
+        Region regionLeft= new Region();
+        hBox.getChildren().addAll(regionLeft,settelmentImageView,roadImageView);
+        action.getChildren().add(hBox);
     }
 }
