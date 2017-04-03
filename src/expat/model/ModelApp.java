@@ -112,7 +112,20 @@ public class ModelApp {
     public void nextPlayer() {
         players.add(players.poll());
         nowPlaying = players.peek();
-        playerController.setPlayerInformation(nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
+        panesInformationRefresh();
+    }
+
+    private void panesInformationRefresh(){
+        playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
+
+        String allPlayerStats = "";
+        for(ModelPlayer element : players){
+            if(element != players.getFirst()) {
+                allPlayerStats += (element.getPlayerName() + "\n");
+                allPlayerStats += ("Victorypoints: " + element.getWinPointsString() + "\n\n");
+            }
+        }
+        matesController.setMatesInformation(allPlayerStats);
     }
 
     /**
@@ -136,7 +149,7 @@ public class ModelApp {
             buildingAction.createBuilding(coords, type);
             if (buildingAction.getBuildingType()=="Settlement" || buildingAction.getBuildingType()=="Town"){
                 nowPlaying.changeVictoryPoints(1);
-                playerController.setPlayerInformation(nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
+                playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
             }
             buildingAction = null;
             actionController.drawBuildStep();

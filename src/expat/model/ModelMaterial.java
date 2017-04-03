@@ -30,7 +30,7 @@ public class ModelMaterial {
         return false; //TODO: Reduces all materials untill below 0, need to check whole array before some changes are done.
     }
 
-    public String toString() {
+    public String allMaterialsString() {
         String materialString = "";
 
         for(int i = 0; i<5; i++){
