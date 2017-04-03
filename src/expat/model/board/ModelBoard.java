@@ -60,13 +60,6 @@ public class ModelBoard {
         return raider;
     }
 
-    public void changeBuilding(int xCoord,int yCoord){
-        for (ModelBuilding building:buildings) {
-            if (building.getCoords()[0]==xCoord&&building.getCoords()[1]==yCoord){
-                building.changeBuildingType();
-            }
-        }
-    }
 
     public ArrayList<ModelConnection> getConnections() {
         return modelConnections;

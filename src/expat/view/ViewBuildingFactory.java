@@ -4,6 +4,7 @@ import expat.control.PaneBoardController;
 import expat.model.buildings.ModelBuilding;
 import javafx.scene.Cursor;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -28,6 +29,13 @@ public class ViewBuildingFactory {
         viewCoordinateCalculator = new ViewCoordinateCalculator(hexSize);
     }
 
+    /**
+     * Generates a ViewBuilding for each ModelBilding given in an ArrayList.
+     * Returns an ArrayList containing,
+     *
+     * @param modelBuildings ModelBuilding list which leads to generation of ViewBuildings.
+     * @return ViewBuilding list, containing all Nodes representing their Model counterpart.
+     */
     public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings) {
         List<ViewBuilding> viewBuildings = new ArrayList<ViewBuilding>();
 
@@ -35,11 +43,11 @@ public class ViewBuildingFactory {
             int[] modelBuildingCoords = modelBuilding.getCoords();
             ViewBuilding viewBuilding;
             if (modelBuilding.getType().equals("Town")) {
-                viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
-
+                viewBuilding = generateTown(modelBuildingCoords[0], modelBuildingCoords[1]);
+                viewBuilding.setEffect(generatePlayerColorEffectForTown(modelBuilding.getOwner().getColor()));
             } else if (modelBuilding.getType().equals("Settlement")) {
-
                 viewBuilding = generateSettlement(modelBuildingCoords[0], modelBuildingCoords[1]);
+                viewBuilding.setEffect(generatePlayerColorEffectForSettlement(modelBuilding.getOwner().getColor()));
             } else {
                 viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
             }
@@ -55,6 +63,15 @@ public class ViewBuildingFactory {
         return viewBuildings;
     }
 
+
+    /**
+     * Generates a ViewBuilding, which extends ImageView, with ability to store the model coordinates so we can acquire it at click event.
+     * Generates a empty building spot.
+     *
+     * @param xCoord takes ModelCoordinate and stores it in ViewBuilding, so event can get it.
+     * @param yCoord takes ModelCoordinate and stores it in ViewBuilding, so event can get it.
+     * @return ViewBuilding Node, which can be added to any Pane
+     */
     public ViewBuilding generateEmptyBuilding(int xCoord, int yCoord) {
         Image img = new Image("expat/img/Building_Empty.png");
         ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
@@ -65,6 +82,14 @@ public class ViewBuildingFactory {
         return viewBuilding;
     }
 
+    /**
+     * Generates a ViewBuilding, which extends ImageView, with ability to store the model coordinates so we can acquire it at click event.
+     * Generates a empty building spot.
+     *
+     * @param xCoord takes ModelCoordinate and stores it in ViewBuilding, so event can get it.
+     * @param yCoord takes ModelCoordinate and stores it in ViewBuilding, so event can get it.
+     * @return ViewBuilding Node, which can be added to any Pane
+     */
     public ViewBuilding generateSettlement(int xCoord, int yCoord) {
 
         Image img = new Image("expat/img/BuildingUncolored.png");
@@ -78,53 +103,104 @@ public class ViewBuildingFactory {
 
     }
 
+    /**
+     * Generates a ViewBuilding, which extends ImageView, with ability to store the model coordinates so we can acquire it at click event.
+     * Generates a empty building spot.
+     *
+     * @param xCoord takes ModelCoordinate and stores it in ViewBuilding, so event can get it.
+     * @param yCoord takes ModelCoordinate and stores it in ViewBuilding, so event can get it.
+     * @return ViewBuilding Node, which can be added to any Pane
+     */
+    public ViewBuilding generateTown(int xCoord, int yCoord) {
+
+
+        Image img = new Image("expat/img/TownUncolored.png");
+        ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
+        viewBuilding.setX(-(hexSize * 0.1));
+        viewBuilding.setY(-(hexSize * 0.1));
+        viewBuilding.setCursor(Cursor.HAND);
+
+        return viewBuilding;
+
+
+    }
+
+    private ColorAdjust generatePlayerColorEffectForTown(String color) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        switch (color.toLowerCase()) {
+            case "green":
+                colorAdjust.setHue(0.3);
+                colorAdjust.setSaturation(0.5);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "red":
+                colorAdjust.setHue(-0.3);
+                colorAdjust.setSaturation(0.8);
+                colorAdjust.setBrightness(-0.15);
+                break;
+            case "blue":
+                colorAdjust.setHue(0.95);
+                colorAdjust.setSaturation(0.8);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "orange":
+                colorAdjust.setHue(-0.15);
+                colorAdjust.setSaturation(0.9);
+                colorAdjust.setBrightness(-0.1);
+                break;
+            case "yellow":
+                colorAdjust.setHue(-0.04);
+                colorAdjust.setSaturation(1);
+                colorAdjust.setBrightness(0.1);
+                break;
+            default:
+                colorAdjust.setHue(0);
+                colorAdjust.setSaturation(0);
+                colorAdjust.setBrightness(0);
+                break;
+
+        }
+        return colorAdjust;
+
+    }
+
+    private Effect generatePlayerColorEffectForSettlement(String color) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        switch (color.toLowerCase()) {
+            case "green":
+                colorAdjust.setHue(0.3);
+                colorAdjust.setSaturation(0.5);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "red":
+                colorAdjust.setHue(-0.3);
+                colorAdjust.setSaturation(0.8);
+                colorAdjust.setBrightness(-0.15);
+                break;
+            case "blue":
+                colorAdjust.setHue(0.95);
+                colorAdjust.setSaturation(0.8);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "orange":
+                colorAdjust.setHue(-0.15);
+                colorAdjust.setSaturation(1);
+                colorAdjust.setBrightness(-0.3);
+                break;
+            case "yellow":
+                colorAdjust.setHue(-0.025);
+                colorAdjust.setSaturation(1);
+                colorAdjust.setBrightness(0.1);
+                break;
+            default:
+                colorAdjust.setHue(0);
+                colorAdjust.setSaturation(0);
+                colorAdjust.setBrightness(0);
+                break;
+
+        }
+        return colorAdjust;
+    }
+
 
 }
-
-
-//    public List<ImageView> generateBuildings(ModelHex[][] hexes){
-//        List<ImageView> buildings= new ArrayList<ImageView>();
-//        int width = hexes.length;
-//        int height = hexes[0].length;
-//        for (int x = 0;x<width;x++) {
-//            for (int y = 0 ; y<height;y++) {
-//                if (true){
-//                    buildings = (generateEmptyBuildingsForOneHex(hexes[x][y],buildings));
-//                }
-//            }
-//        }
-//        return buildings;
-//    }
-//    public List<ImageView> generateEmptyBuildingsForOneHex(ModelHex hex,List<ImageView> buildings) {
-//        Double[] hexCoord = viewCoordinateCalculator.calcHexCoords(hex);
-//        double hexCoordX = hexCoord[0];
-//        double hexCoordY = hexCoord[1];
-//
-//        ImageView imageView, imageView1, imageView2;
-//
-//        if (hexCoordX==0){
-//            imageView =generateEmptyBuilding();
-//            imageView.setLayoutX(hexCoordX);
-//            imageView.setLayoutY(hexCoordY+(hexSize*0.4));
-//            buildings.add(imageView);
-//        }
-//        imageView1 = generateEmptyBuilding();
-//        imageView1.setLayoutX(hexCoordX+(hexSize*0.25));
-//        imageView1.setLayoutY(hexCoordY);
-//        buildings.add(imageView1);
-//
-//        imageView2 = generateEmptyBuilding();
-//        imageView2.setLayoutX(hexCoordX+(hexSize*0.75));
-//        imageView2.setLayoutY(hexCoordY);
-//        buildings.add(imageView2);
-//
-//        return buildings;
-//    }
-//    public ImageView generateEmptyBuilding(){
-//        Image img= new Image("expat/img/Building_Empty.png");
-//        ImageView imageView = new ImageView(img);
-//        imageView.setX(-(hexSize*0.1));
-//        imageView.setY(-(hexSize*0.1));
-//        return imageView;
-//    }
-//}

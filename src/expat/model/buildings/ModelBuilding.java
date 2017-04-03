@@ -72,9 +72,6 @@ public class ModelBuilding {
     public int[] getCoords(){
         return new int[]{xBuildingCoord,yBuildingCoord};
     }
-    public void changeBuildingType(){
-        type = type.equals("empty")? "Settlement":"empty";
-    }
 
     public boolean isDisplay() {
         return display;
@@ -82,6 +79,10 @@ public class ModelBuilding {
 
     public void setDisplay(boolean display) {
         this.display = display;
+    }
+
+    public ModelPlayer getOwner() {
+        return owner;
     }
 }
 

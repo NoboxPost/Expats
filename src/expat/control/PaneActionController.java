@@ -115,5 +115,6 @@ public class PaneActionController {
 
     public void btnEndTurnClicked(ActionEvent event) {
         System.out.println("end turn clicked");
+        app.nextPlayer();
     }
 }

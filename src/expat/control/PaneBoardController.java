@@ -123,7 +123,7 @@ public class PaneBoardController {
     }
     public void emptyBuildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        app.getBoard().changeBuilding(building.getBuildingCoord()[0],building.getBuildingCoord()[1]);
+        app.injectNewBuildingCoords(building.getBuildingCoord(),"Building");
         System.out.println("Empty Building clicked "+building.getBuildingCoord()[0]+" "+building.getBuildingCoord()[1]);
         refreshBoardElements(app.getBoard());
 
@@ -132,6 +132,7 @@ public class PaneBoardController {
         ViewConnection connection = (ViewConnection) event.getSource();
         System.out.println("connectionClicked"+ connection.getConnectionCoords()[0]+ " "+connection.getConnectionCoords()[1]);
         app.injectNewBuildingCoords(connection.getConnectionCoords(),"Road"); //TODO: If Ships are implemented, we need to check types.
+        refreshBoardElements(app.getBoard());
     }
 
 
