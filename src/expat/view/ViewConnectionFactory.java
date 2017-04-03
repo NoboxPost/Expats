@@ -38,9 +38,10 @@ public class ViewConnectionFactory {
                 }
                 viewConnection.setLayoutX(coords[0]);
                 viewConnection.setLayoutY(coords[1]);
-                if (modelConnection.getOwner()!=null) {
-                    viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
+                if (true){//modelConnection.getOwner()!=null) { //TODO: auskommentieren.
+                    viewConnection.setEffect(generatePlayerColorEffect("orange"));//modelConnection.getOwner().getColor()));
                 }
+                viewConnection.getStyleClass().add("road");
                 viewConnections.add(viewConnection);
             }
 
@@ -61,7 +62,7 @@ public class ViewConnectionFactory {
             case "red":
                 colorAdjust.setHue(-0.23);
                 colorAdjust.setSaturation(0.8);
-                colorAdjust.setBrightness(-0.1);
+                colorAdjust.setBrightness(-0.15);
                 break;
             case "blue":
                 colorAdjust.setHue(0.95);
