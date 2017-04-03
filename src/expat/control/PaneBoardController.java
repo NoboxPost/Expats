@@ -131,7 +131,7 @@ public class PaneBoardController {
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
         System.out.println("connectionClicked"+ connection.getConnectionCoords()[0]+ " "+connection.getConnectionCoords()[1]);
-        app.injectNewBuildingCoords(connection.getConnectionCoords(),"Road"); //TODO: If Ships are implemented, we need to check types.
+        app.injectNewBuildingCoords(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
     }
 

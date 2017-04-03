@@ -33,26 +33,44 @@ public class ModelBuildingAction {
      * @param coords
      */
     public boolean createBuilding(int[] coords, String type) {
-        if (type.equals("Road") && buildingType.equals("Road")) {
+
+        if (type.equals("Connection") && buildingType.equals("Road")) {
             for (ModelConnection connection :
                     connections) {
                 if (connection.getCoords()[0] == coords[0] && connection.getCoords()[1] == coords[1]) {
                     if (connection.getOwner() == null) {
                         connection.buildRoad(buildingType, player);
+                        //TODO:BuildingType?
+
+                        ModelMaterial modelMaterialCost = new ModelMaterial(new int[]{1,0,0,1,0});
+                        player.reduceMaterial(modelMaterialCost);
+
                         return true;
                     }
                     return false;
                 }
             }
+            //TODO: add Boat as Connection
+
         } else if (type.equals("Building")) {
             for (ModelBuilding building :
                     buildings) {
                 if (building.getCoords()[0] == coords[0] && building.getCoords()[1] == coords[1]) {
                     if (buildingType.equals("Town")&&building.getOwner()==player) {
                         building.buildTown(player);
+
+                        ModelMaterial modelMaterialCost = new ModelMaterial(new int[]{0,2,3,0,0});
+                        player.reduceMaterial(modelMaterialCost);
+
                         return true;
                     } else if (buildingType.equals("Settlement")&&building.getOwner()==null) {
                         building.buildSettlement(player);
+
+
+
+                        ModelMaterial modelMaterialCost = new ModelMaterial(new int[]{1,1,0,1,1});
+                        player.reduceMaterial(modelMaterialCost);
+
                         return true;
                     }
                 }

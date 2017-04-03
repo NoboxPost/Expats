@@ -10,7 +10,7 @@ public class ModelPlayer {
     private int playerID;
 
     public ModelPlayer(String color, int playerID) {
-        this.materialPool = new ModelMaterial(new int[]{0,0,0,0,0});
+        this.materialPool = new ModelMaterial(new int[]{10,10,10,10,10});
         this.color = color;
         this.playerID = playerID;
     }

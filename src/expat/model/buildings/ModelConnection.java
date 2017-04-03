@@ -1,5 +1,6 @@
 package expat.model.buildings;
 
+import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
 import expat.model.board.ModelHex;
 
