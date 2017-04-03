@@ -3,6 +3,7 @@ package expat.model;
 import expat.control.*;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
+import expat.model.board.ModelHex;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -148,6 +149,18 @@ public class ModelApp {
      */
     public ModelBuildingAction getBuildingAction() {
         return buildingAction;
+    }
+
+    public void moveRaider(int[] coords) {
+        for (ModelHex[] hexline:board.getHexes()) {
+            for (ModelHex hex:hexline){
+                if (hex.getCoords()[0]==coords[0]&&hex.getCoords()[1]==coords[1]){
+                    board.getRaider().moveRaider(hex);
+                }
+            }
+
+        }
+        boardController.refreshBoardElements(board);
     }
 }
 
