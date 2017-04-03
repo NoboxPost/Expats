@@ -15,7 +15,7 @@ public class ViewConnection extends ImageView {
         this.yConnectionCoord = yConnectionCoord;
     }
 
-    public int[] getConnectionCoord() {
+    public int[] getConnectionCoords() {
         return new int[]{xConnectionCoord, yConnectionCoord};
     }
 }

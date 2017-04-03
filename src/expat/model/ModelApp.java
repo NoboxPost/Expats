@@ -3,7 +3,6 @@ package expat.model;
 import expat.control.*;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
-import expat.model.board.ModelHexFactory;
 
 import java.util.ArrayList;
 
@@ -34,6 +33,7 @@ public class ModelApp {
     private int diceNumber;
     private ArrayList<ModelPlayer> players = new ArrayList<>();
     private ModelPlayer nowPlaying;
+    private ModelBuildingAction buildingAction;
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
         this.boardController = boardController;
@@ -47,7 +47,9 @@ public class ModelApp {
 
     public void generatePlayer() {
         ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
-        players.add(playerGen.newPlayer());
+        ModelPlayer player = playerGen.newPlayer();
+        players.add(player);
+        nowPlaying = player;
     }
 
     /**
@@ -59,7 +61,7 @@ public class ModelApp {
     public void gameBegin() {
         generatePlayer();
         generatePlayer();
-        actionController.drawBuildTurn();
+        actionController.drawBuildStep();
     }
 
 
@@ -115,6 +117,18 @@ public class ModelApp {
 
     }
 
+
+    public void newBuildingAction(String type) {
+        buildingAction = new ModelBuildingAction(nowPlaying,type,board.getBuildings(),board.getConnections());
+    }
+    public void injectNewBuildingCoords(int[] coords,String type){
+        if (buildingAction!=null) {
+            buildingAction.createBuilding(coords, type);
+            boardController.drawBoard(board); //TODO: change to refresh
+            buildingAction = null;
+        }
+    }
+
     public ModelBoard getBoard() {
         return board;
     }
@@ -122,5 +136,15 @@ public class ModelApp {
     public ModelPlayer getNowPlaying() {
         return nowPlaying;
     }
+
+    /**
+     * returns current buildingAction,
+     *
+     * @return buildingAction can be null, so needs to be checked.
+     */
+    public ModelBuildingAction getBuildingAction() {
+        return buildingAction;
+    }
 }
+
 
