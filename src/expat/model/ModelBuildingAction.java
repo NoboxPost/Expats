@@ -60,4 +60,8 @@ public class ModelBuildingAction {
         }
         return false;
     }
+
+    public String getBuildingType() {
+        return buildingType;
+    }
 }

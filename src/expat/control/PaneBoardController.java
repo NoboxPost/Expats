@@ -127,7 +127,6 @@ public class PaneBoardController {
         app.injectNewBuildingCoords(building.getBuildingCoord(),"Building");
         System.out.println("Empty Building clicked "+building.getBuildingCoord()[0]+" "+building.getBuildingCoord()[1]);
         refreshBoardElements(app.getBoard());
-
     }
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();

@@ -4,7 +4,7 @@ package expat.model;
  * Created by vanonir on 22.03.2017.
  */
 public class ModelPlayer {
-    private int winPoints = 0;
+    private int victoryPoints = 0;
     private ModelMaterial materialPool;
     private String color;
     private int playerID;
@@ -23,9 +23,6 @@ public class ModelPlayer {
         materialPool.reduceMaterial(materialToReduce);
     }
 
-    public void playerMaterialToString(){
-
-    }
     public String getColor(){
         return color;
     }
@@ -33,6 +30,20 @@ public class ModelPlayer {
     public ModelMaterial getMaterial() {
         return materialPool;
     }
+
+    public String getWinPointsString(){
+        String winPointsString = (Integer.toString(victoryPoints));
+        return winPointsString;
+    }
+    public String getMaterialPoolString(){
+        String materialPoolString = materialPool.toString();
+        return materialPoolString;
+    }
+
+    public void changeVictoryPoints(int victoryPoints){
+        this.victoryPoints += victoryPoints;
+    }
+
 }
 
 

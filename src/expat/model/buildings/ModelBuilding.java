@@ -59,6 +59,7 @@ public class ModelBuilding {
         winPoints = 1;
         resourceMultiplier = 1;
     }
+
     public void buildTown(ModelPlayer owner){
         this.owner = owner;
         type = "Town";
@@ -69,6 +70,7 @@ public class ModelBuilding {
     public String getType() {
         return type;
     }
+
     public int[] getCoords(){
         return new int[]{xBuildingCoord,yBuildingCoord};
     }
