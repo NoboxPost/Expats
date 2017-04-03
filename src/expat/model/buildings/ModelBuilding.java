@@ -15,6 +15,7 @@ public class ModelBuilding {
     private int winPoints;
     private int resourceMultiplier = 1;
     protected ModelPlayer owner;
+    private boolean display =true;
 
     public ModelBuilding(int xBuildingCoord, int yBuildingCoord) {
         this.xBuildingCoord = xBuildingCoord;
@@ -73,6 +74,14 @@ public class ModelBuilding {
     }
     public void changeBuildingType(){
         type = type.equals("empty")? "Settlement":"empty";
+    }
+
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
     }
 }
 

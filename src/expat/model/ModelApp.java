@@ -10,16 +10,16 @@ import java.util.ArrayList;
 /**
  * is responsible for the game procedure
  * <p>
- *     therefore it's a collection of:
- *     - all the FXML-controlles
- *     - the board
- *     - all the players
- *     <p>
- *         this class is built intentionally like the player procedure
- *         - dice and material distirbution
- *         - trading
- *         - building
- *         - events
+ * therefore it's a collection of:
+ * - all the FXML-controlles
+ * - the board
+ * - all the players
+ * <p>
+ * this class is built intentionally like the player procedure
+ * - dice and material distirbution
+ * - trading
+ * - building
+ * - events
  * created on 22.03.2017
  *
  * @author vanonir
@@ -32,7 +32,8 @@ public class ModelApp {
     private ControllerMainStage mainController;
     private ModelBoard board;
     private int diceNumber;
-    private ModelPlayer[] players;
+    private ArrayList<ModelPlayer> players = new ArrayList<>();
+    private ModelPlayer nowPlaying;
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
         this.boardController = boardController;
@@ -44,15 +45,23 @@ public class ModelApp {
         this.board = boardGenerator.generateBoard();
     }
 
+    public void generatePlayer() {
+        ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
+        players.add(playerGen.newPlayer());
+    }
+
     /**
      * handles the beginning of the game
      * <p>
-     *     - players choose the position of their first two settlements
-     *     - they get the materials from all flanking hexes
+     * - players choose the position of their first two settlements
+     * - they get the materials from all flanking hexes
      */
-    public void gameBegin(){
-
+    public void gameBegin() {
+        generatePlayer();
+        generatePlayer();
+        actionController.drawBuildTurn();
     }
+
 
     /**
      * is the first player-step that distributes materials
@@ -87,13 +96,13 @@ public class ModelApp {
      * 2. play development cards (knights, development, victory)
      */
     public void specialStep() {
-        if (diceNumber==7){
+        if (diceNumber == 7) {
             //TODO: do something. take one random material from a player.
         }
     }
+
     /**
      * changes player, so next player can doo all stepps.
-     *
      */
     public void nextPlayer() {
     }
@@ -101,7 +110,7 @@ public class ModelApp {
     /**
      * handles the end of the game
      */
-    public void gameOver(){
+    public void gameOver() {
 
 
     }
@@ -109,4 +118,9 @@ public class ModelApp {
     public ModelBoard getBoard() {
         return board;
     }
+
+    public ModelPlayer getNowPlaying() {
+        return nowPlaying;
+    }
 }
+

@@ -59,8 +59,12 @@ public class ModelConnection {
         return new int[]{xBuildingCoord,yBuildingCoord};
     }
 
+    public ModelPlayer getOwner(){
+        return owner;
+    }
     public String getOrientation() {
         return orientation;
     }
 }
+
 
