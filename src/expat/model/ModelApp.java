@@ -136,6 +136,7 @@ public class ModelApp {
             buildingAction.createBuilding(coords, type);
             if (buildingAction.getBuildingType()=="Settlement" || buildingAction.getBuildingType()=="Town"){
                 nowPlaying.changeVictoryPoints(1);
+                playerController.setPlayerInformation(nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
             }
             buildingAction = null;
             actionController.drawBuildStep();
