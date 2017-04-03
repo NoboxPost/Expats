@@ -2,6 +2,7 @@ package expat.control;
 
 import expat.model.ModelApp;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.scene.Cursor;
@@ -9,7 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -71,9 +74,10 @@ public class PaneActionController {
     }
 
     private void generateRoad(MouseEvent event) {
-        generateBuilding("Road",(ImageView) event.getSource());
+        generateBuilding("Road", (ImageView) event.getSource());
         roadImageView.setEffect(addDropShadow());
     }
+
 
     private void generateSettlement(MouseEvent event) {
         generateBuilding("Settlement",(ImageView) event.getSource());
