@@ -122,9 +122,11 @@ public class ModelApp {
         buildingAction = new ModelBuildingAction(nowPlaying,type,board.getBuildings(),board.getConnections());
     }
     public void injectNewBuildingCoords(int[] coords,String type){
-        buildingAction.createBuilding(coords,type);
-        boardController.drawBoard(board); //TODO: change to refresh
-        buildingAction = null;
+        if (buildingAction!=null) {
+            buildingAction.createBuilding(coords, type);
+            boardController.drawBoard(board); //TODO: change to refresh
+            buildingAction = null;
+        }
     }
 
     public ModelBoard getBoard() {
