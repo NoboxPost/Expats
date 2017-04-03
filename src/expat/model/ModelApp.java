@@ -126,6 +126,7 @@ public class ModelApp {
             buildingAction.createBuilding(coords, type);
             boardController.refreshBoardElements(board);
             buildingAction = null;
+            actionController.drawBuildStep();
         }
     }
 

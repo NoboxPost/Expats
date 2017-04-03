@@ -20,7 +20,17 @@
                   <Button mnemonicParsing="false" text="Button" />
                </children>
             </HBox>
-            <HBox fx:id="middleActionPane" alignment="CENTER" spacing="50.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="middleActionPane" alignment="CENTER" spacing="50.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <effect>
+                        <DropShadow height="23.9" radius="30.284999999999997" spread="0.39" width="99.24" />
+                     </effect>
+                     <image>
+                        <Image url="@../../../files/Settlement.png" />
+                     </image>
+                  </ImageView>
+               </children></HBox>
             <AnchorPane fx:id="rightActionPane" prefHeight="150.0" prefWidth="300.0">
                <children>
                   <Button fx:id="btnNextStep" layoutX="40.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnNextStepClicked" prefHeight="100.0" prefWidth="155.0" text="Nächster Schritt" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0" />
