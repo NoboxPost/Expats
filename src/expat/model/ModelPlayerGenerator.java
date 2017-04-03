@@ -6,7 +6,7 @@ package expat.model;
 public class ModelPlayerGenerator {
 
     public static int playerID = 0;
-    public String[] colors = new String[]{"Yellow","Red","Blue","Green"};
+    public String[] colors = new String[]{"Blue","Red","Yellow","Green"};
 
     public ModelPlayer newPlayer() {
         ModelPlayer player;

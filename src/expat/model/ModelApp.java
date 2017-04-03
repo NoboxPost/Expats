@@ -5,6 +5,8 @@ import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 /**
  * is responsible for the game procedure
@@ -31,7 +33,7 @@ public class ModelApp {
     private ControllerMainStage mainController;
     private ModelBoard board;
     private int diceNumber;
-    private ArrayList<ModelPlayer> players = new ArrayList<>();
+    private LinkedList<ModelPlayer> players = new LinkedList<>();
     private ModelPlayer nowPlaying;
     private ModelBuildingAction buildingAction;
 
@@ -49,7 +51,6 @@ public class ModelApp {
         ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
         ModelPlayer player = playerGen.newPlayer();
         players.add(player);
-        nowPlaying = player;
     }
 
     /**
@@ -61,6 +62,7 @@ public class ModelApp {
     public void gameBegin() {
         generatePlayer();
         generatePlayer();
+        nextPlayer();
         actionController.drawBuildStep();
     }
 
@@ -107,6 +109,8 @@ public class ModelApp {
      * changes player, so next player can doo all stepps.
      */
     public void nextPlayer() {
+        players.add(players.poll());
+        nowPlaying = players.peek();
     }
 
     /**
@@ -124,7 +128,6 @@ public class ModelApp {
     public void injectNewBuildingCoords(int[] coords,String type){
         if (buildingAction!=null) {
             buildingAction.createBuilding(coords, type);
-            boardController.refreshBoardElements(board);
             buildingAction = null;
         }
     }
