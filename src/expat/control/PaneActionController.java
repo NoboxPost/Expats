@@ -6,12 +6,14 @@ import javafx.fxml.FXML;
 
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -29,6 +31,9 @@ public class PaneActionController {
     public Pane leftActionPane;
     private ControllerMainStage controllerMainStage;
     public AnchorPane action;
+    private ImageView roadImageView;
+    private ImageView townImageView;
+    private ImageView settlementImageView;
     ModelApp app;
 
 
@@ -42,39 +47,42 @@ public class PaneActionController {
     public void drawBuildStep(){
         middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
-        ImageView townImageView= new ImageView(town);
+        townImageView= new ImageView(town);
         townImageView.setFitHeight(80);
         townImageView.setPreserveRatio(true);
         townImageView.setOnMouseReleased(this::generateTown);
         townImageView.setCursor(Cursor.HAND);
 
         Image settlement =new Image("expat/img/Settlement.png");
-        ImageView settelmentImageView= new ImageView(settlement);
-        settelmentImageView.setFitHeight(80);
-        settelmentImageView.setPreserveRatio(true);
-        settelmentImageView.setOnMouseReleased(this::generateSettlement);
-        settelmentImageView.setCursor(Cursor.HAND);
+        settlementImageView= new ImageView(settlement);
+        settlementImageView.setFitHeight(80);
+        settlementImageView.setPreserveRatio(true);
+        settlementImageView.setOnMouseReleased(this::generateSettlement);
+        settlementImageView.setCursor(Cursor.HAND);
 
         Image road = new Image("expat/img/Connection.png");
-        ImageView roadImageView = new ImageView(road);
+        roadImageView = new ImageView(road);
         roadImageView.setFitHeight(80);
         roadImageView.setPreserveRatio(true);
         roadImageView.setOnMouseReleased(this::generateRoad);
         roadImageView.setCursor(Cursor.HAND);
 
-        middleActionPane.getChildren().addAll(townImageView,settelmentImageView,roadImageView);
+        middleActionPane.getChildren().addAll(townImageView,settlementImageView,roadImageView);
     }
 
     private void generateRoad(MouseEvent event) {
         generateBuilding("Road",(ImageView) event.getSource());
+        roadImageView.setEffect(addDropShadow());
     }
 
     private void generateSettlement(MouseEvent event) {
         generateBuilding("Settlement",(ImageView) event.getSource());
+        settlementImageView.setEffect(addDropShadow());
     }
 
     private void generateTown(MouseEvent event) {
         generateBuilding("Town",(ImageView) event.getSource());
+        townImageView.setEffect(addDropShadow());
     }
 
     private void generateBuilding(String type, ImageView imageView){
@@ -82,7 +90,16 @@ public class PaneActionController {
         System.out.println("generateBuilding");
         app.newBuildingAction(type);
         //TODO: Draw frame around ImageView;
+    }
 
+    private DropShadow addDropShadow(){
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(30);
+        dropShadow.setHeight(25);
+        dropShadow.setWidth(200);
+        dropShadow.setSpread(0.5);
+
+        return dropShadow;
     }
 
 
