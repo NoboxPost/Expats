@@ -1,6 +1,8 @@
 package expat.view;
 
 import expat.model.board.ModelHex;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -38,6 +40,8 @@ public class ViewHex extends Polygon {
         this.setFill(pattern);
         this.setLayoutX(xOffset);
         this.setLayoutY(yOffset);
-
     }
 }
+
+
+
