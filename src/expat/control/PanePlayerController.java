@@ -3,6 +3,7 @@ package expat.control;
 import expat.model.ModelApp;
 import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 /**
@@ -20,13 +21,15 @@ public class PanePlayerController {
     private ModelApp app;
     public TextArea playerResourcesTextArea;
     public TextArea playerVictoryPointsTextArea;
+    public Label playerLabel;
 
     public void init(ControllerMainStage controllerMainStage, ModelApp app){
         this.controllerMainStage = controllerMainStage;
         this.app= app;
     }
 
-    public void setPlayerInformation(String materialPoolString, String winPointsString){
+    public void setPlayerInformation(String playerName, String materialPoolString, String winPointsString){
+        playerLabel.setText(playerName);
         playerResourcesTextArea.setText(materialPoolString);
         playerVictoryPointsTextArea.setText(winPointsString);
     }
