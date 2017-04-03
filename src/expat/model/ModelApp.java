@@ -129,6 +129,7 @@ public class ModelApp {
         if (buildingAction!=null) {
             buildingAction.createBuilding(coords, type);
             buildingAction = null;
+            actionController.drawBuildStep();
         }
     }
 
