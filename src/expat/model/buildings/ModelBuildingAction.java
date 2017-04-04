@@ -54,7 +54,7 @@ public class ModelBuildingAction {
     }
 
     /**
-     * Takes building coords and finishes the building process.
+     * Takes building coords and finishes the building process. Don't touch!
      *
      * @param coords
      */
@@ -67,26 +67,35 @@ public class ModelBuildingAction {
                         if (checkConnectionForConnection(coords, connection) && buildingCost(buildingType)) {
                             connection.buildRoad(buildingType, player);
                             return true;
-                        } else if (startStage && checkSettlementforConnectionToBeBuilt(coords,connection)){
+                        } else if (startStage && checkSettlementforConnectionToBeBuilt(coords, connection)) {
                             connection.buildRoad(buildingType, player);
                         }
-
+                        return false;
                     }
-                    return false;
                 }
             }
         } else if (type.equals("Building")) {
-            for (ModelBuilding building :
-                    buildings) {
+            for (ModelBuilding building : buildings) {
                 if (building.checkCoords(coords)) {
-                    if (buildingType.equals("Town") && building.getOwner() == player) {
-                        buildingCost(buildingType);
-                        building.buildTown(player);
-                        return true;
+                    if ((buildingType.equals("Town") && building.getOwner() == player)&&building.getType().equals("Settlement")) {
+                        if (buildingCost(buildingType)) {
+                            building.buildTown(player);
+                            return true;
+                        }
+                        return false;
                     } else if (buildingType.equals("Settlement") && building.getOwner() == null) {
-                        buildingCost(buildingType);
-                        building.buildSettlement(player);
-                        return true;
+
+                        if ((checkConnectionForBuilding(building.getCoords()) && checkBuildingForBuilding(coords))) {
+                            if (buildingCost(buildingType)) {
+                                building.buildSettlement(player);
+                                return true;
+                            }
+                            return false;
+                        } else if (startStage && checkBuildingForBuilding(coords)) {
+                            building.buildSettlement(player);
+                            return true;
+                        }
+
                     }
                 }
             }
@@ -97,27 +106,36 @@ public class ModelBuildingAction {
     public boolean buildingCost(String type) {
         switch (type) {
             case "Road":
-                player.reduceMaterial( new ModelMaterial(new int[]{1, 0, 0, 1, 0}));
+                if (player.reduceMaterial(new ModelMaterial(new int[]{1, 0, 0, 1, 0}))) {
+                    return true;
+                }
                 break;
             case "Boat":
-                player.reduceMaterial(new ModelMaterial(new int[]{0, 0, 0, 1, 1}));
+                if (player.reduceMaterial(new ModelMaterial(new int[]{0, 0, 0, 1, 1}))) {
+                    return true;
+                }
                 break;
             case "Settlement":
-                player.reduceMaterial( new ModelMaterial(new int[]{1, 1, 0, 1, 1}));
+                if (player.reduceMaterial(new ModelMaterial(new int[]{1, 1, 0, 1, 1}))) {
+                    return true;
+                }
                 break;
             case "Town":
-                player.reduceMaterial(new ModelMaterial(new int[]{0, 2, 3, 0, 0}));
+                if (player.reduceMaterial(new ModelMaterial(new int[]{0, 2, 3, 0, 0}))) {
+                    return true;
+                }
                 break;
             case "Development":
-                player.reduceMaterial(new ModelMaterial(new int[]{0, 1, 1, 0, 1}));
+                if (player.reduceMaterial(new ModelMaterial(new int[]{0, 1, 1, 0, 1}))) {
+                    return true;
+                }
                 break;
             default:
                 return false;
 
         }
-        return true;
+        return false;
     }
-
 
 
     /**
@@ -152,7 +170,7 @@ public class ModelBuildingAction {
 
                     if (connectionToCheck.getOwner() == player) {
                         for (int i = 0; i < 4; i++) {
-                            if (connectionToCheck.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i]) && connectionToCheck.getOwner() == player) {
+                            if (connectionToCheck.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i])) {
                                 legalPosition = true;
                             }
                         }
@@ -165,7 +183,7 @@ public class ModelBuildingAction {
                     int[] yCoordModulator = new int[]{-1, -2, +1, +2};
                     if (connectionToCheck.getOwner() == player) {
                         for (int i = 0; i < 4; i++) {
-                            if (connectionToCheck.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i]) && connectionToCheck.getOwner() == player) {
+                            if (connectionToCheck.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i])) {
                                 legalPosition = true;
                             }
                         }
@@ -179,7 +197,8 @@ public class ModelBuildingAction {
             return false;
         }
     }
-    public boolean checkSettlementforConnectionToBeBuilt(int[]coords,ModelConnection connection){
+
+    public boolean checkSettlementforConnectionToBeBuilt(int[] coords, ModelConnection connection) {
         boolean legalPosition = false;
         int xCoordOfNewConnection = coords[0];
         int yCoordOfNewConnection = coords[1];
@@ -188,7 +207,7 @@ public class ModelBuildingAction {
                 for (ModelBuilding building : buildings) {
                     int[] xCoordModulator = new int[]{-2, +2};
                     int[] yCoordModulator = new int[]{0, 0};
-                    if (building.getOwner()==player) {
+                    if (building.getOwner() == player) {
                         for (int i = 0; i < 2; i++) {
                             if (building.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i])) {
                                 legalPosition = true;
@@ -201,7 +220,7 @@ public class ModelBuildingAction {
                 for (ModelBuilding building : buildings) {
                     int[] xCoordModulator = new int[]{+1, -1};
                     int[] yCoordModulator = new int[]{-1, +1};
-                    if (building.getOwner()==player) {
+                    if (building.getOwner() == player) {
                         for (int i = 0; i < 2; i++) {
                             if (building.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i])) {
                                 legalPosition = true;
@@ -214,7 +233,7 @@ public class ModelBuildingAction {
                 for (ModelBuilding building : buildings) {
                     int[] xCoordModulator = new int[]{-1, +1};
                     int[] yCoordModulator = new int[]{-1, +1};
-                    if (building.getOwner()==player) {
+                    if (building.getOwner() == player) {
                         for (int i = 0; i < 2; i++) {
                             if (building.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i])) {
                                 legalPosition = true;
@@ -222,6 +241,73 @@ public class ModelBuildingAction {
                         }
                     }
                 }
+        }
+        if (legalPosition) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public boolean checkBuildingForBuilding(int[] coords) {
+        boolean legalPosition = true;
+        int xCoordOfNewBuilding = coords[0];
+        int yCoordOfNewBuilding = coords[1];
+        if (xCoordOfNewBuilding % 6 == 0) {
+            for (ModelBuilding building : buildings) {
+                int[] xCoordModulator = new int[]{-2, +2, +2, -2, -4, +4};
+                int[] yCoordModulator = new int[]{-2, -2, +2, +2, 0, 0};
+                if (building.getOwner() !=null) {
+                    for (int i = 0; i < 6; i++) {
+                        if (building.checkCoords(xCoordOfNewBuilding + xCoordModulator[i], yCoordOfNewBuilding + yCoordModulator[i])) {
+                            legalPosition = false;
+                        }
+                    }
+                }
+            }
+        }
+        if (legalPosition) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if there is a neighbouring connection, so a building can be placed.
+     *
+     * @param coords int array with coordinates of the building to be built.
+     * @return true if there is a ascending connection, else false.
+     */
+    public boolean checkConnectionForBuilding(int[] coords) {
+        boolean legalPosition = false;
+        int xCoordOfNewBuilding = coords[0];
+        int yCoordOfNewBuilding = coords[1];
+        if (xCoordOfNewBuilding % 6 == 0) {
+            for (ModelConnection connection : connections) {
+                int[] xCoordModulator = new int[]{-2, +1, +1};
+                int[] yCoordModulator = new int[]{0, -1, +1};
+                if (connection.getOwner() == player) {
+                    for (int i = 0; i < 3; i++) {
+                        if (connection.checkCoords(xCoordOfNewBuilding + xCoordModulator[i], yCoordOfNewBuilding + yCoordModulator[i])) {
+                            legalPosition = true;
+                        }
+                    }
+                }
+            }
+        } else {
+            for (ModelConnection connection : connections) {
+                int[] xCoordModulator = new int[]{+2, -1, -1};
+                int[] yCoordModulator = new int[]{0, -1, +1};
+                if (connection.getOwner() == player) {
+                    for (int i = 0; i < 3; i++) {
+                        if (connection.checkCoords(xCoordOfNewBuilding + xCoordModulator[i], yCoordOfNewBuilding + yCoordModulator[i])) {
+                            legalPosition = true;
+                        }
+                    }
+                }
+            }
         }
         if (legalPosition) {
             return true;

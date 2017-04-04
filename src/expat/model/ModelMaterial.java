@@ -20,14 +20,22 @@ public class ModelMaterial {
     }
 
     public boolean reduceMaterial(ModelMaterial materialToReduce) {
+        boolean belowZero = false;
+        int[] materialCheck = materialAmount.clone();
         for (int i = 0; i < 5; i++) {
-            if (materialAmount[i]- materialToReduce.getMaterialAmount()[i]>=0) {
-                materialAmount[i] -= (materialToReduce.getMaterialAmount()[i]);
-            }else {
-                return false;
+            materialCheck[i] -= materialToReduce.getMaterialAmount()[i];
+            if (materialCheck[i] < 0) {
+                belowZero = true;
             }
         }
-        return false; //TODO: Reduces all materials untill below 0, need to check whole array before some changes are done.
+        if (belowZero){
+            return false;
+        }else {
+            for (int i = 0; i < 5; i++) {
+                materialAmount[i]-=materialToReduce.getMaterialAmount()[i];
+            }
+            return true;
+        }
     }
 
     public String allMaterialsString() {

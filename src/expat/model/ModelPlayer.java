@@ -10,7 +10,7 @@ public class ModelPlayer {
     private int playerID;
 
     public ModelPlayer(String color, int playerID) {
-        this.materialPool = new ModelMaterial(new int[]{10,10,10,10,10});
+        this.materialPool = new ModelMaterial(new int[]{0,0,0,0,0});
         this.color = color;
         this.playerID = playerID;
     }
@@ -19,8 +19,11 @@ public class ModelPlayer {
         materialPool.addMaterial(materialToAdd);
     }
 
-    public void reduceMaterial(ModelMaterial materialToReduce){
-        materialPool.reduceMaterial(materialToReduce);
+    public boolean reduceMaterial(ModelMaterial materialToReduce){
+        if (materialPool.reduceMaterial(materialToReduce)){
+            return true;
+        }
+        return false;
     }
 
     public String getColor(){
