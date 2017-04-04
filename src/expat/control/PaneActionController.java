@@ -91,8 +91,6 @@ public class PaneActionController {
 
     private void generateBuilding(String type, ImageView imageView){
         drawBuildStep();
-        System.out.println("generateBuilding");
-        System.out.println(type);
         app.newBuildingAction(type);
         //TODO: Draw frame around ImageView;
     }
@@ -110,12 +108,10 @@ public class PaneActionController {
 
 
 
-    public void btnNextStepClicked(ActionEvent event) {
-        System.out.println("next stepp clicked");
+    public void btnNextStepClicked(ActionEvent event){
     }
 
     public void btnEndTurnClicked(ActionEvent event) {
-        System.out.println("end turn clicked");
         app.nextPlayer();
     }
 }

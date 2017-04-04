@@ -47,14 +47,14 @@ public class PaneBoardController {
         generateHexGroup(modelBoard);
         generateDiceButtonGroup(modelBoard);
         generateConnectionGroup(modelBoard);
-        generateBuildingGroup(modelBoard);
         generateRaiderGroup(modelBoard);
+        generateBuildingGroup(modelBoard);
     }
 
     public void refreshBoardElements(ModelBoard modelBoard){
         generateConnectionGroup(modelBoard);
-        generateBuildingGroup(modelBoard);
         generateRaiderGroup(modelBoard);
+        generateBuildingGroup(modelBoard);
     }
 
     public void generateHexGroup(ModelBoard modelBoard){
@@ -120,18 +120,15 @@ public class PaneBoardController {
     public void hexClicked(ActionEvent event) { //TODO: Raider
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
         app.moveRaider(button.getCoords());
-        System.out.println("DiceNumber clicked :"+button.getCoords()[0] + " " + button.getCoords()[1]);
     }
     public void emptyBuildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        app.injectNewBuildingCoords(building.getBuildingCoord(),"Building");
-        System.out.println("Empty Building clicked "+building.getBuildingCoord()[0]+" "+building.getBuildingCoord()[1]);
+        app.injectNewBuildingCoordsAndAddWinpoints(building.getBuildingCoord(),"Building");
         refreshBoardElements(app.getBoard());
     }
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
-        System.out.println("connectionClicked"+ connection.getConnectionCoords()[0]+ " "+connection.getConnectionCoords()[1]);
-        app.injectNewBuildingCoords(connection.getConnectionCoords(),"Road"); //TODO: If Ships are implemented, we need to check types.
+        app.injectNewBuildingCoordsAndAddWinpoints(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
     }
 
