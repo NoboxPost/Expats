@@ -149,8 +149,8 @@ public class ModelApp {
             if (board.finishBuildingAction(coords, type)) {
                 if (type.equals("Building")) {
                     nowPlaying.changeVictoryPoints(1);
-                    playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
                 }
+                playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
                 actionController.drawBuildStep();
             }
         }
