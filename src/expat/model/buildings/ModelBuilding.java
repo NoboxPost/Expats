@@ -13,7 +13,7 @@ public class ModelBuilding {
     private String type = "empty";
     private int xBuildingCoord, yBuildingCoord;
     private int winPoints;
-    private int resourceMultiplier = 1;
+    private int resourceMultiplier;
     protected ModelPlayer owner;
     private boolean display =true;
 

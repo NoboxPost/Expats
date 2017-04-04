@@ -70,6 +70,10 @@ public class ModelApp {
         generatePlayer();
         generatePlayer();
         nextPlayer();
+
+
+
+        //TODO: actionController Start is yet wrong
         currentStep= "FirstBuildingStep";
     }
 
@@ -85,14 +89,13 @@ public class ModelApp {
      * 1. dice
      * 2. material distribution
      */
-    public void resourceStep() {
-        ModelThrowDice throwDice = new ModelThrowDice();
-        diceNumber = throwDice.getRandomDiceNumber();
+    public int[] resourceStep() {
+        ModelDiceRolling diceRolling = new ModelDiceRolling();
+        diceNumber = diceRolling.rollDices();
         if (diceNumber != 7) {
             board.resourceOnDiceEvent(diceNumber);
         }
-
-
+        return diceRolling.getRolledDicesSeperately();
     }
 
     /**
@@ -169,7 +172,6 @@ public class ModelApp {
                     nowPlaying.changeVictoryPoints(1);
                 }
                 playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
-
             }
         }
     }

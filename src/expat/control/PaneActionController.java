@@ -2,21 +2,17 @@ package expat.control;
 
 import expat.model.ModelApp;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 
 /**
@@ -37,6 +33,7 @@ public class PaneActionController {
     private ImageView roadImageView;
     private ImageView townImageView;
     private ImageView settlementImageView;
+    private Button diceRollButton;
     ModelApp app;
 
 
@@ -44,7 +41,46 @@ public class PaneActionController {
         this.controllerMainStage = controllerMainStage;
         this.app= app;
     }
-    public void drawDiceStep(){
+    public void drawResourceStep(int[] rolledDicesNumbers){
+        middleActionPane.getChildren().clear();
+
+        for(int dice : rolledDicesNumbers){
+            ImageView diceImageView;
+
+            switch(dice){
+            case 1:
+                diceImageView = new ImageView("expat/img/Dice1.png");
+                break;
+            case 2:
+                diceImageView = new ImageView("expat/img/Dice2.png");
+                break;
+            case 3:
+                diceImageView = new ImageView("expat/img/Dice3.png");
+                break;
+            case 4:
+                diceImageView = new ImageView("expat/img/Dice4.png");
+                break;
+            case 5:
+                diceImageView = new ImageView("expat/img/Dice5.png");
+                break;
+            case 6:
+                diceImageView = new ImageView("expat/img/Dice6.png");
+                break;
+                default:
+                    diceImageView = new ImageView();
+            }
+            diceImageView.setFitHeight(80);
+            diceImageView.setPreserveRatio(true);
+            middleActionPane.getChildren().add(diceImageView);
+        }
+        diceRollButton = new Button("roll dice!");
+        diceRollButton.setOnAction(this::diceRollClicked);
+        middleActionPane.getChildren().add(diceRollButton);
+    }
+
+    public void diceRollClicked(ActionEvent event){
+        drawResourceStep(app.resourceStep());
+        middleActionPane.getChildren().remove(diceRollButton);
     }
 
 
