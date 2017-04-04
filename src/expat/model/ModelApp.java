@@ -37,7 +37,7 @@ public class ModelApp {
     private ModelPlayer nowPlaying;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
-
+    private int firstBuildingStep = 0;
 
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
@@ -74,16 +74,14 @@ public class ModelApp {
         playerController.generateCards(); //TODO: ändern?
 
 
-
         //TODO: actionController Start is yet wrong
-        //currentStep= "FirstBuildingStep";
-        resourceStep();
+        currentStep = "FirstBuildingStep";
+
     }
 
-    public void buildingStep(){
+    public void buildingStep() {
         currentStep = "BuildingStep";
     }
-
 
 
     /**
@@ -95,12 +93,12 @@ public class ModelApp {
     public void resourceStep() {
         currentStep = "ResourceStep";
         diceNumber = 0;
-        diceRolling =null;
+        diceRolling = null;
     }
 
-    public void rollDice(){
+    public void rollDice() {
         diceRolling = new ModelDiceRolling();
-        diceNumber =diceRolling.getRolledDices();
+        diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial(new int[]{0,0,0,0,0});
             materialBefore.addMaterial(nowPlaying.getMaterial());
@@ -170,8 +168,8 @@ public class ModelApp {
     }
 
 
-    public void firstBuildingAction(String type){
-        board.firstBuildingAction(type,nowPlaying);
+    public void firstBuildingAction(String type) {
+        board.firstBuildingAction(type, nowPlaying);
     }
 
 
@@ -179,9 +177,18 @@ public class ModelApp {
         board.newBuildingAction(type, nowPlaying);
     }
 
+    /**
+     *
+     * In first part, it will
+     *
+     * @param coords
+     * @param type
+     */
     public void injectNewBuildingCoordsAndAddWinpoints(int[] coords, String type) {
-        {
-
+        if((countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1)&&firstBuildingStep<2){
+            nextPlayer();
+        }
+        if (firstBuildingStep>=2||(countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building")||countConnectionsForCurrentPlayer()==firstBuildingStep&&type.equals("Connection"))) {
             if (board.finishBuildingAction(coords, type)) {
                 if (type.equals("Building")) {
                     nowPlaying.changeVictoryPoints(1);
@@ -189,20 +196,35 @@ public class ModelApp {
                 playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
             }
         }
+        boolean allOnSameFirstBuildingStep = true;
+        if (firstBuildingStep<2) {
+            for (ModelPlayer player:players) {
+                if ((board.countBuildingsOwned(player)==firstBuildingStep+1&&board.countConnectionsOwned(player)==firstBuildingStep+1)){
+
+                }else {
+                    allOnSameFirstBuildingStep =false;
+                }
+            }
+            if (allOnSameFirstBuildingStep){
+                firstBuildingStep+=1;
+                nextPlayer();
+            }
+            if (firstBuildingStep>=2){
+                resourceStep();
+            }
+        }
+        if((countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1)&&firstBuildingStep<2){
+            nextPlayer();
+        }
     }
 
-    /**
-     * @return ModelBoard
-     */
-    public ModelBoard getBoard() {
-        return board;
+
+    public int countBuildingsForCurrentPlayer() {
+        return board.countBuildingsOwned(nowPlaying);
     }
 
-    /**
-     * @return actual player.
-     */
-    public ModelPlayer getNowPlaying() {
-        return nowPlaying;
+    public int countConnectionsForCurrentPlayer() {
+        return board.countConnectionsOwned(nowPlaying);
     }
 
 
@@ -217,6 +239,7 @@ public class ModelApp {
         }
         boardController.refreshBoardElements(board);
     }
+
     public String getCurrentStep() {
         return currentStep;
     }
@@ -224,15 +247,19 @@ public class ModelApp {
     public int getDiceNumber() {
         return diceNumber;
     }
-    public int[] getDiceNumbersSeparately(){
+
+    public int[] getDiceNumbersSeparately() {
         return diceRolling.getRolledDicesSeperately();
     }
 
-    /**
-     * gets nowPlayingDicedMaterial
-     *
-     * @return value of nowPlayingDicedMaterial
-     */
+    public ModelBoard getBoard() {
+        return board;
+    }
+
+    public int getFirstBuildingStep() {
+        return firstBuildingStep;
+    }
+
     public ModelMaterial getNowPlayingDicedMaterial() {
         return nowPlayingDicedMaterial;
     }
