@@ -73,6 +73,26 @@ public class ModelBoard {
         buildingAction = null;
     }
 
+    public int countBuildingsOwned(ModelPlayer player){
+        int counter = 0;
+        for (ModelBuilding building:buildings) {
+            if (building.getOwner()==player){
+                counter+=1;
+            }
+        }
+        return counter;
+    }
+    public int countConnectionsOwned(ModelPlayer player){
+        int counter = 0;
+        for (ModelConnection connection:connections) {
+            if (connection.getOwner()==player){
+                counter+=1;
+            }
+        }
+        return counter;
+    }
+
+
     public ModelHex[][] getHexes() {
         return hexes;
     }
