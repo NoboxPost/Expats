@@ -113,6 +113,13 @@ public class PaneActionController {
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(settlementImageView, roadImageView);
+        if (app.getFirstBuildingStep()<2){
+            btnNextStep.setDisable(true);
+            btnEndTurn.setDisable(true);
+        }else{
+            btnNextStep.setDisable(false);
+            btnEndTurn.setDisable(false);
+        }
 
 
     }
@@ -192,6 +199,8 @@ public class PaneActionController {
 
     public void btnEndTurnClicked(ActionEvent event) {
         app.nextPlayer();
+        app.resourceStep();
+        refreshStep();
     }
 
     public void refreshStep() {
