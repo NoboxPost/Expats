@@ -1,9 +1,9 @@
 package expat.control;
 
 import expat.model.ModelApp;
+import expat.view.ViewCardsFactory;
 import javafx.event.ActionEvent;
 
-import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
@@ -72,26 +72,33 @@ public class PaneActionController {
                 }
                 diceImageView.setFitHeight(80);
                 diceImageView.setPreserveRatio(true);
-                middleActionPane.getChildren().add(diceImageView);
-                btnNextStep.setDisable(false);
-                btnEndTurn.setDisable(false);
-                btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
 
+
+                middleActionPane.getChildren().add(diceImageView);
             }
+            generateCards();
+
+            btnNextStep.setDisable(false);
+            btnEndTurn.setDisable(false);
+            btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
+
         } else {
             diceRollButton = new Button("roll dice!");
             diceRollButton.setOnAction(this::diceRollClicked);
             middleActionPane.getChildren().add(diceRollButton);
             btnNextStep.setDisable(true);
             btnEndTurn.setDisable(true);
-
         }
-
     }
 
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
         refreshStep();
+    }
+
+    public void generateCards(){
+        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlayingDicedMaterial());
+        middleActionPane.getChildren().add(viewCardsFactory.generateUnitedCardsHBox());
     }
 
 

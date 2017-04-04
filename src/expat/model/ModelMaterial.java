@@ -41,8 +41,12 @@ public class ModelMaterial {
         return materialString;
     }
 
-    private int[] getMaterialAmount() {
+    public int[] getMaterialAmount() {
         return materialAmount;
+    }
+
+    public String[] getMaterialNames() {
+        return materialNames;
     }
 
 }

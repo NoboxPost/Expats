@@ -4,7 +4,6 @@ import expat.control.*;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
-import expat.model.buildings.ModelBuildingAction;
 
 import java.util.LinkedList;
 
@@ -37,6 +36,7 @@ public class ModelApp {
     private LinkedList<ModelPlayer> players = new LinkedList<>();
     private ModelPlayer nowPlaying;
     private String currentStep;
+    private ModelMaterial nowPlayingDicedMaterial;
 
 
 
@@ -71,6 +71,7 @@ public class ModelApp {
         generatePlayer();
         generatePlayer();
         nextPlayer();
+        playerController.generateCards(); //TODO: ändern?
 
 
 
@@ -101,8 +102,14 @@ public class ModelApp {
         diceRolling = new ModelDiceRolling();
         diceNumber =diceRolling.getRolledDices();
         if (diceNumber != 7) {
+            ModelMaterial materialBefore = new ModelMaterial(new int[]{0,0,0,0,0});
+            materialBefore.addMaterial(nowPlaying.getMaterial());
             board.resourceOnDiceEvent(diceNumber);
+            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0,0,0,0,0});
+            nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
+            nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         }
+        playerController.generateCards();
         playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString()); //TODO: Remove to controller
     }
 
@@ -219,6 +226,15 @@ public class ModelApp {
     }
     public int[] getDiceNumbersSeparately(){
         return diceRolling.getRolledDicesSeperately();
+    }
+
+    /**
+     * gets nowPlayingDicedMaterial
+     *
+     * @return value of nowPlayingDicedMaterial
+     */
+    public ModelMaterial getNowPlayingDicedMaterial() {
+        return nowPlayingDicedMaterial;
     }
 }
 
