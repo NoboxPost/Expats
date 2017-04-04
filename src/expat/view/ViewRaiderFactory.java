@@ -2,8 +2,13 @@ package expat.view;
 
 import expat.control.PaneBoardController;
 import expat.model.ModelRaider;
+import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * is responsible for the generation of the raider figure on board
@@ -37,12 +42,12 @@ public class ViewRaiderFactory {
         ImageView raiderImageView = new ImageView("expat/img/Raider.png");
         raiderPane.setLayoutX(coords[0]);
         raiderPane.setLayoutY(coords[1]);
+        raiderPane.setMaxHeight(70);
+        raiderPane.setMaxWidth(50);
         raiderImageView.setX(-(hexSize * 0.1));
         raiderImageView.setY(-(hexSize * 0.2));
         raiderPane.getChildren().add(raiderImageView);
 
         return raiderPane;
-
-
     }
 }
