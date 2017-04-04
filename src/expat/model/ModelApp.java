@@ -177,7 +177,7 @@ public class ModelApp {
      * @param type
      */
     public void injectNewBuildingCoordsAndAddWinpoints(int[] coords, String type) {
-        if(countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1){
+        if((countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1)&&firstBuildingStep<2){
             nextPlayer();
         }
         if (firstBuildingStep>=2||(countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building")||countConnectionsForCurrentPlayer()==firstBuildingStep&&type.equals("Connection"))) {
@@ -205,7 +205,7 @@ public class ModelApp {
                 resourceStep();
             }
         }
-        if(countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1){
+        if((countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1)&&firstBuildingStep<2){
             nextPlayer();
         }
     }
