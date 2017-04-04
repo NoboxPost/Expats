@@ -37,59 +37,69 @@ public class PaneActionController {
     ModelApp app;
 
 
-    public void init(ControllerMainStage controllerMainStage, ModelApp app){
+    public void init(ControllerMainStage controllerMainStage, ModelApp app) {
         this.controllerMainStage = controllerMainStage;
-        this.app= app;
+        this.app = app;
     }
-    public void drawResourceStep(int[] rolledDicesNumbers){
+
+    public void drawResourceStep() {
         middleActionPane.getChildren().clear();
+        if (app.getDiceNumber() != 0) {
+            for (int dice : app.getDiceNumbersSeparately()) {
+                ImageView diceImageView;
 
-        for(int dice : rolledDicesNumbers){
-            ImageView diceImageView;
+                switch (dice) {
+                    case 1:
+                        diceImageView = new ImageView("expat/img/Dice1.png");
+                        break;
+                    case 2:
+                        diceImageView = new ImageView("expat/img/Dice2.png");
+                        break;
+                    case 3:
+                        diceImageView = new ImageView("expat/img/Dice3.png");
+                        break;
+                    case 4:
+                        diceImageView = new ImageView("expat/img/Dice4.png");
+                        break;
+                    case 5:
+                        diceImageView = new ImageView("expat/img/Dice5.png");
+                        break;
+                    case 6:
+                        diceImageView = new ImageView("expat/img/Dice6.png");
+                        break;
+                    default:
+                        diceImageView = new ImageView();
+                }
+                diceImageView.setFitHeight(80);
+                diceImageView.setPreserveRatio(true);
+                middleActionPane.getChildren().add(diceImageView);
+                btnNextStep.setDisable(false);
+                btnEndTurn.setDisable(false);
+                btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
 
-            switch(dice){
-            case 1:
-                diceImageView = new ImageView("expat/img/Dice1.png");
-                break;
-            case 2:
-                diceImageView = new ImageView("expat/img/Dice2.png");
-                break;
-            case 3:
-                diceImageView = new ImageView("expat/img/Dice3.png");
-                break;
-            case 4:
-                diceImageView = new ImageView("expat/img/Dice4.png");
-                break;
-            case 5:
-                diceImageView = new ImageView("expat/img/Dice5.png");
-                break;
-            case 6:
-                diceImageView = new ImageView("expat/img/Dice6.png");
-                break;
-                default:
-                    diceImageView = new ImageView();
             }
-            diceImageView.setFitHeight(80);
-            diceImageView.setPreserveRatio(true);
-            middleActionPane.getChildren().add(diceImageView);
+        } else {
+            diceRollButton = new Button("roll dice!");
+            diceRollButton.setOnAction(this::diceRollClicked);
+            middleActionPane.getChildren().add(diceRollButton);
+            btnNextStep.setDisable(true);
+            btnEndTurn.setDisable(true);
+
         }
-        diceRollButton = new Button("roll dice!");
-        diceRollButton.setOnAction(this::diceRollClicked);
-        middleActionPane.getChildren().add(diceRollButton);
+
     }
 
-    public void diceRollClicked(ActionEvent event){
-        drawResourceStep(app.resourceStep());
-        middleActionPane.getChildren().remove(diceRollButton);
+    public void diceRollClicked(ActionEvent event) {
+        app.rollDice();
+        refreshStep();
     }
 
 
-
-    public void drawFirstSettlementAndRoadStep(){
+    public void drawFirstSettlementAndRoadStep() {
         middleActionPane.getChildren().clear();
 
-        Image settlement =new Image("expat/img/Settlement.png");
-        settlementImageView= new ImageView(settlement);
+        Image settlement = new Image("expat/img/Settlement.png");
+        settlementImageView = new ImageView(settlement);
         settlementImageView.setFitHeight(80);
         settlementImageView.setPreserveRatio(true);
         settlementImageView.setOnMouseReleased(this::generateFirstSettlement);
@@ -102,32 +112,34 @@ public class PaneActionController {
         roadImageView.setOnMouseReleased(this::generateFirstRoad);
         roadImageView.setCursor(Cursor.HAND);
 
-        middleActionPane.getChildren().addAll(settlementImageView,roadImageView);
+        middleActionPane.getChildren().addAll(settlementImageView, roadImageView);
 
 
     }
 
-    private void generateFirstSettlement(MouseEvent event){
+    private void generateFirstSettlement(MouseEvent event) {
         refreshStep();
         app.firstBuildingAction("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
-    private void generateFirstRoad(MouseEvent event){
+
+    private void generateFirstRoad(MouseEvent event) {
         refreshStep();
         app.firstBuildingAction("Road");
         roadImageView.setEffect(addDropShadow());
     }
-    public void drawBuildStep(){
+
+    public void drawBuildStep() {
         middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
-        townImageView= new ImageView(town);
+        townImageView = new ImageView(town);
         townImageView.setFitHeight(80);
         townImageView.setPreserveRatio(true);
         townImageView.setOnMouseReleased(this::generateTown);
         townImageView.setCursor(Cursor.HAND);
 
-        Image settlement =new Image("expat/img/Settlement.png");
-        settlementImageView= new ImageView(settlement);
+        Image settlement = new Image("expat/img/Settlement.png");
+        settlementImageView = new ImageView(settlement);
         settlementImageView.setFitHeight(80);
         settlementImageView.setPreserveRatio(true);
         settlementImageView.setOnMouseReleased(this::generateSettlement);
@@ -140,11 +152,10 @@ public class PaneActionController {
         roadImageView.setOnMouseReleased(this::generateRoad);
         roadImageView.setCursor(Cursor.HAND);
 
-        middleActionPane.getChildren().addAll(townImageView,settlementImageView,roadImageView);
+        middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
+        btnNextStep.setOnAction(this::btnNextStepClickedSetResourceStep);
 
-//        btnNextStep.setOnAction();
     }
-
 
 
     private void generateRoad(MouseEvent event) {
@@ -163,13 +174,13 @@ public class PaneActionController {
         townImageView.setEffect(addDropShadow());
     }
 
-    private void generateBuilding(String type){
+    private void generateBuilding(String type) {
         refreshStep();
         app.newBuildingAction(type);
         //TODO: Draw frame around ImageView;
     }
 
-    private DropShadow addDropShadow(){
+    private DropShadow addDropShadow() {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(30);
         dropShadow.setHeight(25);
@@ -179,26 +190,33 @@ public class PaneActionController {
         return dropShadow;
     }
 
-
-
-
-    public void btnNextStepClicked(ActionEvent event){
-    }
-
     public void btnEndTurnClicked(ActionEvent event) {
         app.nextPlayer();
     }
 
     public void refreshStep() {
         String currentStep = app.getCurrentStep();
-        switch (currentStep){
+        switch (currentStep) {
             case "FirstBuildingStep":
                 drawFirstSettlementAndRoadStep();
                 break;
             case "BuildingStep":
                 drawBuildStep();
-            case"ResourceStep":
-                //TODO: add methode name
+                break;
+            case "ResourceStep":
+                drawResourceStep();
+                break;
         }
     }
+
+
+    public void btnNextStepClickedSetBuildingStep(ActionEvent event){
+        app.buildingStep();
+        refreshStep();
+    }
+    public void btnNextStepClickedSetResourceStep(ActionEvent event){
+        app.resourceStep();
+        refreshStep();
+    }
+
 }

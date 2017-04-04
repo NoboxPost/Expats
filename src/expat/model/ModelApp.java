@@ -33,6 +33,7 @@ public class ModelApp {
     private ControllerMainStage mainController;
     private ModelBoard board;
     private int diceNumber;
+    private ModelDiceRolling diceRolling;
     private LinkedList<ModelPlayer> players = new LinkedList<>();
     private ModelPlayer nowPlaying;
     private String currentStep;
@@ -74,7 +75,8 @@ public class ModelApp {
 
 
         //TODO: actionController Start is yet wrong
-        currentStep= "FirstBuildingStep";
+        //currentStep= "FirstBuildingStep";
+        resourceStep();
     }
 
     public void buildingStep(){
@@ -89,13 +91,19 @@ public class ModelApp {
      * 1. dice
      * 2. material distribution
      */
-    public int[] resourceStep() {
-        ModelDiceRolling diceRolling = new ModelDiceRolling();
-        diceNumber = diceRolling.rollDices();
+    public void resourceStep() {
+        currentStep = "ResourceStep";
+        diceNumber = 0;
+        diceRolling =null;
+    }
+
+    public void rollDice(){
+        diceRolling = new ModelDiceRolling();
+        diceNumber =diceRolling.getRolledDices();
         if (diceNumber != 7) {
             board.resourceOnDiceEvent(diceNumber);
         }
-        return diceRolling.getRolledDicesSeperately();
+        playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString()); //TODO: Remove to controller
     }
 
     /**
@@ -204,6 +212,13 @@ public class ModelApp {
     }
     public String getCurrentStep() {
         return currentStep;
+    }
+
+    public int getDiceNumber() {
+        return diceNumber;
+    }
+    public int[] getDiceNumbersSeparately(){
+        return diceRolling.getRolledDicesSeperately();
     }
 }
 
