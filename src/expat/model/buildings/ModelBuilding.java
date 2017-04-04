@@ -17,6 +17,7 @@ public class ModelBuilding {
     protected ModelPlayer owner;
     private boolean display =true;
 
+
     public ModelBuilding(int xBuildingCoord, int yBuildingCoord) {
         this.xBuildingCoord = xBuildingCoord;
         this.yBuildingCoord = yBuildingCoord;
