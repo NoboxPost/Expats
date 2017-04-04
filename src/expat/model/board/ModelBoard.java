@@ -50,6 +50,9 @@ public class ModelBoard {
         }
     }
 
+    public void firstBuildingAction(String type, ModelPlayer newOwner) {
+        buildingAction = new ModelBuildingAction(newOwner,type,buildings,connections,true);
+    }
     public void newBuildingAction(String type, ModelPlayer newOwner) {
         buildingAction = new ModelBuildingAction(newOwner, type, buildings, connections);
 
@@ -66,7 +69,9 @@ public class ModelBoard {
         }
         return false;
     }
-
+    public void abortBuildingAction() {
+        buildingAction = null;
+    }
 
     public ModelHex[][] getHexes() {
         return hexes;
@@ -84,6 +89,7 @@ public class ModelBoard {
     public ArrayList<ModelConnection> getConnections() {
         return connections;
     }
+
 
 
 }

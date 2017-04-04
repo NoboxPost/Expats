@@ -44,6 +44,10 @@ public class ControllerMainStage {
     private ModelApp app;
 
 
+    /**
+     * Runs after initialization of all controllers, initializes an app and starts model logic.
+     * Is called by FXMLLoader and can't be changed.
+     */
     public void initialize() {
         app = new ModelApp(this, paneBoardController, paneMatesController, paneActionController, panePlayerController);
         paneBoardController.init(this,app);
@@ -51,6 +55,7 @@ public class ControllerMainStage {
         panePlayerController.init(this, app);
         paneBoardController.drawBoard(app.getBoard());
         app.gameBegin();
+        paneActionController.refreshStep();
 
     }
 
@@ -65,6 +70,10 @@ public class ControllerMainStage {
         // TODO: entfernen (Testing): System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
 
 
+    }
+
+    public void refreshActionStep() {
+        paneActionController.refreshStep();
     }
 }
 

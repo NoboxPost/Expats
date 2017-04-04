@@ -15,13 +15,14 @@ public class ModelDiceRolling {
     private int rand2;
 
     public ModelDiceRolling() {
-    }
-
-    public int rollDices(){
         Random rand = new Random();
         rand1 = rand.nextInt(6) + 1;
         rand2 = rand.nextInt(6) + 1;
-        return(rand1+rand2);
+    }
+
+
+    public int getRolledDices(){
+        return (rand1+rand2);
     }
 
     public int[] getRolledDicesSeperately(){

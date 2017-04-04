@@ -26,6 +26,33 @@ public class ModelConnection {
         this.orientation = orientation;
     }
 
+    /**
+     * checks if given coordinates are equal to own building coordinates.
+     *
+     * @param coordsToCheck int array, first position = x coordinate, second position = y coordinate
+     * @return true if coordinates match, else false.
+     */
+    public boolean checkCoords(int[] coordsToCheck){
+        return checkCoords(coordsToCheck[0],coordsToCheck[1]);
+    }
+
+    /**
+     * checks if given coordinates are equal to own building coordinates.
+     *
+     * @param xCoord x coordinate to check.
+     * @param yCoord y coordinate to check.
+     * @return true if coordinates match, else false.
+     */
+    public boolean checkCoords(int xCoord,int yCoord){
+        if (xCoord==xBuildingCoord&&yCoord==yBuildingCoord){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+
+
 
     public boolean getOnWater(){
         return onWater;
