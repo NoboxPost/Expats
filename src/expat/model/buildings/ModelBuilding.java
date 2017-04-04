@@ -68,6 +68,24 @@ public class ModelBuilding {
         resourceMultiplier = 2;
     }
 
+    /**
+     * checks if given coordinates are equal to own building coordinates.
+     *
+     * @param coordsToCheck int array with first position standing for x coordinate, second position standing for y coordinate
+     * @return true if coords are equal, else false.
+     */
+    public boolean checkCoords(int[] coordsToCheck){
+        return checkCoords(coordsToCheck[0],coordsToCheck[1]);
+    }
+
+    public boolean checkCoords(int xCoord,int yCoord){
+        if (xCoord==xBuildingCoord&&yCoord==yBuildingCoord){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public String getType() {
         return type;
     }

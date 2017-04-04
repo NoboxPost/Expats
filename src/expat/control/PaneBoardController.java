@@ -125,11 +125,14 @@ public class PaneBoardController {
         ViewBuilding building = (ViewBuilding)event.getSource();
         app.injectNewBuildingCoordsAndAddWinpoints(building.getBuildingCoord(),"Building");
         refreshBoardElements(app.getBoard());
+        controllerMainStage.refreshActionStep();
     }
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
         app.injectNewBuildingCoordsAndAddWinpoints(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
+        controllerMainStage.refreshActionStep();
+        System.out.println("connection : x "+connection.getConnectionCoords()[0]+" y "+connection.getConnectionCoords()[1]);
     }
 
 

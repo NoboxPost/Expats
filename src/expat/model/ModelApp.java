@@ -35,7 +35,9 @@ public class ModelApp {
     private int diceNumber;
     private LinkedList<ModelPlayer> players = new LinkedList<>();
     private ModelPlayer nowPlaying;
-    private ModelBuildingAction buildingAction;
+    private String currentStep;
+
+
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
         this.boardController = boardController;
@@ -45,8 +47,13 @@ public class ModelApp {
         this.mainController = mainController;
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         this.board = boardGenerator.generateBoard();
+
+
     }
 
+    /**
+     * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
+     */
     public void generatePlayer() {
         ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
         ModelPlayer player = playerGen.newPlayer();
@@ -63,8 +70,13 @@ public class ModelApp {
         generatePlayer();
         generatePlayer();
         nextPlayer();
-        actionController.drawBuildStep();
+        currentStep= "FirstBuildingStep";
     }
+
+    public void buildingStep(){
+        currentStep = "BuildingStep";
+    }
+
 
 
     /**
@@ -106,18 +118,19 @@ public class ModelApp {
     }
 
     /**
-     * changes player, so next player can doo all stepps.
+     * Changes player, so next player can doo all steps.
      */
     public void nextPlayer() {
+        board.abortBuildingAction();
         players.add(players.poll());
         nowPlaying = players.peek();
-        panesInformationRefresh();
+        panesInformationRefresh(); //TODO: remove into controller
     }
 
     /**
      * Displays current playerinformation in PanePlayerController.
      */
-    private void panesInformationRefresh() {
+    private void panesInformationRefresh() { //TODO: remove into controller
         playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
 
         String allPlayerStats = "";
@@ -139,6 +152,11 @@ public class ModelApp {
     }
 
 
+    public void firstBuildingAction(String type){
+        board.firstBuildingAction(type,nowPlaying);
+    }
+
+
     public void newBuildingAction(String type) {
         board.newBuildingAction(type, nowPlaying);
     }
@@ -151,7 +169,7 @@ public class ModelApp {
                     nowPlaying.changeVictoryPoints(1);
                 }
                 playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
-                actionController.drawBuildStep();
+
             }
         }
     }
@@ -170,14 +188,6 @@ public class ModelApp {
         return nowPlaying;
     }
 
-    /**
-     * returns current buildingAction,
-     *
-     * @return buildingAction can be null, so needs to be checked.
-     */
-    public ModelBuildingAction getBuildingAction() {
-        return buildingAction;
-    }
 
     public void moveRaider(int[] coords) {
         for (ModelHex[] hexline : board.getHexes()) {
@@ -189,6 +199,9 @@ public class ModelApp {
 
         }
         boardController.refreshBoardElements(board);
+    }
+    public String getCurrentStep() {
+        return currentStep;
     }
 }
 

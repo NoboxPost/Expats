@@ -47,6 +47,40 @@ public class PaneActionController {
     public void drawDiceStep(){
     }
 
+
+
+    public void drawFirstSettlementAndRoadStep(){
+        middleActionPane.getChildren().clear();
+
+        Image settlement =new Image("expat/img/Settlement.png");
+        settlementImageView= new ImageView(settlement);
+        settlementImageView.setFitHeight(80);
+        settlementImageView.setPreserveRatio(true);
+        settlementImageView.setOnMouseReleased(this::generateFirstSettlement);
+        settlementImageView.setCursor(Cursor.HAND);
+
+        Image road = new Image("expat/img/Connection.png");
+        roadImageView = new ImageView(road);
+        roadImageView.setFitHeight(80);
+        roadImageView.setPreserveRatio(true);
+        roadImageView.setOnMouseReleased(this::generateFirstRoad);
+        roadImageView.setCursor(Cursor.HAND);
+
+        middleActionPane.getChildren().addAll(settlementImageView,roadImageView);
+
+
+    }
+
+    private void generateFirstSettlement(MouseEvent event){
+        refreshStep();
+        app.firstBuildingAction("Settlement");
+        settlementImageView.setEffect(addDropShadow());
+    }
+    private void generateFirstRoad(MouseEvent event){
+        refreshStep();
+        app.firstBuildingAction("Road");
+        roadImageView.setEffect(addDropShadow());
+    }
     public void drawBuildStep(){
         middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
@@ -71,26 +105,30 @@ public class PaneActionController {
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(townImageView,settlementImageView,roadImageView);
+
+//        btnNextStep.setOnAction();
     }
 
+
+
     private void generateRoad(MouseEvent event) {
-        generateBuilding("Road", (ImageView) event.getSource());
+        generateBuilding("Road");
         roadImageView.setEffect(addDropShadow());
     }
 
 
     private void generateSettlement(MouseEvent event) {
-        generateBuilding("Settlement",(ImageView) event.getSource());
+        generateBuilding("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
 
     private void generateTown(MouseEvent event) {
-        generateBuilding("Town",(ImageView) event.getSource());
+        generateBuilding("Town");
         townImageView.setEffect(addDropShadow());
     }
 
-    private void generateBuilding(String type, ImageView imageView){
-        drawBuildStep();
+    private void generateBuilding(String type){
+        refreshStep();
         app.newBuildingAction(type);
         //TODO: Draw frame around ImageView;
     }
@@ -113,5 +151,18 @@ public class PaneActionController {
 
     public void btnEndTurnClicked(ActionEvent event) {
         app.nextPlayer();
+    }
+
+    public void refreshStep() {
+        String currentStep = app.getCurrentStep();
+        switch (currentStep){
+            case "FirstBuildingStep":
+                drawFirstSettlementAndRoadStep();
+                break;
+            case "BuildingStep":
+                drawBuildStep();
+            case"ResourceStep":
+                //TODO: add methode name
+        }
     }
 }
