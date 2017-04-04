@@ -1,8 +1,9 @@
 package expat.model.board;
 
+import expat.model.buildings.ModelBuildingAction;
+import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;
-import expat.model.buildings.ModelBuilding;
 import expat.model.buildings.ModelConnection;
 
 import java.util.ArrayList;
@@ -17,14 +18,15 @@ import java.util.ArrayList;
 public class ModelBoard {
     private ModelHex[][] hexes;
     private ArrayList<ModelBuilding> buildings;
-    private ArrayList<ModelConnection> modelConnections;
+    private ArrayList<ModelConnection> connections;
     private ModelRaider raider;
+    private ModelBuildingAction buildingAction;
 
-    public ModelBoard(ModelHex[][] hexes , ArrayList<ModelBuilding> buildings,ArrayList<ModelConnection>connections, ModelRaider raider) {
+    public ModelBoard(ModelHex[][] hexes, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, ModelRaider raider) {
         this.hexes = hexes;
         this.buildings = buildings;
         this.raider = raider;
-        this.modelConnections= connections;
+        this.connections = connections;
     }
 
     /**
@@ -34,12 +36,12 @@ public class ModelBoard {
      *
      * @param diceNumber
      */
-    public void resourceOnDiceEvent(int diceNumber){
-        for(ModelHex[] hexLine : hexes){
-            for(ModelHex hex : hexLine){
-                if(hex.getDiceNumber()==diceNumber){ //TODO: check if raided,
-                    for(ModelBuilding building: buildings){
-                        if(building.isFlanking(hex)){
+    public void resourceOnDiceEvent(int diceNumber) {
+        for (ModelHex[] hexLine : hexes) {
+            for (ModelHex hex : hexLine) {
+                if (hex.getDiceNumber() == diceNumber) { //TODO: check if raided,
+                    for (ModelBuilding building : buildings) {
+                        if (building.isFlanking(hex)) {
                             building.giveMaterialToOwner(hex.getMaterial());
                         }
                     }
@@ -47,6 +49,24 @@ public class ModelBoard {
             }
         }
     }
+
+    public void newBuildingAction(String type, ModelPlayer newOwner) {
+        buildingAction = new ModelBuildingAction(newOwner, type, buildings, connections);
+
+    }
+
+    public boolean finishBuildingAction(int[] coords, String type) {
+
+
+        if (buildingAction != null) {
+            if (buildingAction.createBuilding(coords, type)) {
+                buildingAction = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public ModelHex[][] getHexes() {
         return hexes;
@@ -62,6 +82,8 @@ public class ModelBoard {
 
 
     public ArrayList<ModelConnection> getConnections() {
-        return modelConnections;
+        return connections;
     }
+
+
 }

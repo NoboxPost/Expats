@@ -1,5 +1,7 @@
-package expat.model;
+package expat.model.buildings;
 
+import expat.model.ModelMaterial;
+import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;
 import expat.model.buildings.ModelConnection;
 
@@ -14,9 +16,18 @@ public class ModelBuildingAction {
     private ModelPlayer player;
     private ModelMaterial materials;
     private String buildingType;
-    ArrayList<ModelBuilding> buildings;
-    ArrayList<ModelConnection> connections;
+    private ArrayList<ModelBuilding> buildings;
+    private ArrayList<ModelConnection> connections;
+    private boolean startStage=false;
 
+    /**
+     *to be used during game, materials will be checked alongside with connection and building positions.
+     *
+     * @param player
+     * @param buildingType
+     * @param buildings
+     * @param connections
+     */
     public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections) {
         this.player = player;
         this.materials = player.getMaterial();
@@ -24,7 +35,26 @@ public class ModelBuildingAction {
         this.buildings = buildings;
         this.connections = connections;
         // TODO: depending on buildingType, show possible locations for types
-        // TODO: switch case for building and COST!, COST is not handled by building, so need to do i here.
+        // TODO: switch case and COST!, COST is not handled by building, so need to do i here.
+    }
+
+    /**
+     * To be used at Start of Game,
+     *
+     * @param player
+     * @param materials
+     * @param buildingType
+     * @param buildings
+     * @param connections
+     * @param startStage if true, no Materials will be checked and Settlements can be built independent from roads.
+     */
+    public ModelBuildingAction(ModelPlayer player, ModelMaterial materials, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, boolean startStage) {
+        this.player = player;
+        this.materials = materials;
+        this.buildingType = buildingType;
+        this.buildings = buildings;
+        this.connections = connections;
+        this.startStage = startStage;
     }
 
     /**
@@ -33,7 +63,7 @@ public class ModelBuildingAction {
      * @param coords
      */
     public boolean createBuilding(int[] coords, String type) {
-        if (type.equals("Road") && buildingType.equals("Road")) {
+        if (type.equals("Connection") && buildingType.equals("Road")) {
             for (ModelConnection connection :
                     connections) {
                 if (connection.getCoords()[0] == coords[0] && connection.getCoords()[1] == coords[1]) {
@@ -59,9 +89,5 @@ public class ModelBuildingAction {
             }
         }
         return false;
-    }
-
-    public String getBuildingType() {
-        return buildingType;
     }
 }

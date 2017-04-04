@@ -1,8 +1,7 @@
 package expat.control;
 
 import expat.model.ModelApp;
-import expat.model.ModelMaterial;
-import expat.model.ModelPlayer;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
@@ -21,7 +20,7 @@ public class PanePlayerController {
     private ModelApp app;
     public TextArea playerResourcesTextArea;
     public TextArea playerVictoryPointsTextArea;
-    public Label playerLabel;
+    @FXML public Label playerLabel;
 
     public void init(ControllerMainStage controllerMainStage, ModelApp app){
         this.controllerMainStage = controllerMainStage;
