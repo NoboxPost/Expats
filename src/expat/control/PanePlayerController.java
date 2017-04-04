@@ -1,9 +1,11 @@
 package expat.control;
 
 import expat.model.ModelApp;
+import expat.view.ViewCardsFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 
 /**
  * the left hand pane that works as an oversight of the actual player,
@@ -20,6 +22,7 @@ public class PanePlayerController {
     private ModelApp app;
     public TextArea playerResourcesTextArea;
     public TextArea playerVictoryPointsTextArea;
+    public VBox playerResourcesVBox;
     @FXML public Label playerLabel;
 
     public void init(ControllerMainStage controllerMainStage, ModelApp app){
@@ -29,9 +32,16 @@ public class PanePlayerController {
 
     public void setPlayerInformation(String playerName, String materialPoolString, String winPointsString){
         playerLabel.setText(playerName);
-        playerResourcesTextArea.setText(materialPoolString);
         playerVictoryPointsTextArea.setText(winPointsString);
     }
+
+
+    public void generateCards(){
+        playerResourcesVBox.getChildren().clear();
+        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlaying().getMaterial());
+        playerResourcesVBox.getChildren().add(viewCardsFactory.generateSplittedCardsVBox());
+    }
+
 
 
 

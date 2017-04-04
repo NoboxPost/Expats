@@ -44,7 +44,7 @@ public class ModelPlayer {
 
     public String getPlayerName(){
         String playerName = ("Player ");
-        playerName += (Integer.toString(playerID));
+        playerName += (color);
         return playerName;
     }
 
