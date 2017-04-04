@@ -4,10 +4,9 @@ import expat.control.*;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
+import expat.model.buildings.ModelBuildingAction;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 
 /**
  * is responsible for the game procedure
@@ -115,12 +114,15 @@ public class ModelApp {
         panesInformationRefresh();
     }
 
-    private void panesInformationRefresh(){
+    /**
+     * Displays current playerinformation in PanePlayerController.
+     */
+    private void panesInformationRefresh() {
         playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
 
         String allPlayerStats = "";
-        for(ModelPlayer element : players){
-            if(element != players.getFirst()) {
+        for (ModelPlayer element : players) {
+            if (element != players.getFirst()) {
                 allPlayerStats += (element.getPlayerName() + "\n");
                 allPlayerStats += ("Victorypoints: " + element.getWinPointsString() + "\n\n");
             }
@@ -138,28 +140,32 @@ public class ModelApp {
 
 
     public void newBuildingAction(String type) {
-        buildingAction = new ModelBuildingAction(nowPlaying,type,board.getBuildings(),board.getConnections());
-        System.out.println(type);
+        board.newBuildingAction(type, nowPlaying);
     }
 
-    public void injectNewBuildingCoords(int[] coords, String type){
-        System.out.println(type);
+    public void injectNewBuildingCoordsAndAddWinpoints(int[] coords, String type) {
+        {
 
-        if (buildingAction!=null) {
-            buildingAction.createBuilding(coords, type);
-            if (buildingAction.getBuildingType()=="Settlement" || buildingAction.getBuildingType()=="Town"){
-                nowPlaying.changeVictoryPoints(1);
-                playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
+            if (board.finishBuildingAction(coords, type)) {
+                if (type.equals("Building")) {
+                    nowPlaying.changeVictoryPoints(1);
+                    playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
+                }
+                actionController.drawBuildStep();
             }
-            buildingAction = null;
-            actionController.drawBuildStep();
         }
     }
 
+    /**
+     * @return ModelBoard
+     */
     public ModelBoard getBoard() {
         return board;
     }
 
+    /**
+     * @return actual player.
+     */
     public ModelPlayer getNowPlaying() {
         return nowPlaying;
     }
@@ -174,9 +180,9 @@ public class ModelApp {
     }
 
     public void moveRaider(int[] coords) {
-        for (ModelHex[] hexline:board.getHexes()) {
-            for (ModelHex hex:hexline){
-                if (hex.getCoords()[0]==coords[0]&&hex.getCoords()[1]==coords[1]){
+        for (ModelHex[] hexline : board.getHexes()) {
+            for (ModelHex hex : hexline) {
+                if (hex.getCoords()[0] == coords[0] && hex.getCoords()[1] == coords[1]) {
                     board.getRaider().moveRaider(hex);
                 }
             }
