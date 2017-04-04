@@ -263,6 +263,10 @@ public class ModelApp {
     public ModelMaterial getNowPlayingDicedMaterial() {
         return nowPlayingDicedMaterial;
     }
+
+    public ModelPlayer getNowPlaying() {
+        return nowPlaying;
+    }
 }
 
 
