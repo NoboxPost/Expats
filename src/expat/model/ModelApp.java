@@ -190,7 +190,11 @@ public class ModelApp {
         tradeAction = null;
     }
 
-
+    /**
+     * Createsa a new ModelBuildingAction with parameter firstStage = true, so building and connections won't cost anything.
+     *
+     * @param type
+     */
     public void firstBuildingAction(String type) {
         board.firstBuildingAction(type, nowPlaying);
     }
@@ -201,9 +205,9 @@ public class ModelApp {
     }
 
     /**
-     * In first part, it will
+     * In first part, it will check
      *
-     * @param coords
+     * @param coords coordinates of building which will be built.
      * @param type
      */
     public void injectNewBuildingCoordsAndAddWinpoints(int[] coords, String type) {
