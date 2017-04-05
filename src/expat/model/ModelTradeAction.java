@@ -11,15 +11,22 @@ public class ModelTradeAction {
     String type;
     ModelMaterial materialOffer;
     ModelMaterial materialDemand;
-    ModelPlayer Sender;
-    ModelPlayer Receiver;
+    ModelPlayer sender;
+    ModelPlayer receiver;
 
 
-    public ModelTradeAction(String type) {
+    public ModelTradeAction(String type,ModelPlayer sender) {
         this.type = type;
+        this.sender =sender;
     }
 
     public String getType() {
         return type;
+    }
+
+
+
+    public void finischTradeAction(int[] materialResultSender){
+        sender.addMaterial(new ModelMaterial(materialResultSender));
     }
 }

@@ -77,7 +77,7 @@ public class ModelBuildingAction {
         } else if (type.equals("Building")) {
             for (ModelBuilding building : buildings) {
                 if (building.checkCoords(coords)) {
-                    if ((buildingType.equals("Town") && building.getOwner() == player)&&building.getType().equals("Settlement")) {
+                    if ((buildingType.equals("Town") && building.getOwner() == player) && building.getType().equals("Settlement")) {
                         if (buildingCost(buildingType)) {
                             building.buildTown(player);
                             return true;
@@ -257,7 +257,6 @@ public class ModelBuildingAction {
 
 
     /**
-     *
      * Check's according to given coordinates if there is a building at next junction, so building would be forbidden.
      *
      * @param coords int array, first position represents x coordinate, second position represents y coordinate.
@@ -267,19 +266,18 @@ public class ModelBuildingAction {
         boolean legalPosition = true;
         int xCoordOfNewBuilding = coords[0];
         int yCoordOfNewBuilding = coords[1];
-        if (xCoordOfNewBuilding % 6 == 0) {
-            for (ModelBuilding building : buildings) {
-                int[] xCoordModulator = new int[]{-2, +2, +2, -2, -4, +4};
-                int[] yCoordModulator = new int[]{-2, -2, +2, +2, 0, 0};
-                if (building.getOwner() !=null) {
-                    for (int i = 0; i < 6; i++) {
-                        if (building.checkCoords(xCoordOfNewBuilding + xCoordModulator[i], yCoordOfNewBuilding + yCoordModulator[i])) {
-                            legalPosition = false;
-                        }
+        for (ModelBuilding building : buildings) {
+            int[] xCoordModulator = new int[]{-2, +2, +2, -2, -4, +4};
+            int[] yCoordModulator = new int[]{-2, -2, +2, +2, 0, 0};
+            if (building.getOwner() != null) {
+                for (int i = 0; i < 6; i++) {
+                    if (building.checkCoords(xCoordOfNewBuilding + xCoordModulator[i], yCoordOfNewBuilding + yCoordModulator[i])) {
+                        legalPosition = false;
                     }
                 }
             }
         }
+
         if (legalPosition) {
             return true;
         } else {
