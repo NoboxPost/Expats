@@ -73,8 +73,8 @@ public class ModelApp {
         generatePlayer();
         nextPlayer();
 
-        //TODO: actionController Start is yet wrong
-        currentStep = "FirstBuildingStep";
+        currentStep = "TradeStep";//TODO: actionController Start is yet wrong
+        //currentStep = "FirstBuildingStep";
 
     }
 
