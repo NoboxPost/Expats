@@ -30,9 +30,9 @@ public class PanePlayerController {
         this.app= app;
     }
 
-    public void setPlayerInformation(String playerName, String materialPoolString, String winPointsString){
-        playerLabel.setText(playerName);
-        playerVictoryPointsTextArea.setText(winPointsString);
+    public void setPlayerInformation(){
+        playerLabel.setText("Player " + app.getNowPlaying().getColor());
+        playerVictoryPointsTextArea.setText(app.getNowPlaying().getWinPointsString());
     }
 
 
@@ -44,7 +44,7 @@ public class PanePlayerController {
 
 
     public void refresh() {
-        //setPlayerInformation();
+        setPlayerInformation();
         generateCards();
     }
 }
