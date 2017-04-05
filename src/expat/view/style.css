@@ -111,3 +111,78 @@
 .road{
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
+
+.cardNumberLabelClay{
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+    -fx-background-image: url("../img/Clay.png");
+    -fx-background-radius: 100em;
+    -fx-background-insets: -2px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+}
+
+.cardNumberLabelGrain{
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+    -fx-background-image: url("../img/Grain.png");
+    -fx-background-radius: 100em;
+    -fx-background-insets: -2px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+}
+
+.cardNumberLabelStone{
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+    -fx-background-image: url("../img/Stone.png");
+    -fx-background-radius: 100em;
+    -fx-background-insets: -2px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+}
+.cardNumberLabelWood{
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+    -fx-background-image: url("../img/Wood.png");
+    -fx-background-radius: 100em;
+    -fx-background-insets: -2px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+}
+
+.cardNumberLabelWool{
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+    -fx-background-image: url("../img/Wool.png");
+    -fx-background-radius: 100em;
+    -fx-background-insets: -2px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+}

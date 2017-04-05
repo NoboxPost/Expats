@@ -9,7 +9,7 @@
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="expat.control.ControllerMainStage">
     <center>
-        <ScrollPane fx:id="scrollPaneCenter" hbarPolicy="NEVER" pannable="true" prefHeight="1200.0" prefWidth="1400.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="scrollPaneCenter" hbarPolicy="NEVER" pannable="true" prefHeight="1200.0" prefWidth="1400.0" style="-fx-background-color: #306cd3;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
    
                          <fx:include fx:id="paneBoard" source="PaneBoard.fxml" />
@@ -17,20 +17,6 @@
 
         </ScrollPane>
     </center>
-    <top>
-        <VBox BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="50.0" />
-         </BorderPane.margin>
-         <children>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" text="Button" />
-                  <Button mnemonicParsing="false" text="Button" />
-               </children>
-            </HBox>
-         </children></VBox>
-    </top>
     <left>
         <Pane prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
@@ -58,4 +44,25 @@
             </children>
         </Pane>
     </bottom>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>

@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -210,9 +211,16 @@ public class PaneActionController {
         if (app.getTradeAction() == null) {
             Button btnGeneralTrade = new Button("Allgemeiner Handel 4:1");
             btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
-        }else if (app.getTradeAction().getType().equals("GeneralTrade")){
+        }else if (app.getTradeAction().getType().equals("GeneralTrade")){ }
 
-        }
+    }
+
+    private void drawSpecialStep() {
+        middleActionPane.getChildren().clear();
+
+        Label label = new Label("You can move the raider now");
+        middleActionPane.getChildren().add(label);
+
 
     }
 
@@ -222,8 +230,9 @@ public class PaneActionController {
 
 
     public void btnEndTurnClicked(ActionEvent event) {
-        app.nextPlayer();
-        app.resourceStep();
+//        app.nextPlayer();
+//        app.resourceStep();
+        app.specialStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
     }
@@ -242,6 +251,8 @@ public class PaneActionController {
                 break;
             case "TraidingStep":
                 drawTradeStep();
+            case "SpecialStep":
+                drawSpecialStep();
         }
     }
 

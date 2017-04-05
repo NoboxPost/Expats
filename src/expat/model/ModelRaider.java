@@ -1,6 +1,7 @@
 package expat.model;
 
 import expat.model.board.ModelHex;
+import expat.model.buildings.ModelBuilding;
 
 
 /**
@@ -27,6 +28,10 @@ public class ModelRaider {
         this.hex.raid();
         hex.raid();
         this.hex = hex;
+    }
+
+    public void acitvateRaider(){
+
     }
 
     public ModelHex getRaiderHex() {

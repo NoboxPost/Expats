@@ -50,6 +50,14 @@ public class ModelBoard {
         }
     }
 
+    public void raiderOnHexEvent(){
+        for (ModelBuilding building : buildings){
+            if (building.isFlanking(raider.getRaiderHex())){
+                System.out.println(building.getOwner());
+            }
+        }
+    }
+
     public void firstBuildingAction(String type, ModelPlayer newOwner) {
         buildingAction = new ModelBuildingAction(newOwner,type,buildings,connections,true);
     }

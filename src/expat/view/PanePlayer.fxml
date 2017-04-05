@@ -20,12 +20,18 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label text="Victory Points:" />
-      <TextArea fx:id="playerVictoryPointsTextArea" editable="false" prefHeight="30.0" prefWidth="200.0" />
+      <Label text="Victory Points:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <TextArea fx:id="playerVictoryPointsTextArea" editable="false" prefHeight="30.0" prefWidth="200.0">
+         <VBox.margin>
+            <Insets bottom="60.0" />
+         </VBox.margin></TextArea>
       <Label text="Resources:">
-         <padding>
-            <Insets top="20.0" />
-         </padding>
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
       </Label>
       <VBox fx:id="playerResourcesVBox" prefHeight="200.0" prefWidth="100.0" />
    </children>
