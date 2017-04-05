@@ -58,6 +58,7 @@ public class ControllerMainStage {
         app.gameBegin();
         paneActionController.refreshStep();
         panePlayerController.refresh();
+        paneMatesController.setMatesInformation();
     }
 
     /**
