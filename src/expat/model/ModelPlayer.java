@@ -35,7 +35,7 @@ public class ModelPlayer {
         String winPointsString = (Integer.toString(victoryPoints));
         return winPointsString;
     }
-    //TODO: display gets ALL victory Points - maybe has to be split in visibleVP & invisible VP & allVP
+    //TODO: display gets ALL victory Points - maybe has to be split in visibleV P & invisible VP & allVP
 
     public String getMaterialPoolString(){
         String materialPoolString = materialPool.allMaterialsString();

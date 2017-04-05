@@ -94,6 +94,7 @@ public class PaneActionController {
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
         refreshStep();
+        controllerMainStage.refreshPlayerPane();
     }
 
     public void generateCards(){
@@ -190,8 +191,8 @@ public class PaneActionController {
 
     private void generateBuilding(String type) {
         refreshStep();
+        controllerMainStage.refreshPlayerPane();
         app.newBuildingAction(type);
-        //TODO: Draw frame around ImageView;
     }
 
     private DropShadow addDropShadow() {
@@ -208,6 +209,7 @@ public class PaneActionController {
         app.nextPlayer();
         app.resourceStep();
         refreshStep();
+        controllerMainStage.refreshPlayerPane();
     }
 
     public void refreshStep() {
@@ -229,10 +231,12 @@ public class PaneActionController {
     public void btnNextStepClickedSetBuildingStep(ActionEvent event){
         app.buildingStep();
         refreshStep();
+        controllerMainStage.refreshPlayerPane();
     }
     public void btnNextStepClickedSetResourceStep(ActionEvent event){
         app.resourceStep();
         refreshStep();
+        controllerMainStage.refreshPlayerPane();
     }
 
 }

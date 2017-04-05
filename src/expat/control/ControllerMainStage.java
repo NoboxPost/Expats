@@ -68,12 +68,12 @@ public class ControllerMainStage {
         scrollPaneCenter.setHvalue(width);
         scrollPaneCenter.setVvalue(height);
         // TODO: entfernen (Testing): System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
-
-
     }
 
     public void refreshActionStep() {
         paneActionController.refreshStep();
     }
+
+    public void refreshPlayerPane() { panePlayerController.refresh();}
 }
 

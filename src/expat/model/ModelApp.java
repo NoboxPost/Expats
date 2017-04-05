@@ -107,8 +107,6 @@ public class ModelApp {
             nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         }
-        playerController.generateCards();
-        playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString()); //TODO: Remove to controller
     }
 
     /**
@@ -140,12 +138,13 @@ public class ModelApp {
         board.abortBuildingAction();
         players.add(players.poll());
         nowPlaying = players.peek();
-        panesInformationRefresh(); //TODO: remove into controller
     }
 
     /**
      * Displays current playerinformation in PanePlayerController.
      */
+
+    /*
     private void panesInformationRefresh() { //TODO: remove into controller
         playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
 
@@ -158,6 +157,7 @@ public class ModelApp {
         }
         matesController.setMatesInformation(allPlayerStats);
     }
+    */
 
     /**
      * handles the end of the game
@@ -235,7 +235,6 @@ public class ModelApp {
                     board.getRaider().moveRaider(hex);
                 }
             }
-
         }
         boardController.refreshBoardElements(board);
     }
