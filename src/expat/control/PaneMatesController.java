@@ -1,7 +1,10 @@
 package expat.control;
 
+
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
+
+import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
 import java.util.LinkedList;
@@ -15,8 +18,9 @@ import java.util.LinkedList;
  */
 public class PaneMatesController {
 
-    public ModelApp app;
-    public TextArea matesVictoryPointsTextArea;
+    private ModelApp app;
+    @FXML public TextArea matesVictoryPointsTextArea;
+
 
     public void init(ModelApp app){
         this.app = app;

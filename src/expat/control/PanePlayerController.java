@@ -20,9 +20,9 @@ public class PanePlayerController {
 
     private ControllerMainStage controllerMainStage;
     private ModelApp app;
-    public TextArea playerResourcesTextArea;
-    public TextArea playerVictoryPointsTextArea;
-    public VBox playerResourcesVBox;
+    @FXML public TextArea playerResourcesTextArea;
+    @FXML public TextArea playerVictoryPointsTextArea;
+    @FXML public VBox playerResourcesVBox;
     @FXML public Label playerLabel;
 
     public void init(ControllerMainStage controllerMainStage, ModelApp app){
