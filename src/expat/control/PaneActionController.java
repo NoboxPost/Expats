@@ -78,7 +78,6 @@ public class PaneActionController {
                 diceImageView.setFitHeight(80);
                 diceImageView.setPreserveRatio(true);
 
-
                 middleActionPane.getChildren().add(diceImageView);
             }
             generateCards();
