@@ -56,6 +56,7 @@ public class ControllerMainStage {
         paneBoardController.drawBoard(app.getBoard());
         app.gameBegin();
         paneActionController.refreshStep();
+        panePlayerController.refresh();
 
     }
 
