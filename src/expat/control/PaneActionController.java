@@ -232,6 +232,7 @@ public class PaneActionController {
         app.buildingStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshActionStep();
     }
 
     /**
@@ -244,6 +245,7 @@ public class PaneActionController {
         app.resourceStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshActionStep();
     }
 
 }

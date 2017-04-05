@@ -71,8 +71,6 @@ public class ModelApp {
         generatePlayer();
         generatePlayer();
         nextPlayer();
-        playerController.generateCards(); //TODO: ändern?
-
 
         //TODO: actionController Start is yet wrong
         currentStep = "FirstBuildingStep";
@@ -106,6 +104,9 @@ public class ModelApp {
             nowPlayingDicedMaterial = new ModelMaterial(new int[]{0,0,0,0,0});
             nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+        }
+        else{
+            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0,0,0,0,0});
         }
     }
 
@@ -193,7 +194,6 @@ public class ModelApp {
                 if (type.equals("Building")) {
                     nowPlaying.changeVictoryPoints(1);
                 }
-                playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
             }
         }
         boolean allOnSameFirstBuildingStep = true;
@@ -218,16 +218,6 @@ public class ModelApp {
         }
     }
 
-
-    public int countBuildingsForCurrentPlayer() {
-        return board.countBuildingsOwned(nowPlaying);
-    }
-
-    public int countConnectionsForCurrentPlayer() {
-        return board.countConnectionsOwned(nowPlaying);
-    }
-
-
     public void moveRaider(int[] coords) {
         for (ModelHex[] hexline : board.getHexes()) {
             for (ModelHex hex : hexline) {
@@ -237,6 +227,15 @@ public class ModelApp {
             }
         }
         boardController.refreshBoardElements(board);
+    }
+
+
+    public int countBuildingsForCurrentPlayer() {
+        return board.countBuildingsOwned(nowPlaying);
+    }
+
+    public int countConnectionsForCurrentPlayer() {
+        return board.countConnectionsOwned(nowPlaying);
     }
 
     public String getCurrentStep() {
