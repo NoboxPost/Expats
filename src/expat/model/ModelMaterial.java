@@ -48,6 +48,13 @@ public class ModelMaterial {
         }
         return materialString;
     }
+    public int getSumOfAllMaterials(){
+        int materialSum = 0;
+        for (int i = 0; i < 5; i++) {
+            materialSum += materialAmount[i];
+        }
+        return materialSum;
+    }
 
     public int[] getMaterialAmount() {
         return materialAmount;

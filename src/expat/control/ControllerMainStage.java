@@ -76,5 +76,9 @@ public class ControllerMainStage {
     }
 
     public void refreshPlayerPane() { panePlayerController.refresh();}
+
+    public void raiderMoved() {
+        paneActionController.raiderMoved();
+    }
 }
 

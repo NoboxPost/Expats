@@ -39,6 +39,7 @@ public class ModelApp {
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
     private ModelTradeAction tradeAction;
+    private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
 
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
@@ -99,15 +100,14 @@ public class ModelApp {
         diceRolling = new ModelDiceRolling();
         diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            ModelMaterial materialBefore = new ModelMaterial(new int[]{0,0,0,0,0});
+            ModelMaterial materialBefore = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
             materialBefore.addMaterial(nowPlaying.getMaterial());
             board.resourceOnDiceEvent(diceNumber);
-            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0,0,0,0,0});
+            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
             nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
-        }
-        else{
-            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0,0,0,0,0});
+        } else {
+            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
         }
     }
 
@@ -118,7 +118,7 @@ public class ModelApp {
      * 2. sea trade (2:1, 3:1, 4:1)
      */
     public void tradeStep() {
-        currentStep="TradeStep";
+        currentStep = "TradeStep";
     }
 
     /**
@@ -128,20 +128,26 @@ public class ModelApp {
      * 2. play development cards (knights, development, victory)
      */
     public void specialStep() {
-        if(diceNumber!=7){
-            nextPlayer();
-            resourceStep();
+        if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
+            for (ModelPlayer player :players) {
+                if (player.getMaterial().getSumOfAllMaterials() > 7) {
+                    playersMustDrop.add(player);
+                }
+            }
+        }else if(currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()){
+            board.activateRaider();
         }
-        else{
-            currentStep = "SpecialStep";
-            diceNumber=0;
-        }
-
+        currentStep = "SpecialStep";
+        diceNumber = 0;
+    }
+    public void playerDroppedMaterial(int[] endDifference) {
+        playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
     }
 
     /**
      * Changes player, so next player can doo all steps.
      */
+
     public void nextPlayer() {
         board.abortBuildingAction();
         players.add(players.poll());
@@ -175,10 +181,11 @@ public class ModelApp {
 
     }
 
-    public void newTradeAction(String type){
-        tradeAction = new ModelTradeAction(type,nowPlaying);
+    public void newTradeAction(String type) {
+        tradeAction = new ModelTradeAction(type, nowPlaying);
     }
-    public void finishTradeAction(int[] materialResultSender){
+
+    public void finishTradeAction(int[] materialResultSender) {
         tradeAction.finischTradeAction(materialResultSender);
         tradeAction = null;
     }
@@ -198,17 +205,16 @@ public class ModelApp {
     }
 
     /**
-     *
      * In first part, it will
      *
      * @param coords
      * @param type
      */
     public void injectNewBuildingCoordsAndAddWinpoints(int[] coords, String type) {
-        if((countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1)&&firstBuildingStep<2){
+        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
             nextPlayer();
         }
-        if (firstBuildingStep>=2||(countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building")||countConnectionsForCurrentPlayer()==firstBuildingStep&&type.equals("Connection"))) {
+        if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
             if (board.finishBuildingAction(coords, type)) {
                 if (type.equals("Building")) {
                     nowPlaying.changeVictoryPoints(1);
@@ -216,34 +222,37 @@ public class ModelApp {
             }
         }
         boolean allOnSameFirstBuildingStep = true;
-        if (firstBuildingStep<2) {
-            for (ModelPlayer player:players) {
-                if ((board.countBuildingsOwned(player)==firstBuildingStep+1&&board.countConnectionsOwned(player)==firstBuildingStep+1)){
+        if (firstBuildingStep < 2) {
+            for (ModelPlayer player : players) {
+                if ((board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
 
-                }else {
-                    allOnSameFirstBuildingStep =false;
+                } else {
+                    allOnSameFirstBuildingStep = false;
                 }
             }
-            if (allOnSameFirstBuildingStep){
-                firstBuildingStep+=1;
+            if (allOnSameFirstBuildingStep) {
+                firstBuildingStep += 1;
                 nextPlayer();
             }
-            if (firstBuildingStep>=2){
+            if (firstBuildingStep >= 2) {
                 resourceStep();
             }
         }
-        if((countConnectionsForCurrentPlayer()==firstBuildingStep+1&&countBuildingsForCurrentPlayer()==firstBuildingStep+1)&&firstBuildingStep<2){
+        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
             nextPlayer();
         }
     }
 
     public void moveRaider(int[] coords) {
-        for (ModelHex[] hexline : board.getHexes()) {
-            for (ModelHex hex : hexline) {
-                if (hex.getCoords()[0] == coords[0] && hex.getCoords()[1] == coords[1]) {
-                    board.getRaider().moveRaider(hex);
+        if (board.getRaider().getAllowMovement()) {
+            for (ModelHex[] hexline : board.getHexes()) {
+                for (ModelHex hex : hexline) {
+                    if (hex.getCoords()[0] == coords[0] && hex.getCoords()[1] == coords[1]) {
+                        board.getRaider().moveRaider(hex);
+                    }
                 }
             }
+            board.getRaider().setAllowMovement(false);
         }
     }
 
@@ -254,6 +263,10 @@ public class ModelApp {
 
     public int countConnectionsForCurrentPlayer() {
         return board.countConnectionsOwned(nowPlaying);
+    }
+
+    public LinkedList<ModelPlayer> getPlayersMustDrop() {
+        return playersMustDrop;
     }
 
     public String getCurrentStep() {
@@ -287,6 +300,7 @@ public class ModelApp {
     public ModelTradeAction getTradeAction() {
         return tradeAction;
     }
+
 
 }
 

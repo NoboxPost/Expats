@@ -119,5 +119,7 @@ public class ModelBoard {
     }
 
 
-
+    public void activateRaider() {
+        raider.setAllowMovement(true);
+    }
 }
