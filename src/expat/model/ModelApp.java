@@ -128,9 +128,15 @@ public class ModelApp {
      * 2. play development cards (knights, development, victory)
      */
     public void specialStep() {
-        if (diceNumber == 7) {
-            //TODO: do something. take one random material from a player.
+        if(diceNumber!=7){
+            nextPlayer();
+            resourceStep();
         }
+        else{
+            currentStep = "SpecialStep";
+            diceNumber=0;
+        }
+
     }
 
     /**
@@ -232,7 +238,6 @@ public class ModelApp {
                 }
             }
         }
-        boardController.refreshBoardElements(board);
     }
 
 

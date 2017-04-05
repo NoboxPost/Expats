@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -92,7 +93,6 @@ public class PaneActionController {
             btnEndTurn.setDisable(true);
         }
     }
-
 
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
@@ -215,13 +215,20 @@ public class PaneActionController {
             btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
             middleActionPane.getChildren().add(btnGeneralTrade);
             btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
-        }else if (app.getTradeAction().getType().equals("GeneralTrade")){
+        }else if (app.getTradeAction().getType().equals("GeneralTrade")) {
             ViewPaneTradeGeneral tradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount());
             middleActionPane.getChildren().add(tradeGeneral);
             btnNextStep.setDisable(false);
             btnEndTurn.setDisable(false);
-
         }
+    }
+
+    private void drawSpecialStep() {
+        middleActionPane.getChildren().clear();
+
+        Label label = new Label("You can move the raider now");
+        middleActionPane.getChildren().add(label);
+
 
     }
 
@@ -232,8 +239,9 @@ public class PaneActionController {
 
 
     public void btnEndTurnClicked(ActionEvent event) {
-        app.nextPlayer();
-        app.resourceStep();
+//        app.nextPlayer();
+//        app.resourceStep();
+        app.specialStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
     }
@@ -252,6 +260,8 @@ public class PaneActionController {
                 break;
             case "TradeStep":
                 drawTradeStep();
+            case "SpecialStep":
+                drawSpecialStep();
         }
     }
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {

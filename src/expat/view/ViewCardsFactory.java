@@ -2,6 +2,7 @@ package expat.view;
 
 import expat.model.ModelMaterial;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,7 +23,6 @@ public class ViewCardsFactory {
         this.material = material;
     }
 
-
     public HBox generateUnitedCardsHBox() {
         HBox unitedCardsHBox = new HBox();
         unitedCardsHBox.setMaxHeight(80);
@@ -39,15 +39,23 @@ public class ViewCardsFactory {
     public Pane generateSplittedCardsVBox() {
         VBox splittedCardsVBox = new VBox();
         splittedCardsVBox.setSpacing(30);
-        splittedCardsVBox.setPadding(new Insets(20));
+        splittedCardsVBox.setPadding(new Insets(20, 0,0,0));
+
+        cardsNumberFactory = new ViewCardsNumberFactory();
 
         for(int i = 0; i<5; i++) {
+
+
             Pane splittedMaterialPane = new Pane();
             double yOffset = 20;
-            double xOffset = 0;
+            double xOffset = 60;
             splittedMaterialPane.setMinHeight(100);
 
+            Label label = cardsNumberFactory.generateCardNumber(material.getMaterialNames()[i]);
+
+            int labelCounter = 0;
             for (int j = 0; j < material.getMaterialAmount()[i]; j++) {
+                labelCounter += 1;
                 ImageView temp = generateCardImageView(i);
                 temp.setLayoutX(xOffset);
                 temp.setLayoutY(yOffset);
@@ -55,6 +63,11 @@ public class ViewCardsFactory {
                 xOffset+=10;
                 splittedMaterialPane.getChildren().add(temp);
             }
+            label.setText(Integer.toString(labelCounter));
+            labelCounter = 0;
+            label.setLayoutX(0);
+            label.setLayoutY(30);
+            splittedMaterialPane.getChildren().add(label);
             splittedCardsVBox.getChildren().add(splittedMaterialPane);
         }
         return splittedCardsVBox;
