@@ -71,15 +71,24 @@ public class ControllerMainStage {
         // TODO: entfernen (Testing): System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
     }
 
+    /**
+     * Refreshes lower middle part of the screen, where the different game steps are displayed.
+     */
     public void refreshActionStep() {
         paneActionController.refreshStep();
     }
-
+    /**
+     * Refreshes left side of the screen, where infos about the current player are displayed.
+     */
     public void refreshGameInformations() {
         panePlayerController.refresh();
         paneMatesController.setMatesInformation();
     }
 
+
+    /**
+     * Enables buttons for next step and end turn again, after paneActionController waitet for Raider to be moved.
+     */
     public void raiderMoved() {
         paneActionController.raiderMoved();
     }

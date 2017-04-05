@@ -21,11 +21,11 @@ import javafx.scene.layout.StackPane;
  * @author vanonir
  */
 public class PaneBoardController {
-    public StackPane stackPane;
-    private ControllerMainStage controllerMainStage;
-
+    @FXML public StackPane stackPane;
     @FXML
     private AnchorPane anchorPaneBoard;
+
+    private ControllerMainStage controllerMainStage;
     private int HEXSIZE = 200;
     private double SCALE_NUMBER = 1.05;
     private double mousePositionX;
