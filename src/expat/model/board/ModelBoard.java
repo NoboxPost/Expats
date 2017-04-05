@@ -41,7 +41,7 @@ public class ModelBoard {
             for (ModelHex hex : hexLine) {
                 if (hex.getDiceNumber() == diceNumber) { //TODO: check if raided,
                     for (ModelBuilding building : buildings) {
-                        if (building.isFlanking(hex)) {
+                        if (building.isFlanking(hex) && !hex.checkIfRaided()) {
                             building.giveMaterialToOwner(hex.getMaterial());
                         }
                     }

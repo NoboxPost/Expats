@@ -103,6 +103,12 @@ public class ModelBuildingAction {
         return false;
     }
 
+    /**
+     * Method stores material costs for a building action to be done.
+     *
+     * @param type
+     * @return
+     */
     public boolean buildingCost(String type) {
         switch (type) {
             case "Road":
@@ -250,6 +256,13 @@ public class ModelBuildingAction {
     }
 
 
+    /**
+     *
+     * Check's according to given coordinates if there is a building at next junction, so building would be forbidden.
+     *
+     * @param coords int array, first position represents x coordinate, second position represents y coordinate.
+     * @return true if placement of building is allowed, false if there is a building, at next junction.
+     */
     public boolean checkBuildingForBuilding(int[] coords) {
         boolean legalPosition = true;
         int xCoordOfNewBuilding = coords[0];

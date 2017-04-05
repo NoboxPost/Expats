@@ -30,7 +30,7 @@ public class ModelHex {
     }
 
     /**
-     * random generator for dice numbers on a hex
+     * random generator for dice numbers on a hex. Unused so far, might be used as soon as dicenumbers are distributed randomly.
      *
      * @param newDiceNumber
      * @return assigning boolean

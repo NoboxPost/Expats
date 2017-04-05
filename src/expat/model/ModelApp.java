@@ -38,6 +38,7 @@ public class ModelApp {
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
+    private ModelTradeAction tradeAction;
 
 
     public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
@@ -168,6 +169,11 @@ public class ModelApp {
 
     }
 
+    public void newTraidingAction(String type){
+        tradeAction = new ModelTradeAction(type);
+    }
+
+
 
     public void firstBuildingAction(String type) {
         board.firstBuildingAction(type, nowPlaying);
@@ -264,6 +270,10 @@ public class ModelApp {
 
     public ModelPlayer getNowPlaying() {
         return nowPlaying;
+    }
+
+    public ModelTradeAction getTradeAction() {
+        return tradeAction;
     }
 }
 

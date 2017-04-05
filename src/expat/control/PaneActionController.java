@@ -97,7 +97,7 @@ public class PaneActionController {
         controllerMainStage.refreshPlayerPane();
     }
 
-    public void generateCards(){
+    public void generateCards() {
         ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlayingDicedMaterial());
         middleActionPane.getChildren().add(viewCardsFactory.generateUnitedCardsHBox());
     }
@@ -121,10 +121,10 @@ public class PaneActionController {
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(settlementImageView, roadImageView);
-        if (app.getFirstBuildingStep()<2){
+        if (app.getFirstBuildingStep() < 2) {
             btnNextStep.setDisable(true);
             btnEndTurn.setDisable(true);
-        }else{
+        } else {
             btnNextStep.setDisable(false);
             btnEndTurn.setDisable(false);
         }
@@ -205,6 +205,22 @@ public class PaneActionController {
         return dropShadow;
     }
 
+    private void drawTradeStep() {
+        middleActionPane.getChildren().clear();
+        if (app.getTradeAction() == null) {
+            Button btnGeneralTrade = new Button("Allgemeiner Handel 4:1");
+            btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
+        }else if (app.getTradeAction().getType().equals("GeneralTrade")){
+
+        }
+
+    }
+
+    private void btnGeneralTradingClicked(ActionEvent event) {
+        app.newTraidingAction("GeneralTrade");
+    }
+
+
     public void btnEndTurnClicked(ActionEvent event) {
         app.nextPlayer();
         app.resourceStep();
@@ -224,11 +240,13 @@ public class PaneActionController {
             case "ResourceStep":
                 drawResourceStep();
                 break;
+            case "TraidingStep":
+                drawTradeStep();
         }
     }
 
 
-    public void btnNextStepClickedSetBuildingStep(ActionEvent event){
+    public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
         app.buildingStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
@@ -241,7 +259,7 @@ public class PaneActionController {
      * @param event
      */
     @Deprecated
-    public void btnNextStepClickedSetResourceStep(ActionEvent event){
+    public void btnNextStepClickedSetResourceStep(ActionEvent event) {
         app.resourceStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
