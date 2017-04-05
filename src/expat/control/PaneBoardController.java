@@ -128,14 +128,14 @@ public class PaneBoardController {
         app.injectNewBuildingCoordsAndAddWinpoints(building.getBuildingCoord(),"Building");
         refreshBoardElements(app.getBoard());
         controllerMainStage.refreshActionStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
         app.injectNewBuildingCoordsAndAddWinpoints(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
         controllerMainStage.refreshActionStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
 
@@ -176,5 +176,4 @@ public class PaneBoardController {
         //TODO: entfernen (Test) System.out.println(anchorPaneBoard.getScaleX() + " " + anchorPaneBoard.getScaleY());
         controllerMainStage.adjustScrollPaneCenter(mousePositionX, mousePositionY);
     }
-
 }

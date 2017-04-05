@@ -53,11 +53,11 @@ public class ControllerMainStage {
         paneBoardController.init(this,app);
         paneActionController.init(this,app);
         panePlayerController.init(this, app);
+        paneMatesController.init(app);
         paneBoardController.drawBoard(app.getBoard());
         app.gameBegin();
         paneActionController.refreshStep();
         panePlayerController.refresh();
-
     }
 
     /**
@@ -75,7 +75,10 @@ public class ControllerMainStage {
         paneActionController.refreshStep();
     }
 
-    public void refreshPlayerPane() { panePlayerController.refresh();}
+    public void refreshGameInformations() {
+        panePlayerController.refresh();
+        paneMatesController.setMatesInformation();
+    }
 
     public void raiderMoved() {
         paneActionController.raiderMoved();

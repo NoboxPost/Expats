@@ -163,11 +163,7 @@ public class ModelApp {
         playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
 
         String allPlayerStats = "";
-        for (ModelPlayer element : players) {
-            if (element != players.getFirst()) {
-                allPlayerStats += (element.getPlayerName() + "\n");
-                allPlayerStats += ("Victorypoints: " + element.getWinPointsString() + "\n\n");
-            }
+
         }
         matesController.setMatesInformation(allPlayerStats);
     }
@@ -302,6 +298,9 @@ public class ModelApp {
     }
 
 
+    public LinkedList<ModelPlayer> getPlayers() {
+        return players;
+    }
 }
 
 
