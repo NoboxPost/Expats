@@ -103,14 +103,14 @@ public class PaneActionController {
     private void btnDropMaterialsClicked(ActionEvent event) {
         app.specialStep();
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
 
     }
 
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
     public void generateCards() {
@@ -206,7 +206,7 @@ public class PaneActionController {
 
     private void generateBuilding(String type) {
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
         app.newBuildingAction(type);
     }
 
@@ -284,7 +284,7 @@ public class PaneActionController {
         app.finishTradeAction(paneTradeGeneral.getEndDifference());
         app.resetTrade();
         paneTradeGeneral = null;
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
         refreshStep();
     }
 
@@ -295,7 +295,7 @@ public class PaneActionController {
         app.nextPlayer();
         app.resourceStep();
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
     public void refreshStep() {
@@ -323,7 +323,7 @@ public class PaneActionController {
         paneTradeGeneral = null;
         app.tradeStep();
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
 
@@ -331,14 +331,14 @@ public class PaneActionController {
         app.buildingStep();
         paneTradeGeneral = null;
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
 
     }
 
     public void btnNextStepClickedSetSpecialStep(ActionEvent event) {
         //TODO:  if implemented add: app.specialStep();
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
     /**
@@ -350,7 +350,7 @@ public class PaneActionController {
     public void btnNextStepClickedSetResourceStep(ActionEvent event) {
         app.resourceStep();
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
     public void raiderMoved() {
@@ -363,7 +363,7 @@ public class PaneActionController {
     public void btnDropMaterialFinishClicked(ActionEvent event) {
         paneDropMaterial.setDone(true);
         refreshStep();
-        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshGameInformations();
     }
 
     public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
