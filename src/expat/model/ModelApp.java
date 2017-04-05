@@ -73,8 +73,8 @@ public class ModelApp {
         generatePlayer();
         nextPlayer();
 
-        currentStep = "TradeStep";//TODO: actionController Start is yet wrong
-        //currentStep = "FirstBuildingStep";
+
+        currentStep = "FirstBuildingStep";
 
     }
 
@@ -118,7 +118,7 @@ public class ModelApp {
      * 2. sea trade (2:1, 3:1, 4:1)
      */
     public void tradeStep() {
-
+        currentStep="TradeStep";
     }
 
     /**
@@ -175,10 +175,17 @@ public class ModelApp {
 
     }
 
-    public void newTraidingAction(String type){
-        tradeAction = new ModelTradeAction(type);
+    public void newTradeAction(String type){
+        tradeAction = new ModelTradeAction(type,nowPlaying);
+    }
+    public void finishTradeAction(int[] materialResultSender){
+        tradeAction.finischTradeAction(materialResultSender);
+        tradeAction = null;
     }
 
+    public void resetTrade() {
+        tradeAction = null;
+    }
 
 
     public void firstBuildingAction(String type) {
@@ -280,6 +287,7 @@ public class ModelApp {
     public ModelTradeAction getTradeAction() {
         return tradeAction;
     }
+
 }
 
 

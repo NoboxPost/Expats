@@ -19,6 +19,9 @@ public class ViewCardsFactory {
     ModelMaterial material;
     ViewCardsNumberFactory cardsNumberFactory;
 
+    public ViewCardsFactory(){
+        material = new ModelMaterial(new int[5]);
+    }
     public ViewCardsFactory(ModelMaterial material) {
         this.material = material;
     }

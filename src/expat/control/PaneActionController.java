@@ -210,16 +210,23 @@ public class PaneActionController {
 
     private void drawTradeStep() {
         middleActionPane.getChildren().clear();
+        btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
         if (app.getTradeAction() == null) {
+            tradeGeneral = null;
             Button btnGeneralTrade = new Button("Allgemeiner Handel 4:1");
             btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
             middleActionPane.getChildren().add(btnGeneralTrade);
             btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
-        }else if (app.getTradeAction().getType().equals("GeneralTrade")) {
-            ViewPaneTradeGeneral tradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount());
-            middleActionPane.getChildren().add(tradeGeneral);
-            btnNextStep.setDisable(false);
-            btnEndTurn.setDisable(false);
+        } else if (app.getTradeAction().getType().equals("GeneralTrade")) {
+            if (tradeGeneral == null) {
+                tradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount(), this);
+                tradeGeneral.refresh();
+                middleActionPane.getChildren().add(tradeGeneral);
+
+            } else if (tradeGeneral != null) {
+                tradeGeneral.refresh();
+                middleActionPane.getChildren().add(tradeGeneral);
+            }
         }
     }
 
@@ -228,12 +235,29 @@ public class PaneActionController {
 
         Label label = new Label("You can move the raider now");
         middleActionPane.getChildren().add(label);
+        btnNextStep.setOnAction(this::btnEndTurnClicked);
 
 
     }
 
     private void btnGeneralTradingClicked(ActionEvent event) {
-        app.newTraidingAction("GeneralTrade");
+        tradeGeneral = null;
+        app.newTradeAction("GeneralTrade");
+        refreshStep();
+    }
+
+    public void btnTradeAdjustMaterialClicked(ActionEvent event) {
+        if (tradeGeneral != null) {
+            refreshStep();
+            tradeGeneral.adjustMaterial((Button) event.getSource());
+        }
+    }
+
+    public void btnTradeFinishClicked(ActionEvent event) {
+        app.finishTradeAction(tradeGeneral.getEndDifference());
+        app.resetTrade();
+        tradeGeneral = null;
+        controllerMainStage.refreshPlayerPane();
         refreshStep();
     }
 
@@ -241,6 +265,8 @@ public class PaneActionController {
     public void btnEndTurnClicked(ActionEvent event) {
 //        app.nextPlayer();
 //        app.resourceStep();
+        tradeGeneral = null;
+        app.resetTrade();
         app.specialStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
@@ -260,11 +286,15 @@ public class PaneActionController {
                 break;
             case "TradeStep":
                 drawTradeStep();
+                break;
             case "SpecialStep":
                 drawSpecialStep();
+                break;
         }
     }
+
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {
+        tradeGeneral = null;
         app.tradeStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
@@ -275,11 +305,12 @@ public class PaneActionController {
     public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
         app.buildingStep();
         refreshStep();
+        tradeGeneral = null;
         controllerMainStage.refreshPlayerPane();
         controllerMainStage.refreshActionStep();
     }
 
-    public void btnNextStepClickedSetSpecialStep(ActionEvent event){
+    public void btnNextStepClickedSetSpecialStep(ActionEvent event) {
         //TODO:  if implemented add: app.specialStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
