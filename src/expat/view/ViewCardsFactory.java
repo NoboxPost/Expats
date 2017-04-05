@@ -1,7 +1,5 @@
 package expat.view;
 
-import expat.control.PaneActionController;
-import expat.control.PanePlayerController;
 import expat.model.ModelMaterial;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -27,33 +25,9 @@ public class ViewCardsFactory {
         HBox unitedCardsHBox = new HBox();
         unitedCardsHBox.setMaxHeight(80);
 
-        ImageView cardImageView;
-
         for(int i = 0; i<5; i++) {
             for (int j = 0; j < material.getMaterialAmount()[i]; j++) {
-                switch(material.getMaterialNames()[i]){
-                    case "Clay":
-                        cardImageView = new ImageView("expat/img/CardClay.png");
-                        unitedCardsHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Grain":
-                        cardImageView = new ImageView("expat/img/CardGrain.png");
-                        unitedCardsHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Stone":
-                        cardImageView = new ImageView("expat/img/CardStone.png");
-                        unitedCardsHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Wood":
-                        cardImageView = new ImageView("expat/img/CardWood.png");
-                        unitedCardsHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Wool":
-                        cardImageView = new ImageView("expat/img/CardWool.png");
-                        unitedCardsHBox.getChildren().add(cardImageView);
-                        break;
-                }
-
+                        unitedCardsHBox.getChildren().add(generateCardImageView(i));
             }
         }
         return unitedCardsHBox;
@@ -63,38 +37,43 @@ public class ViewCardsFactory {
         VBox splittedCardsVBox = new VBox();
         splittedCardsVBox.setMaxWidth(200);
 
-        ImageView cardImageView;
-
         for(int i = 0; i<5; i++) {
             HBox splittedMaterialHBox = new HBox();
             for (int j = 0; j < material.getMaterialAmount()[i]; j++) {
-                switch (material.getMaterialNames()[i]) {
-                    case "Clay":
-                        cardImageView = new ImageView("expat/img/CardClay.png");
-                        splittedMaterialHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Grain":
-                        cardImageView = new ImageView("expat/img/CardGrain.png");
-                        splittedMaterialHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Stone":
-                        cardImageView = new ImageView("expat/img/CardStone.png");
-                        splittedMaterialHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Wood":
-                        cardImageView = new ImageView("expat/img/CardWood.png");
-                        splittedMaterialHBox.getChildren().add(cardImageView);
-                        break;
-                    case "Wool":
-                        cardImageView = new ImageView("expat/img/CardWool.png");
-                        splittedMaterialHBox.getChildren().add(cardImageView);
-                        break;
-                }
+                splittedMaterialHBox.getChildren().add(generateCardImageView(i));
             }
             splittedCardsVBox.getChildren().add(splittedMaterialHBox);
         }
         return splittedCardsVBox;
+    }
 
+    public ImageView generateCardImageView(int i){
+        return generateCardImageView(material.getMaterialNames()[i]);
+    }
+
+    public ImageView generateCardImageView(String type){
+        ImageView cardImageView;
+
+        switch (type) {
+            case "Clay":
+                cardImageView = new ImageView("expat/img/CardClay.png");
+                break;
+            case "Grain":
+                cardImageView = new ImageView("expat/img/CardGrain.png");
+                break;
+            case "Stone":
+                cardImageView = new ImageView("expat/img/CardStone.png");
+                break;
+            case "Wood":
+                cardImageView = new ImageView("expat/img/CardWood.png");
+                break;
+            case "Wool":
+                cardImageView = new ImageView("expat/img/CardWool.png");
+                break;
+            default:
+                cardImageView = new ImageView();
+        }
+        return cardImageView;
     }
 
 

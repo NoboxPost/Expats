@@ -43,6 +43,8 @@ public class PanePlayerController {
     }
 
 
-
-
+    public void refresh() {
+        //setPlayerInformation();
+        generateCards();
+    }
 }
