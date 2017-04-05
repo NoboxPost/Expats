@@ -215,12 +215,12 @@ public class PaneActionController {
             btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
             middleActionPane.getChildren().add(btnGeneralTrade);
             btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
-        }else if (app.getTradeAction().getType().equals("GeneralTrade")){
+        }else if (app.getTradeAction().getType().equals("GeneralTrade")) {
             ViewPaneTradeGeneral tradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount());
             middleActionPane.getChildren().add(tradeGeneral);
             btnNextStep.setDisable(false);
             btnEndTurn.setDisable(false);
-
+        }
     }
 
     private void drawSpecialStep() {
