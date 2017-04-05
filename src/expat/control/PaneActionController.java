@@ -167,7 +167,7 @@ public class PaneActionController {
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
-        btnNextStep.setOnAction(this::btnNextStepClickedSetResourceStep);
+        btnNextStep.setOnAction(this::btnEndTurnClicked);
 
     }
 
@@ -230,6 +230,13 @@ public class PaneActionController {
         app.buildingStep();
         refreshStep();
     }
+
+    /**
+     * Probably unused!
+     *
+     * @param event
+     */
+    @Deprecated
     public void btnNextStepClickedSetResourceStep(ActionEvent event){
         app.resourceStep();
         refreshStep();
