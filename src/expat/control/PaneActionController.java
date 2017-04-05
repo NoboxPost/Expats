@@ -2,6 +2,7 @@ package expat.control;
 
 import expat.model.ModelApp;
 import expat.view.ViewCardsFactory;
+import expat.view.ViewPaneTradeGeneral;
 import javafx.event.ActionEvent;
 
 import javafx.scene.Cursor;
@@ -34,7 +35,8 @@ public class PaneActionController {
     private ImageView townImageView;
     private ImageView settlementImageView;
     private Button diceRollButton;
-    ModelApp app;
+    private ViewPaneTradeGeneral tradeGeneral;
+    private ModelApp app;
 
 
     public void init(ControllerMainStage controllerMainStage, ModelApp app) {
@@ -80,7 +82,7 @@ public class PaneActionController {
 
             btnNextStep.setDisable(false);
             btnEndTurn.setDisable(false);
-            btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
+            btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
 
         } else {
             diceRollButton = new Button("roll dice!");
@@ -90,6 +92,7 @@ public class PaneActionController {
             btnEndTurn.setDisable(true);
         }
     }
+
 
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
@@ -210,7 +213,13 @@ public class PaneActionController {
         if (app.getTradeAction() == null) {
             Button btnGeneralTrade = new Button("Allgemeiner Handel 4:1");
             btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
+            middleActionPane.getChildren().add(btnGeneralTrade);
+            btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
         }else if (app.getTradeAction().getType().equals("GeneralTrade")){
+            ViewPaneTradeGeneral tradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount());
+            middleActionPane.getChildren().add(tradeGeneral);
+            btnNextStep.setDisable(false);
+            btnEndTurn.setDisable(false);
 
         }
 
@@ -218,6 +227,7 @@ public class PaneActionController {
 
     private void btnGeneralTradingClicked(ActionEvent event) {
         app.newTraidingAction("GeneralTrade");
+        refreshStep();
     }
 
 
@@ -240,14 +250,27 @@ public class PaneActionController {
             case "ResourceStep":
                 drawResourceStep();
                 break;
-            case "TraidingStep":
+            case "TradeStep":
                 drawTradeStep();
         }
+    }
+    private void btnNextStepClickedSetTradeStep(ActionEvent event) {
+        app.tradeStep();
+        refreshStep();
+        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshActionStep();
     }
 
 
     public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
         app.buildingStep();
+        refreshStep();
+        controllerMainStage.refreshPlayerPane();
+        controllerMainStage.refreshActionStep();
+    }
+
+    public void btnNextStepClickedSetSpecialStep(ActionEvent event){
+        //TODO:  if implemented add: app.specialStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
         controllerMainStage.refreshActionStep();
