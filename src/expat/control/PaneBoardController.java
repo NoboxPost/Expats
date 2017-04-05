@@ -117,9 +117,11 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(raiderGroup);
     }
 
-    public void hexClicked(ActionEvent event) { //TODO: Raider
+    public void hexClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
         app.moveRaider(button.getCoords());
+        refreshBoardElements(app.getBoard());
+        controllerMainStage.raiderMoved();
     }
     public void emptyBuildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();

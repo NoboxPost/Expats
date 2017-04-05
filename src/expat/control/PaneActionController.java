@@ -2,6 +2,7 @@ package expat.control;
 
 import expat.model.ModelApp;
 import expat.view.ViewCardsFactory;
+import expat.view.ViewPaneDropMaterial;
 import expat.view.ViewPaneTradeGeneral;
 import javafx.event.ActionEvent;
 
@@ -36,7 +37,8 @@ public class PaneActionController {
     private ImageView townImageView;
     private ImageView settlementImageView;
     private Button diceRollButton;
-    private ViewPaneTradeGeneral tradeGeneral;
+    private ViewPaneTradeGeneral paneTradeGeneral;
+    private ViewPaneDropMaterial paneDropMaterial;
     private ModelApp app;
 
 
@@ -80,10 +82,15 @@ public class PaneActionController {
                 middleActionPane.getChildren().add(diceImageView);
             }
             generateCards();
-
-            btnNextStep.setDisable(false);
-            btnEndTurn.setDisable(false);
-            btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
+            if (app.getDiceNumber() == 7) {
+                Button btnDropMaterials = new Button("Materialien abgeben");
+                btnDropMaterials.setOnAction(this::btnDropMaterialsClicked);
+                middleActionPane.getChildren().add(btnDropMaterials);
+            } else {
+                btnNextStep.setDisable(false);
+                btnEndTurn.setDisable(false);
+                btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
+            }
 
         } else {
             diceRollButton = new Button("roll dice!");
@@ -92,6 +99,13 @@ public class PaneActionController {
             btnNextStep.setDisable(true);
             btnEndTurn.setDisable(true);
         }
+    }
+
+    private void btnDropMaterialsClicked(ActionEvent event) {
+        app.specialStep();
+        refreshStep();
+        controllerMainStage.refreshPlayerPane();
+
     }
 
     public void diceRollClicked(ActionEvent event) {
@@ -172,7 +186,6 @@ public class PaneActionController {
 
         middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
         btnNextStep.setOnAction(this::btnEndTurnClicked);
-
     }
 
 
@@ -212,62 +225,76 @@ public class PaneActionController {
         middleActionPane.getChildren().clear();
         btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
         if (app.getTradeAction() == null) {
-            tradeGeneral = null;
+            paneTradeGeneral = null;
             Button btnGeneralTrade = new Button("Allgemeiner Handel 4:1");
             btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
             middleActionPane.getChildren().add(btnGeneralTrade);
             btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
         } else if (app.getTradeAction().getType().equals("GeneralTrade")) {
-            if (tradeGeneral == null) {
-                tradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount(), this);
-                tradeGeneral.refresh();
-                middleActionPane.getChildren().add(tradeGeneral);
+            if (paneTradeGeneral == null) {
+                paneTradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount(), this);
+                paneTradeGeneral.refresh();
+                middleActionPane.getChildren().add(paneTradeGeneral);
 
-            } else if (tradeGeneral != null) {
-                tradeGeneral.refresh();
-                middleActionPane.getChildren().add(tradeGeneral);
+            } else if (paneTradeGeneral != null) {
+                paneTradeGeneral.refresh();
+                middleActionPane.getChildren().add(paneTradeGeneral);
             }
         }
     }
 
     private void drawSpecialStep() {
         middleActionPane.getChildren().clear();
-
-        Label label = new Label("You can move the raider now");
-        middleActionPane.getChildren().add(label);
-        btnNextStep.setOnAction(this::btnEndTurnClicked);
+        if (paneDropMaterial == null) {
+            if (!app.getPlayersMustDrop().isEmpty()) {
+                paneDropMaterial = new ViewPaneDropMaterial(app.getPlayersMustDrop().peek().getMaterial().getMaterialAmount(), this,app.getPlayersMustDrop().peek().getPlayerName());
+                middleActionPane.getChildren().add(paneDropMaterial);
+            } else {
+                app.getBoard().activateRaider();
+                Label label = new Label("You can move the raider now");
+                middleActionPane.getChildren().add(label);
+            }
+        } else if (paneDropMaterial != null) {
+            if (paneDropMaterial.isDone()) {
+                app.playerDroppedMaterial(paneDropMaterial.getEndDifference());
+                paneDropMaterial = null;
+                refreshStep();
+            } else {
+                paneDropMaterial.refresh();
+                middleActionPane.getChildren().add(paneDropMaterial);
+            }
+        }
 
 
     }
 
     private void btnGeneralTradingClicked(ActionEvent event) {
-        tradeGeneral = null;
+        paneTradeGeneral = null;
         app.newTradeAction("GeneralTrade");
         refreshStep();
     }
 
     public void btnTradeAdjustMaterialClicked(ActionEvent event) {
-        if (tradeGeneral != null) {
+        if (paneTradeGeneral != null) {
             refreshStep();
-            tradeGeneral.adjustMaterial((Button) event.getSource());
+            paneTradeGeneral.adjustMaterial((Button) event.getSource());
         }
     }
 
     public void btnTradeFinishClicked(ActionEvent event) {
-        app.finishTradeAction(tradeGeneral.getEndDifference());
+        app.finishTradeAction(paneTradeGeneral.getEndDifference());
         app.resetTrade();
-        tradeGeneral = null;
+        paneTradeGeneral = null;
         controllerMainStage.refreshPlayerPane();
         refreshStep();
     }
 
 
     public void btnEndTurnClicked(ActionEvent event) {
-//        app.nextPlayer();
-//        app.resourceStep();
-        tradeGeneral = null;
+        paneTradeGeneral = null;
         app.resetTrade();
-        app.specialStep();
+        app.nextPlayer();
+        app.resourceStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
     }
@@ -294,27 +321,25 @@ public class PaneActionController {
     }
 
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {
-        tradeGeneral = null;
+        paneTradeGeneral = null;
         app.tradeStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
-        controllerMainStage.refreshActionStep();
     }
 
 
     public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
         app.buildingStep();
+        paneTradeGeneral = null;
         refreshStep();
-        tradeGeneral = null;
         controllerMainStage.refreshPlayerPane();
-        controllerMainStage.refreshActionStep();
+
     }
 
     public void btnNextStepClickedSetSpecialStep(ActionEvent event) {
         //TODO:  if implemented add: app.specialStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
-        controllerMainStage.refreshActionStep();
     }
 
     /**
@@ -327,7 +352,24 @@ public class PaneActionController {
         app.resourceStep();
         refreshStep();
         controllerMainStage.refreshPlayerPane();
-        controllerMainStage.refreshActionStep();
     }
 
+    public void raiderMoved() {
+        btnNextStep.setDisable(false);
+        btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
+        btnEndTurn.setDisable(false);
+        //TODO: draw auswahl von Player
+    }
+
+    public void btnDropMaterialFinishClicked(ActionEvent event) {
+        paneDropMaterial.setDone(true);
+        refreshStep();
+        controllerMainStage.refreshPlayerPane();
+    }
+
+    public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
+        paneDropMaterial.adjustMaterial((Button) event.getSource());
+        refreshStep();
+
+    }
 }
