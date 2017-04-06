@@ -1,8 +1,5 @@
 package expat.model.board;
 
-import expat.model.ModelRaider;
-import expat.model.buildings.ModelBuilding;
-
 /**
  * is responsible for the creation of a hexagonal field
  * <p>
@@ -45,7 +42,7 @@ public class ModelHexFactory {
         }
         //TODO:Implement random deployment of hexes and DiceNumbers
 
-        //hexes[7][5].setTypeAndDiceNumber("Stone",8); //Adds an additional Hex, just to show off.
+        //hexes[7][5].assignTypeAndDiceNumber("Stone",8); //Adds an additional Hex, just to show off.
 
         return hexes;
     }
@@ -55,25 +52,25 @@ public class ModelHexFactory {
      */
     private void generateHexesBasicLayout() {
 
-        hexes[3][1].setTypeAndDiceNumber("Clay", 2);
-        hexes[4][1].setTypeAndDiceNumber("Grain", 4);
-        hexes[5][1].setTypeAndDiceNumber("Wood", 6);
-        hexes[2][2].setTypeAndDiceNumber("Wool", 9);
-        hexes[3][2].setTypeAndDiceNumber("Clay", 8);
-        hexes[4][2].setTypeAndDiceNumber("Wood", 5);
-        hexes[5][2].setTypeAndDiceNumber("Wool", 12);
-        hexes[6][2].setTypeAndDiceNumber("Grain", 9);
-        hexes[2][3].setTypeAndDiceNumber("Wood", 3);
-        hexes[3][3].setTypeAndDiceNumber("Stone", 5);
-        hexes[4][3].setTypeAndDiceNumber("Desert", 0);
-        hexes[5][3].setTypeAndDiceNumber("Stone", 8);
-        hexes[6][3].setTypeAndDiceNumber("Wool", 4);
-        hexes[2][4].setTypeAndDiceNumber("Grain", 3);
-        hexes[3][4].setTypeAndDiceNumber("Grain", 6);
-        hexes[4][4].setTypeAndDiceNumber("Clay", 10);
-        hexes[5][4].setTypeAndDiceNumber("Wood", 11);
-        hexes[6][4].setTypeAndDiceNumber("Wool", 10);
-        hexes[4][5].setTypeAndDiceNumber("Stone", 11);
+        hexes[3][1].assignTypeAndDiceNumber("Clay", 2);
+        hexes[4][1].assignTypeAndDiceNumber("Grain", 4);
+        hexes[5][1].assignTypeAndDiceNumber("Wood", 6);
+        hexes[2][2].assignTypeAndDiceNumber("Wool", 9);
+        hexes[3][2].assignTypeAndDiceNumber("Clay", 8);
+        hexes[4][2].assignTypeAndDiceNumber("Wood", 5);
+        hexes[5][2].assignTypeAndDiceNumber("Wool", 12);
+        hexes[6][2].assignTypeAndDiceNumber("Grain", 9);
+        hexes[2][3].assignTypeAndDiceNumber("Wood", 3);
+        hexes[3][3].assignTypeAndDiceNumber("Stone", 5);
+        hexes[4][3].assignTypeAndDiceNumber("Desert", 0);
+        hexes[5][3].assignTypeAndDiceNumber("Stone", 8);
+        hexes[6][3].assignTypeAndDiceNumber("Wool", 4);
+        hexes[2][4].assignTypeAndDiceNumber("Grain", 3);
+        hexes[3][4].assignTypeAndDiceNumber("Grain", 6);
+        hexes[4][4].assignTypeAndDiceNumber("Clay", 10);
+        hexes[5][4].assignTypeAndDiceNumber("Wood", 11);
+        hexes[6][4].assignTypeAndDiceNumber("Wool", 10);
+        hexes[4][5].assignTypeAndDiceNumber("Stone", 11);
     }
 
     /**
@@ -81,24 +78,24 @@ public class ModelHexFactory {
      */
     public void generateBasicLayoutRandomDiceNumbers(){
         ModelDiceNumberRandomDeployer diceNumberRandomDeployer = new ModelDiceNumberRandomDeployer();
-        hexes[3][1].setTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
-        hexes[4][1].setTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
-        hexes[5][1].setTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
-        hexes[2][2].setTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
-        hexes[3][2].setTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
-        hexes[4][2].setTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
-        hexes[5][2].setTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
-        hexes[6][2].setTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
-        hexes[2][3].setTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
-        hexes[3][3].setTypeAndDiceNumber("Stone", diceNumberRandomDeployer.getADiceNumber());
-        hexes[4][3].setTypeAndDiceNumber("Desert", 0);
-        hexes[5][3].setTypeAndDiceNumber("Stone", diceNumberRandomDeployer.getADiceNumber());
-        hexes[6][3].setTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
-        hexes[2][4].setTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
-        hexes[3][4].setTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
-        hexes[4][4].setTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
-        hexes[5][4].setTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
-        hexes[6][4].setTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
-        hexes[4][5].setTypeAndDiceNumber("Stone", diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][1].assignTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][1].assignTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
+        hexes[5][1].assignTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
+        hexes[2][2].assignTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][2].assignTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][2].assignTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
+        hexes[5][2].assignTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
+        hexes[6][2].assignTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
+        hexes[2][3].assignTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][3].assignTypeAndDiceNumber("Stone", diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][3].assignTypeAndDiceNumber("Desert", 0);
+        hexes[5][3].assignTypeAndDiceNumber("Stone", diceNumberRandomDeployer.getADiceNumber());
+        hexes[6][3].assignTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
+        hexes[2][4].assignTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][4].assignTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][4].assignTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
+        hexes[5][4].assignTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
+        hexes[6][4].assignTypeAndDiceNumber("Wool", diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][5].assignTypeAndDiceNumber("Stone", diceNumberRandomDeployer.getADiceNumber());
     }
 }
