@@ -104,6 +104,8 @@ public class PaneActionController {
         } else {
             diceRollButton = new Button("roll dice!");
             diceRollButton.setOnAction(this::diceRollClicked);
+            diceRollButton.setMinHeight(60);
+            diceRollButton.setMinWidth(60);
             middleActionPane.getChildren().add(diceRollButton);
             btnNextStep.setDisable(true);
             btnEndTurn.setDisable(true);
