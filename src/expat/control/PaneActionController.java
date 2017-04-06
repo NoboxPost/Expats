@@ -55,7 +55,8 @@ public class PaneActionController {
     }
 
     /**
-     *
+     *Generates the different views according to state acquired from app. First displays the the Button which will roll the dices.
+     * Second will display the dice result and the materials the actual player has got.
      */
     public void drawResourceStep() {
         middleActionPane.getChildren().clear();
@@ -112,6 +113,12 @@ public class PaneActionController {
         }
     }
 
+    /**
+     * After a player decides which materials he will drop incases of dices = 7 and materials > 7.
+     * This method will be called by the btnDropMaterial. Methode will initiate next step in app and refreshes the screen.
+     *
+     * @param event ActionEvent
+     */
     private void btnDropMaterialsClicked(ActionEvent event) {
         app.specialStep();
         refreshStep();
@@ -119,18 +126,30 @@ public class PaneActionController {
 
     }
 
+    /**
+     * Will initiate app diceRoll and all further stepps. Is called by the btnRollDice.
+     * Refreshes the actionPane.
+     *
+     * @param event
+     */
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
         refreshStep();
         controllerMainStage.refreshGameInformations();
     }
 
+    /**
+     * Initiates a ViewCardFactory and generates the material cards diplayed after the dice roll event.
+     */
     public void generateCards() {
         ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlayingDicedMaterial());
         middleActionPane.getChildren().add(viewCardsFactory.generateUnitedCardsHBox());
     }
 
 
+    /**
+     * Generates a Pane displaying, with a settlement and a connection so player can place his fist buildings.
+     */
     public void drawFirstSettlementAndRoadStep() {
         middleActionPane.getChildren().clear();
 
@@ -163,18 +182,33 @@ public class PaneActionController {
 
     }
 
+    /**
+     * Initiates ModelBuildingAction in ModelApp app, so placement checks will be done and building will be built.
+     * Settlement will be built if correct Position is clicked afterwards.
+     *
+     * @param event MouseEvent onMouseReleased
+     */
     private void generateFirstSettlement(MouseEvent event) {
         refreshStep();
         app.firstBuildingAction("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
 
+    /**
+     * Initiates ModelBuildingAction in ModelApp app, so placement checks will be done and building will be built.
+     * Road will be built if correct Position is clicked afterwards.
+     *
+     * @param event MouseEvent onMouseReleased
+     */
     private void generateFirstRoad(MouseEvent event) {
         refreshStep();
         app.firstBuildingAction("Road");
         roadImageView.setEffect(addDropShadow());
     }
 
+    /**
+     * Initiates ModelBuildingAction in app so, Player can choose building fields afterwards and corresponding Building will be built.
+     */
     public void drawBuildStep() {
         middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
@@ -203,28 +237,56 @@ public class PaneActionController {
     }
 
 
+    /**
+     * OnMouseReleased called if a road is clicked. Sends correspondint String to generate Building and drows shadow around choosen building
+     *
+     * @param event onMouseReleased
+     */
     private void generateRoad(MouseEvent event) {
         generateBuilding("Road");
         roadImageView.setEffect(addDropShadow());
     }
 
 
+    /**
+     * OnMouseReleased called if a settlement is clicked.Sends correspondint String to generate Building and drows shadow around choosen building
+     *
+     * @param event onMouseReleased
+     */
     private void generateSettlement(MouseEvent event) {
         generateBuilding("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
 
+    /**
+     * OnMouseReleased called if a Town is clicked. Sends correspondint String to generate Building and drows shadow around choosen building
+     *
+     * @param event onMouseReleased
+     */
     private void generateTown(MouseEvent event) {
         generateBuilding("Town");
         townImageView.setEffect(addDropShadow());
     }
 
+
+    /**
+     * Initiates a new ModelBuildingAciton according to received building type.
+     * Calls app with String parameter and refreshes screen.
+     *
+     * @param type Building type
+     */
     private void generateBuilding(String type) {
         refreshStep();
         controllerMainStage.refreshGameInformations();
         app.newBuildingAction(type);
     }
 
+
+    /**
+     * Generates a balck Shadow Effect.
+     *
+     * @return
+     */
     private DropShadow addDropShadow() {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(30);
@@ -235,6 +297,9 @@ public class PaneActionController {
         return dropShadow;
     }
 
+    /**
+     * draws trade step, first lets player choose which trading action he will take, initiates display of the choosen trading action.
+     */
     private void drawTradeStep() {
         middleActionPane.getChildren().clear();
         btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
@@ -257,6 +322,11 @@ public class PaneActionController {
         }
     }
 
+    /**
+     * If dice number is 7 drop material screen will be displayed for each player who has to much cards.
+     *
+     *
+     */
     private void drawSpecialStep() {
         middleActionPane.getChildren().clear();
         if (paneDropMaterial == null) {
@@ -282,12 +352,22 @@ public class PaneActionController {
 
     }
 
+    /**
+     * General trade is initialised in app. Is called by corresponding trade button.
+     *
+     * @param event
+     */
     private void btnGeneralTradingClicked(ActionEvent event) {
         paneTradeGeneral = null;
         app.newTradeAction("GeneralTrade");
         refreshStep();
     }
 
+    /**
+     * adjusts trade amount in trade screen, is called by buttons on trade screen.
+     *
+     * @param event AcitonEvent
+     */
     public void btnTradeAdjustMaterialClicked(ActionEvent event) {
         if (paneTradeGeneral != null) {
             refreshStep();
@@ -295,6 +375,11 @@ public class PaneActionController {
         }
     }
 
+    /**
+     * Sends trade result to app, which will adjust the players material amount.
+     *
+     * @param event
+     */
     public void btnTradeFinishClicked(ActionEvent event) {
         app.finishTradeAction(paneTradeGeneral.getEndDifference());
         app.resetTrade();
@@ -304,6 +389,11 @@ public class PaneActionController {
     }
 
 
+    /**
+     * Can be called during most turn steps so next player will be displayed an can start his action.
+     *
+     * @param event
+     */
     public void btnEndTurnClicked(ActionEvent event) {
         paneTradeGeneral = null;
         app.resetTrade();
@@ -313,6 +403,9 @@ public class PaneActionController {
         controllerMainStage.refreshGameInformations();
     }
 
+    /**
+     * gets the current step from app, calls the correspoinding draw methode.
+     */
     public void refreshStep() {
         String currentStep = app.getCurrentStep();
         switch (currentStep) {
@@ -334,6 +427,11 @@ public class PaneActionController {
         }
     }
 
+    /**
+     * is called from btnNextStep and calls methode from app for trade step
+     *
+     * @param event ActionEvent
+     */
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {
         paneTradeGeneral = null;
         app.tradeStep();
@@ -341,7 +439,11 @@ public class PaneActionController {
         controllerMainStage.refreshGameInformations();
     }
 
-
+    /**
+     * is called from btnNextStep and calls methode from app for building step
+     *
+     * @param event ActionEvent
+     */
     public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
         app.buildingStep();
         paneTradeGeneral = null;
@@ -350,24 +452,10 @@ public class PaneActionController {
 
     }
 
-    public void btnNextStepClickedSetSpecialStep(ActionEvent event) {
-        //TODO:  if implemented add: app.specialStep();
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
-    }
 
     /**
-     * Probably unused!
-     *
-     * @param event
+     * Refreshes buttons after Raider is moved.
      */
-    @Deprecated
-    public void btnNextStepClickedSetResourceStep(ActionEvent event) {
-        app.resourceStep();
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
-    }
-
     public void raiderMoved() {
         btnNextStep.setDisable(false);
         btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
@@ -375,12 +463,22 @@ public class PaneActionController {
         //TODO: draw auswahl von Player
     }
 
+    /**
+     * After materials to drop are choosen and button to finisch is clicked this methode will be called. Calls the ViewDropMaterialAction and changes its done boolean to true.
+     *
+     * @param event
+     */
     public void btnDropMaterialFinishClicked(ActionEvent event) {
         paneDropMaterial.setDone(true);
         refreshStep();
         controllerMainStage.refreshGameInformations();
     }
 
+    /**
+     * Is called by buttons on drop material screen to adjust corresponding labels.
+     *
+     * @param event
+     */
     public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
         paneDropMaterial.adjustMaterial((Button) event.getSource());
         refreshStep();
