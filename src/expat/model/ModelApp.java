@@ -37,11 +37,12 @@ public class ModelApp {
     private ModelFirstBuildingActionSequence firstBuildingActionSequence;
 
 
+    /**
+     * constuctor for app. generates a default board of widht 9 and height 7.
+     */
     public ModelApp() {
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         this.board = boardGenerator.generateBoard();
-
-
     }
 
     /**
@@ -63,8 +64,8 @@ public class ModelApp {
         generatePlayer();
         generatePlayer();
 
-        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players,board);
-        nowPlaying= firstBuildingActionSequence.getCurrentPlayer();
+        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players, board);
+        nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
         currentStep = "FirstBuildingStep";
     }
 
@@ -136,6 +137,11 @@ public class ModelApp {
         diceNumber = 0;
     }
 
+    /**
+     * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
+     *
+     * @param endDifference
+     */
     public void playerDroppedMaterial(int[] endDifference) {
         playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
     }
@@ -143,7 +149,6 @@ public class ModelApp {
     /**
      * Changes player, so next player can doo all steps.
      */
-
     public void nextPlayer() {
         board.abortBuildingAction();
         players.add(players.poll());
@@ -160,11 +165,11 @@ public class ModelApp {
     /**
      * Initiates a new ModelTradingAction for the current player.
      * Trade types will be:
-     *      GeneralTrade 4:1
-     *      PlayerToPlayerTrade ?:?
-     *      GeneralPortTrade 3:1
-     *      SpecificPortTrade 2:1
-     *
+     * GeneralTrade 4:1
+     * PlayerToPlayerTrade ?:?
+     * GeneralPortTrade 3:1
+     * SpecificPortTrade 2:1
+     * <p>
      * Currently only GeneralTrade is implementetd //TODO:Change if other types are implemented.
      *
      * @param type of trading action
@@ -210,7 +215,8 @@ public class ModelApp {
     }
 
     /**
-     * In first part, it will check
+     * In first part, it will check state of game, firstStage, so building will not cost anything or otherwise normal building.
+     * During first stage it will automaticaly sets next player active, so all can build their first buildings and connections.
      *
      * @param coords coordinates of building which will be built.
      * @param type
@@ -219,7 +225,7 @@ public class ModelApp {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
             if (firstBuildingActionSequence.nextPlayer()) {
                 nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            }else {
+            } else {
                 nextPlayer();
             }
         }
@@ -243,7 +249,7 @@ public class ModelApp {
                 firstBuildingStep += 1;
                 if (firstBuildingActionSequence.nextPlayer()) {
                     nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-                }else {
+                } else {
                     nextPlayer();
                 }
             }
@@ -254,12 +260,17 @@ public class ModelApp {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
             if (firstBuildingActionSequence.nextPlayer()) {
                 nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            }else {
+            } else {
                 nextPlayer();
             }
         }
     }
 
+    /**
+     * Hands given coordinates over to board so raider can be moved to corresponding hex.
+     *
+     * @param coords
+     */
     public void moveRaider(int[] coords) {
         if (board.getRaider().getAllowMovement()) {
             for (ModelHex[] hexline : board.getHexes()) {
@@ -274,50 +285,110 @@ public class ModelApp {
     }
 
 
+    /**
+     * counts all buildings for current player
+     *
+     * @return sum of buildings
+     */
     public int countBuildingsForCurrentPlayer() {
         return board.countBuildingsOwned(nowPlaying);
     }
 
+    /**
+     * counts all connections for current player
+     *
+     * @return sum of connections
+     */
     public int countConnectionsForCurrentPlayer() {
         return board.countConnectionsOwned(nowPlaying);
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public LinkedList<ModelPlayer> getPlayersMustDrop() {
         return playersMustDrop;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public String getCurrentStep() {
         return currentStep;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public int getDiceNumber() {
         return diceNumber;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public int[] getDiceNumbersSeparately() {
         return diceRolling.getRolledDicesSeperately();
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public ModelBoard getBoard() {
         return board;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public int getFirstBuildingStep() {
         return firstBuildingStep;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public ModelMaterial getNowPlayingDicedMaterial() {
         return nowPlayingDicedMaterial;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public ModelPlayer getNowPlaying() {
         return nowPlaying;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public ModelTradeAction getTradeAction() {
         return tradeAction;
     }
 
+    /**
+     * getter
+     *
+     * @return
+     */
     public LinkedList<ModelPlayer> getPlayers() {
         return players;
     }

@@ -17,6 +17,13 @@ public class ModelHexFactory {
     private int xSize, ySize;
     private ModelHex[][] hexes;
 
+    /**
+     * Constructor for hex Factory, if default layout of hexes is choosen atleas a width of 9 and height of 7 is required.
+     *
+     * @param xSize width of board, corresponds to hex which will be generated side by side.
+     * @param ySize height of board, correspond to hex which will be generated underneath each other.
+     * @return
+     */
     public ModelHex[][] generateHexes(int xSize, int ySize) {
         this.xSize = xSize;
         this.ySize = ySize;
@@ -68,6 +75,10 @@ public class ModelHexFactory {
         hexes[6][4].setTypeAndDiceNumber("Wool", 10);
         hexes[4][5].setTypeAndDiceNumber("Stone", 11);
     }
+
+    /**
+     * changes hexes to basic material distribution and deploys random dice numbers.
+     */
     public void generateBasicLayoutRandomDiceNumbers(){
         ModelDiceNumberRandomDeployer diceNumberRandomDeployer = new ModelDiceNumberRandomDeployer();
         hexes[3][1].setTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());

@@ -22,10 +22,18 @@ public class PaneMatesController {
     @FXML public TextArea matesVictoryPointsTextArea;
 
 
+    /**
+     * Takes a reference of ModelApp so this controller can call it.
+     *
+     * @param app
+     */
     public void init(ModelApp app){
         this.app = app;
     }
 
+    /**
+     * Sets Textareas with informations about enemy players acquired from the app.
+     */
     public void setMatesInformation(){
         LinkedList<ModelPlayer> players = app.getPlayers();
         String allPlayerStats = "";
