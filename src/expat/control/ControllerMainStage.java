@@ -17,9 +17,6 @@ import javafx.util.Duration;
  *
  * @author vanonir
  */
-
-//TODO: Mainstage? Or MainPane/Scene?
-
 public class ControllerMainStage {
     @FXML
     private ScrollPane scrollPaneCenter;

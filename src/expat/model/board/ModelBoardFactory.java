@@ -22,6 +22,12 @@ public class ModelBoardFactory {
     private int xSize, ySize;
     private ModelBoard board;
 
+    /**
+     * Constructor for ModelBoardFactory, takes width and height of board to be generated.
+     *
+     * @param xSize width of board, equals aswell max x coordinate -1 for hexes.
+     * @param ySize height of board, equals aswell max y coordinate -1 for hexes.
+     */
     public ModelBoardFactory(int xSize, int ySize) {
         this.xSize = xSize;
         this.ySize = ySize;
