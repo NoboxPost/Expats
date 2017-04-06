@@ -53,7 +53,14 @@ public class ModelFirstBuildingActionSequence {
         }
     }
 
-
+    public boolean nextPlayer(){
+        if (currentPlayerIndex<indexOfSequenceForFirstBuilding.length){
+            currentPlayerIndex+=1;
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
 
@@ -62,3 +69,4 @@ public class ModelFirstBuildingActionSequence {
     }
 
 }
+

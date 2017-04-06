@@ -20,7 +20,7 @@ public class ViewCardsFactory {
     ViewCardsNumberFactory cardsNumberFactory;
 
     public ViewCardsFactory(){
-        material = new ModelMaterial(new int[5]);
+        material = new ModelMaterial();
     }
     public ViewCardsFactory(ModelMaterial material) {
         this.material = material;

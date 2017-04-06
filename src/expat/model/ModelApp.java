@@ -100,14 +100,14 @@ public class ModelApp {
         diceRolling = new ModelDiceRolling();
         diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            ModelMaterial materialBefore = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
+            ModelMaterial materialBefore = new ModelMaterial();
             materialBefore.addMaterial(nowPlaying.getMaterial());
             board.resourceOnDiceEvent(diceNumber);
-            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
+            nowPlayingDicedMaterial = new ModelMaterial();
             nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         } else {
-            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
+            nowPlayingDicedMaterial = new ModelMaterial();
         }
     }
 
