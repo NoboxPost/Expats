@@ -1,6 +1,5 @@
 package expat.model;
 
-import expat.control.*;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
@@ -25,11 +24,6 @@ import java.util.LinkedList;
  * @author vanonir
  */
 public class ModelApp {
-    private PaneBoardController boardController;
-    private PanePlayerController playerController;
-    private PaneActionController actionController;
-    private PaneMatesController matesController;
-    private ControllerMainStage mainController;
     private ModelBoard board;
     private int diceNumber;
     private ModelDiceRolling diceRolling;
@@ -40,14 +34,10 @@ public class ModelApp {
     private int firstBuildingStep = 0;
     private ModelTradeAction tradeAction;
     private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
+    private ModelFirstBuildingActionSequence firstBuildingActionSequence;
 
 
-    public ModelApp(ControllerMainStage mainController, PaneBoardController boardController, PaneMatesController matesController, PaneActionController actionController, PanePlayerController playerController) {
-        this.boardController = boardController;
-        this.actionController = actionController;
-        this.matesController = matesController;
-        this.playerController = playerController;
-        this.mainController = mainController;
+    public ModelApp() {
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         this.board = boardGenerator.generateBoard();
 
@@ -72,13 +62,15 @@ public class ModelApp {
     public void gameBegin() {
         generatePlayer();
         generatePlayer();
-        nextPlayer();
 
-
+        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players,board);
+        nowPlaying= firstBuildingActionSequence.getCurrentPlayer();
         currentStep = "FirstBuildingStep";
-
     }
 
+    /**
+     * last player-step where player can build new buildings.
+     */
     public void buildingStep() {
         currentStep = "BuildingStep";
     }
@@ -96,18 +88,21 @@ public class ModelApp {
         diceRolling = null;
     }
 
+    /**
+     * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
+     */
     public void rollDice() {
         diceRolling = new ModelDiceRolling();
         diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            ModelMaterial materialBefore = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
+            ModelMaterial materialBefore = new ModelMaterial();
             materialBefore.addMaterial(nowPlaying.getMaterial());
             board.resourceOnDiceEvent(diceNumber);
-            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
+            nowPlayingDicedMaterial = new ModelMaterial();
             nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         } else {
-            nowPlayingDicedMaterial = new ModelMaterial(new int[]{0, 0, 0, 0, 0});
+            nowPlayingDicedMaterial = new ModelMaterial();
         }
     }
 
@@ -129,17 +124,18 @@ public class ModelApp {
      */
     public void specialStep() {
         if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            for (ModelPlayer player :players) {
+            for (ModelPlayer player : players) {
                 if (player.getMaterial().getSumOfAllMaterials() > 7) {
                     playersMustDrop.add(player);
                 }
             }
-        }else if(currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()){
+        } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
             board.activateRaider();
         }
         currentStep = "SpecialStep";
         diceNumber = 0;
     }
+
     public void playerDroppedMaterial(int[] endDifference) {
         playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
     }
@@ -155,60 +151,77 @@ public class ModelApp {
     }
 
     /**
-     * Displays current playerinformation in PanePlayerController.
-     */
-
-    /*
-    private void panesInformationRefresh() { //TODO: remove into controller
-        playerController.setPlayerInformation(nowPlaying.getPlayerName(), nowPlaying.getMaterialPoolString(), nowPlaying.getWinPointsString());
-
-        String allPlayerStats = "";
-
-        }
-        matesController.setMatesInformation(allPlayerStats);
-    }
-    */
-
-    /**
-     * handles the end of the game
+     * handles the end of the game , currently unused.
      */
     public void gameOver() {
-
-
+        //TODO: implement game over condition
     }
 
+    /**
+     * Initiates a new ModelTradingAction for the current player.
+     * Trade types will be:
+     *      GeneralTrade 4:1
+     *      PlayerToPlayerTrade ?:?
+     *      GeneralPortTrade 3:1
+     *      SpecificPortTrade 2:1
+     *
+     * Currently only GeneralTrade is implementetd //TODO:Change if other types are implemented.
+     *
+     * @param type of trading action
+     */
     public void newTradeAction(String type) {
         tradeAction = new ModelTradeAction(type, nowPlaying);
     }
 
+    /**
+     * Injects integer array representing
+     *
+     * @param materialResultSender
+     */
     public void finishTradeAction(int[] materialResultSender) {
-        tradeAction.finischTradeAction(materialResultSender);
+        tradeAction.finishTradeAction(materialResultSender);
         tradeAction = null;
     }
 
+    /**
+     * Frees the reference to a ModelTradeAction, if player decides to abort the step or end his turn prior to ending the action.
+     */
     public void resetTrade() {
         tradeAction = null;
     }
 
-
+    /**
+     * Createsa a new ModelBuildingAction with parameter firstStage = true, so building and connections won't cost anything.
+     *
+     * @param type
+     */
     public void firstBuildingAction(String type) {
         board.firstBuildingAction(type, nowPlaying);
     }
 
 
+    /**
+     * Initiates
+     *
+     * @param type
+     */
     public void newBuildingAction(String type) {
         board.newBuildingAction(type, nowPlaying);
     }
 
     /**
-     * In first part, it will
+     * In first part, it will check
      *
-     * @param coords
+     * @param coords coordinates of building which will be built.
      * @param type
      */
-    public void injectNewBuildingCoordsAndAddWinpoints(int[] coords, String type) {
+    public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            nextPlayer();
+            if (firstBuildingActionSequence.nextPlayer()) {
+                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
+            }else {
+                nextPlayer();
+            }
         }
         if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
             if (board.finishBuildingAction(coords, type)) {
@@ -228,14 +241,22 @@ public class ModelApp {
             }
             if (allOnSameFirstBuildingStep) {
                 firstBuildingStep += 1;
-                nextPlayer();
+                if (firstBuildingActionSequence.nextPlayer()) {
+                    nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
+                }else {
+                    nextPlayer();
+                }
             }
             if (firstBuildingStep >= 2) {
                 resourceStep();
             }
         }
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            nextPlayer();
+            if (firstBuildingActionSequence.nextPlayer()) {
+                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
+            }else {
+                nextPlayer();
+            }
         }
     }
 
@@ -297,10 +318,10 @@ public class ModelApp {
         return tradeAction;
     }
 
-
     public LinkedList<ModelPlayer> getPlayers() {
         return players;
     }
+
 }
 
 

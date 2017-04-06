@@ -37,10 +37,18 @@ public class PaneBoardController {
     private Group diceButtonGroup;
     private Group connectionGroup;
 
+    /**
+     *Run by FXMLLoader attaches ScrollHandler so zooming is possible.
+     */
     public void initialize() {
         attachScrollHandler();
     }
 
+    /**
+     * Generates complete board with all elements on it and adds it to anchorPaneBoard.
+     *
+     * @param modelBoard
+     */
     public void drawBoard(ModelBoard modelBoard) {
         anchorPaneBoard.getChildren().removeAll();
 
@@ -51,12 +59,23 @@ public class PaneBoardController {
         generateBuildingGroup(modelBoard);
     }
 
+    /**
+     * Refreshes all elements which will change during process of game.
+     *
+     * @param modelBoard ModelBoard which will hand over the seperate elements to subclasses.
+     */
     public void refreshBoardElements(ModelBoard modelBoard){
         generateConnectionGroup(modelBoard);
         generateRaiderGroup(modelBoard);
         generateBuildingGroup(modelBoard);
     }
 
+    /**
+     * Generates the background of the board, which will be made out of polygons representing the ModelHexes and their types.
+     * Adds the polygons nodes to anchorPaneBoard.
+     *
+     * @param modelBoard takes the ModelBoard so Method can get the hex collection.
+     */
     public void generateHexGroup(ModelBoard modelBoard){
         if (hexGroup!=null) {
             anchorPaneBoard.getChildren().remove(hexGroup);
@@ -69,6 +88,12 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(hexGroup);
     }
 
+    /**
+     * Generates the DiceButtons which represent the numbers ontop of each resource hex.
+     * Attaches all button to the anchorPaneBoard.
+     *
+     * @param modelBoard  takes the ModelBoard so method can acquire the diceNumber form every hex.
+     */
     public void generateDiceButtonGroup(ModelBoard modelBoard){
         if (diceButtonGroup!=null) {
             anchorPaneBoard.getChildren().remove(diceButtonGroup);
@@ -81,6 +106,12 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(diceButtonGroup);
     }
 
+    /**
+     * Generates all Buildings representing the ModelBuildings given as field of parameter ModelBoard.
+     * Attaches all Buildings as ViewBuilding which is an extended ImageView, directly to the anchorPaneBoard.
+     *
+     * @param modelBoard ModelBoard so methode can acquire the building collection
+     */
     public void generateBuildingGroup(ModelBoard modelBoard){
         if (buildingGroup!=null) {
             anchorPaneBoard.getChildren().remove(buildingGroup);
@@ -93,6 +124,12 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(buildingGroup);
     }
 
+    /**
+     * Generates all Connections representing the ModelBuildings given as field of parameter ModelBoard.
+     * Attaches all Connections as ViewBuilding which is an extended ImageView, directly to the anchorPaneBoard.
+     *
+     * @param modelBoard ModelBoard so methode can acquire the connection collection
+     */
     public void generateConnectionGroup(ModelBoard modelBoard){
         if (connectionGroup!=null) {
             anchorPaneBoard.getChildren().remove(connectionGroup);
@@ -105,6 +142,11 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(connectionGroup);
     }
 
+    /**
+     * Generates the ImageView representing the ModelRaider at his current location.
+     *
+     * @param modelBoard ModelBoard so methode can acquire the ModelRaider.
+     */
     public void generateRaiderGroup(ModelBoard modelBoard){
         if (raiderGroup!=null) {
             anchorPaneBoard.getChildren().remove(raiderGroup);
@@ -117,33 +159,62 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(raiderGroup);
     }
 
+    /**
+     * Is called by the ViewDiceButton and gets its coordinates which will be handed over to the corresponding methode in ModelApp
+     *
+     * @param event ActonEvent
+     */
     public void hexClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
         app.moveRaider(button.getCoords());
         refreshBoardElements(app.getBoard());
         controllerMainStage.raiderMoved();
     }
+
+    /**
+     * Is called by ViewBuilding as onMouseReleased event.
+     * Gets the coordinates stored in event source and hands them over to the corresponding method in the ModelApp
+     *
+     * @param event MouseEvent
+     */
     public void emptyBuildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        app.injectNewBuildingCoordsAndAddWinpoints(building.getBuildingCoord(),"Building");
+        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(building.getBuildingCoord(),"Building");
         refreshBoardElements(app.getBoard());
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
     }
+    /**
+     * Is called by ViewConnection as onMouseReleased event.
+     * Gets the coordinates stored in event source and hands them over to the corresponding method in the ModelApp
+     *
+     * @param event MouseEvent
+     */
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
-        app.injectNewBuildingCoordsAndAddWinpoints(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
+        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
     }
 
 
+    /**
+     *
+     * Takes ControllerMainStage, the MainController, and the ModelApp. MainController is used as reference so other controllers can be called.
+     * App is used as a reference so events can be handed over to ModelApp.
+     *
+     * @param controllerMainStage
+     * @param app
+     */
     public void init(ControllerMainStage controllerMainStage,ModelApp app) {
         this.controllerMainStage = controllerMainStage;
         this.app = app;
     }
 
+    /**
+     * Attaches ScrollHandler to the anchorPaneBoard, so scrolling will be possible as long as the mouse is over the Board.
+     */
     private void attachScrollHandler(){
         anchorPaneBoard.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
@@ -168,6 +239,11 @@ public class PaneBoardController {
         });
     }
 
+    /**
+     * Scales the board according to given input.
+     *
+     * @param scaleSize double generated after ScrollEvent.
+     */
     private void scaleAnchorPaneBoard(double scaleSize){
         anchorPaneBoard.setScaleX(anchorPaneBoard.getScaleX() * scaleSize);
         anchorPaneBoard.setScaleY(anchorPaneBoard.getScaleY() * scaleSize);

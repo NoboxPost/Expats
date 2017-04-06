@@ -19,11 +19,17 @@ public class ModelHex {
     protected boolean raidable= false;
     protected boolean raided = false;
     protected boolean allowsBuildings = false;
-    protected ModelMaterial material = new ModelMaterial(new int[]{0,0,0,0,0});
+    protected ModelMaterial material = new ModelMaterial();
     protected int diceNumber;
 
 
-
+    /**
+     *
+     * Constructor for a new ModelHex, is by default of type water.
+     *
+     * @param xCoord x Hex coordinate
+     * @param yCoord y Hex coordinate
+     */
     public ModelHex(int xCoord, int yCoord) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
@@ -35,7 +41,7 @@ public class ModelHex {
      * @param newDiceNumber
      * @return assigning boolean
      */
-    public boolean asignDiceNumber(int newDiceNumber){
+    public boolean assignDiceNumber(int newDiceNumber){
         if (diceNumber == 0){
             if (newDiceNumber>=1&&newDiceNumber<=12){
                 diceNumber = newDiceNumber;
@@ -113,27 +119,48 @@ public class ModelHex {
         this.diceNumber = diceNumber;
     }
 
+    /**
+     * Getter, returns ModelMaterial of type of Hex with amount 1.
+     *
+     * @return ModelMaterial
+     */
     public ModelMaterial getMaterial(){
         return material;
     }
 
+    /**
+     * Getter for type of hex.
+     *
+     * @return type.
+     */
     public String getType(){return type;}
 
-    public boolean checkIfRaided(){
+    /**
+     * Getter for boolean raided
+     *
+     * @return
+     */
+    public boolean getRaided(){
         return raided;
     }
-    //TODO: get method rename and the methods should be rearranged
 
+
+    /**
+     * Getter for dice number of hex.
+     *
+     * @return
+     */
     public int getDiceNumber() {
         return diceNumber;
     }
 
+    /**
+     * Getter of coordinates of current hex in an integer array, 1. position corresponding to x coordinate, 2. position corresponding to y coordinate.
+     *
+     * @return
+     */
     public int[] getCoords(){
         return new int[]{xCoord,yCoord};
-    }
-
-    public boolean getAllowsBuildings() {
-        return allowsBuildings;
     }
 
 }

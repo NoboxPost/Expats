@@ -1,6 +1,7 @@
 package expat.view;
 
 import expat.control.PaneActionController;
+import expat.model.ModelMaterial;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -53,7 +54,7 @@ public class ViewPaneDropMaterial extends HBox {
     public void generateFirstTimeContent() {
         this.getChildren().clear();
         this.getChildren().add(lblPlayerName);
-        ViewCardsFactory cardsFactory = new ViewCardsFactory();
+        ViewCardsFactory cardsFactory = new ViewCardsFactory(new ModelMaterial());
         for (int i = 0; i < 5; i++) {
             ImageView materialImageView = cardsFactory.generateCardImageView(i);
             this.getChildren().add(materialImageView);

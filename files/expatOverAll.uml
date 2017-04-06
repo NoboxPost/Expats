@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>expat</OriginalElement>
+  <nodes>
+    <node x="-2166.0021892349278" y="4772.499999999999">expat.view.ViewCoordinateCalculator</node>
+    <node x="-2125.395833333333" y="5829.999999999999">expat.view.ViewBuildingFactory</node>
+    <node x="5813.499999999996" y="5070.0">expat.model.ModelCoordinateCalculator</node>
+    <node x="2183.003592097937" y="2070.999999999999">expat.control.PanePlayerController</node>
+    <node x="-1587.4855225682613" y="4826.499999999999">expat.view.ViewDiceNumber</node>
+    <node x="-3571.041666666666" y="4719.499999999999">expat.view.ViewCardsNumberFactory</node>
+    <node x="-2985.2355225682613" y="4786.499999999999">expat.view.ViewHex</node>
+    <node x="8148.874999999996" y="4577.5">expat.model.ModelPlayerGenerator</node>
+    <node x="6456.472810765068" y="5110.5">expat.model.ModelRaider</node>
+    <node x="1585.7644774317391" y="2793.999999999999">expat.control.PaneActionController</node>
+    <node x="5492.499999999996" y="5442.0">expat.model.buildings.ModelBuildingFactory</node>
+    <node x="-653.7291666666656" y="5329.999999999999">expat.view.ViewPaneTradeGeneral</node>
+    <node x="7866.374999999996" y="5952.0">expat.model.ModelFirstBuildingActionSequence</node>
+    <node x="-255.04166666666606" y="4929.666666666665">expat.view.ViewCardsFactory</node>
+    <node x="3915.1430695296685" y="5120.0">expat.model.ModelMaterial</node>
+    <node x="-1670.856930470325" y="5285.999999999999">expat.view.ViewDiceButtonFactory</node>
+    <node x="6371.18943164419" y="4374.0">expat.model.buildings.ModelBuilding</node>
+    <node x="5052.875" y="3971.0">expat.model.ModelApp</node>
+    <node x="5985.499999999996" y="5496.0">expat.model.buildings.ModelConnectionFactory</node>
+    <node x="246.2708333333344" y="5212.999999999999">expat.view.ViewPaneDropMaterial</node>
+    <node x="6292.768069529671" y="3874.0">expat.model.board.ModelHex</node>
+    <node x="-2772.856930470325" y="5285.999999999999">expat.view.ViewConnectionFactory</node>
+    <node x="8433.95833333333" y="4522.5">expat.model.ModelTradeAction</node>
+    <node x="7624.374999999996" y="6020.0">expat.model.ModelDiceRolling</node>
+    <node x="2745.854166666667" y="2863.9999999999995">expat.control.PaneBoardController</node>
+    <node x="7551.249999999996" y="4989.0">expat.model.buildings.ModelBuildingAction</node>
+    <node x="2747.0416666666674" y="3821.9999999999995">expat.control.PaneMatesController</node>
+    <node x="-2626.9855225682613" y="4826.499999999999">expat.view.ViewConnection</node>
+    <node x="7232.249999999996" y="5428.0">expat.model.board.ModelBoard</node>
+    <node x="5061.499999999996" y="5523.5">expat.model.board.ModelHexFactory</node>
+    <node x="-2591.145833333333" y="5763.999999999999">expat.view.ViewBuilding</node>
+    <node x="4919.999999999996" y="5124.0">expat.model.board.ModelDiceNumberRandomDeployer</node>
+    <node x="-3106.856930470325" y="5258.999999999999">expat.view.ViewHexFactory</node>
+    <node x="2842.854166666667" y="2252.4999999999995">expat.control.ControllerMainStage</node>
+    <node x="6971.18943164419" y="4428.0">expat.model.buildings.ModelConnection</node>
+    <node x="7991.106098310856" y="3901.0">expat.model.ModelPlayer</node>
+    <node x="-2201.856930470325" y="5312.999999999999">expat.view.ViewRaiderFactory</node>
+    <node x="6494.499999999996" y="5979.5">expat.model.board.ModelBoardFactory</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="expat.view.ViewPaneTradeGeneral" target="expat.control.PaneActionController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.buildings.ModelConnection">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelConnectionFactory" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingFactory" target="expat.model.ModelCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuilding" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.board.ModelBoardFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.ModelFirstBuildingActionSequence">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewRaiderFactory" target="expat.view.ViewCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.ControllerMainStage" target="expat.control.PaneBoardController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelTradeAction" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.control.ControllerMainStage">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneActionController" target="expat.control.ControllerMainStage">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.ControllerMainStage" target="expat.control.PanePlayerController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelConnection" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.ModelDiceRolling">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneActionController" target="expat.view.ViewPaneTradeGeneral">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PanePlayerController" target="expat.model.ModelApp">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingFactory" target="expat.model.buildings.ModelBuilding">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewDiceButtonFactory" target="expat.view.ViewCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelPlayer" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.ModelTradeAction">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewHexFactory" target="expat.view.ViewHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PanePlayerController" target="expat.view.ViewCardsFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingAction" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewConnectionFactory" target="expat.view.ViewConnection">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelHexFactory" target="expat.model.board.ModelDiceNumberRandomDeployer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelFirstBuildingActionSequence" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewHexFactory" target="expat.view.ViewCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingFactory" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewCardsFactory" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelConnection" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewBuildingFactory" target="expat.view.ViewCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelTradeAction" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PanePlayerController" target="expat.control.ControllerMainStage">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewPaneDropMaterial" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.ModelRaider">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoard" target="expat.model.ModelRaider">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuilding" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.view.ViewRaiderFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelRaider" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.buildings.ModelBuildingFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.ControllerMainStage" target="expat.control.PaneMatesController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingAction" target="expat.model.buildings.ModelConnection">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewRaiderFactory" target="expat.control.PaneBoardController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelConnectionFactory" target="expat.model.buildings.ModelConnection">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.ModelPlayerGenerator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewBuildingFactory" target="expat.control.PaneBoardController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.board.ModelBoard">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewPaneDropMaterial" target="expat.view.ViewCardsFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.buildings.ModelConnectionFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.ControllerMainStage" target="expat.control.PaneActionController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneActionController" target="expat.view.ViewCardsFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoard" target="expat.model.buildings.ModelBuilding">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewDiceButtonFactory" target="expat.control.PaneBoardController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneMatesController" target="expat.model.ModelApp">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.view.ViewConnectionFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.view.ViewDiceButtonFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.board.ModelHexFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoard" target="expat.model.buildings.ModelConnection">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.view.ViewHexFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.ControllerMainStage" target="expat.model.ModelApp">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneActionController" target="expat.model.ModelApp">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewPaneTradeGeneral" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.view.ViewBuildingFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingAction" target="expat.model.buildings.ModelBuilding">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewConnectionFactory" target="expat.control.PaneBoardController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewDiceButtonFactory" target="expat.view.ViewDiceNumber">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewPaneDropMaterial" target="expat.control.PaneActionController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelHexFactory" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelPlayerGenerator" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewPaneTradeGeneral" target="expat.view.ViewCardsFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelFirstBuildingActionSequence" target="expat.model.board.ModelBoard">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewConnectionFactory" target="expat.view.ViewCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelHex" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoard" target="expat.model.buildings.ModelBuildingAction">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneActionController" target="expat.view.ViewPaneDropMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewBuildingFactory" target="expat.view.ViewBuilding">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.buildings.ModelBuilding">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.view.ViewCardsFactory" target="expat.view.ViewCardsNumberFactory">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.ModelMaterial">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.control.PaneBoardController" target="expat.model.ModelApp">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelConnectionFactory" target="expat.model.ModelCoordinateCalculator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.ModelApp" target="expat.model.board.ModelBoard">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.buildings.ModelBuildingAction" target="expat.model.ModelPlayer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoardFactory" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="expat.model.board.ModelBoard" target="expat.model.board.ModelHex">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.10000000000000006" x="2663.9999999999945" y="4436.999999999997" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

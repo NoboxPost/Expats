@@ -7,6 +7,12 @@ public class ModelMaterial {
     private String[] materialNames = new String[]{"Clay", "Grain", "Stone", "Wood", "Wool"};
     private int[] materialAmount = new int[5];
 
+
+
+    public ModelMaterial(){
+        materialAmount = new int[]{0,0,0,0,0};
+    }
+
     public ModelMaterial(int[] materialAmount) {
         this.materialAmount = materialAmount;
     }
