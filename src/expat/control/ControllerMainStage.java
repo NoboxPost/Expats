@@ -49,7 +49,7 @@ public class ControllerMainStage {
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
-        app = new ModelApp(this, paneBoardController, paneMatesController, paneActionController, panePlayerController);
+        app = new ModelApp();
         paneBoardController.init(this,app);
         paneActionController.init(this,app);
         panePlayerController.init(this, app);

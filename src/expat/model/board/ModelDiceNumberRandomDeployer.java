@@ -1,4 +1,4 @@
-package expat.model;
+package expat.model.board;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,13 +12,13 @@ import java.util.Random;
  */
 public class ModelDiceNumberRandomDeployer {
 
-    ArrayList<Integer> dicenumbers;
+    private ArrayList<Integer> dicenumbers =new ArrayList<>();
 
 
     public ModelDiceNumberRandomDeployer() {
         int[] numbers = new int[]{2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12};
-        for (int i: numbers) {
-            dicenumbers.add(i);
+        for (int i = 0; i<numbers.length;i++) {
+            dicenumbers.add(numbers[i]);
         }
     }
     public int getADiceNumber(){

@@ -125,14 +125,14 @@ public class PaneBoardController {
     }
     public void emptyBuildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        app.injectNewBuildingCoordsAndAddWinpoints(building.getBuildingCoord(),"Building");
+        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(building.getBuildingCoord(),"Building");
         refreshBoardElements(app.getBoard());
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
     }
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
-        app.injectNewBuildingCoordsAndAddWinpoints(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
+        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();

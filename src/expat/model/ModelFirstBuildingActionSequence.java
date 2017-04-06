@@ -14,13 +14,11 @@ public class ModelFirstBuildingActionSequence {
     private int playerCounter;
     private ModelPlayer[] players;
     private ModelBoard board;
-    private ModelBuildingAction buildingAction;
 
     private int[][] amountOfBuildingsPerPlayer;
     private int[] indexOfSequenceForFirstBuilding;
     private int currentPlayerIndex = 0;
-    private boolean currentPlayerBuildingBuilt;
-    private boolean currentPlayerConnectionBuilt;
+
 
 
     public ModelFirstBuildingActionSequence(List<ModelPlayer> playerList, ModelBoard board) {
@@ -54,7 +52,7 @@ public class ModelFirstBuildingActionSequence {
     }
 
     public boolean nextPlayer(){
-        if (currentPlayerIndex<indexOfSequenceForFirstBuilding.length){
+        if (currentPlayerIndex<indexOfSequenceForFirstBuilding.length-1){
             currentPlayerIndex+=1;
             return true;
         }else{

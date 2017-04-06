@@ -19,13 +19,21 @@ public class ViewCardsFactory {
     ModelMaterial material;
     ViewCardsNumberFactory cardsNumberFactory;
 
-    public ViewCardsFactory(){
-        material = new ModelMaterial();
-    }
+
+    /**
+     * Constructor for a new ViewCardFactory, takes a ModelMaterial so amount of type of specific material can be generated.
+     *
+     * @param material ModelMaterial can be a new ModelMaterial with all amounts = 0.
+     */
     public ViewCardsFactory(ModelMaterial material) {
         this.material = material;
     }
 
+    /**
+     * Generates a a HBox with cards side by side which is added in the result screen of the dice roll.
+     *
+     * @return HBox with cards representing the amount of materials given in the constructor.
+     */
     public HBox generateUnitedCardsHBox() {
         HBox unitedCardsHBox = new HBox();
         unitedCardsHBox.setMaxHeight(80);

@@ -132,6 +132,9 @@ public class PaneActionController {
     public void drawFirstSettlementAndRoadStep() {
         middleActionPane.getChildren().clear();
 
+
+        Label playerName = new Label("Player "+app.getNowPlaying().getPlayerName());
+
         Image settlement = new Image("expat/img/Settlement.png");
         settlementImageView = new ImageView(settlement);
         settlementImageView.setFitHeight(80);
@@ -146,7 +149,7 @@ public class PaneActionController {
         roadImageView.setOnMouseReleased(this::generateFirstRoad);
         roadImageView.setCursor(Cursor.HAND);
 
-        middleActionPane.getChildren().addAll(settlementImageView, roadImageView);
+        middleActionPane.getChildren().addAll(playerName,settlementImageView, roadImageView);
         if (app.getFirstBuildingStep() < 2) {
             btnNextStep.setDisable(true);
             btnEndTurn.setDisable(true);

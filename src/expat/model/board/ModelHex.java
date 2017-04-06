@@ -41,7 +41,7 @@ public class ModelHex {
      * @param newDiceNumber
      * @return assigning boolean
      */
-    public boolean asignDiceNumber(int newDiceNumber){
+    public boolean assignDiceNumber(int newDiceNumber){
         if (diceNumber == 0){
             if (newDiceNumber>=1&&newDiceNumber<=12){
                 diceNumber = newDiceNumber;
