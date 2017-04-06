@@ -18,6 +18,10 @@ public class ModelMaterial {
     }
 
 
+    /**
+     * @param materialToAdd
+     * @return
+     */
     public boolean addMaterial(ModelMaterial materialToAdd) {
         for (int i = 0 ; i<5;i++){
             materialAmount[i]+= materialToAdd.getMaterialAmount()[i];
@@ -25,6 +29,10 @@ public class ModelMaterial {
         return true;
     }
 
+    /**
+     * @param materialToReduce
+     * @return
+     */
     public boolean reduceMaterial(ModelMaterial materialToReduce) {
         boolean belowZero = false;
         int[] materialCheck = materialAmount.clone();
@@ -44,6 +52,9 @@ public class ModelMaterial {
         }
     }
 
+    /**
+     * @return
+     */
     public String allMaterialsString() {
         String materialString = "";
 
@@ -54,6 +65,10 @@ public class ModelMaterial {
         }
         return materialString;
     }
+
+    /**
+     * @return
+     */
     public int getSumOfAllMaterials(){
         int materialSum = 0;
         for (int i = 0; i < 5; i++) {
@@ -62,10 +77,16 @@ public class ModelMaterial {
         return materialSum;
     }
 
+    /**
+     * @return
+     */
     public int[] getMaterialAmount() {
         return materialAmount;
     }
 
+    /**
+     * @return
+     */
     public String[] getMaterialNames() {
         return materialNames;
     }

@@ -44,6 +44,9 @@ public class ModelFirstBuildingActionSequence {
         checkBuidlingsPerPlayer();
     }
 
+    /**
+     *
+     */
     public void checkBuidlingsPerPlayer() {
         for (int i = 0; i < playerCounter; i++) {
             amountOfBuildingsPerPlayer[i][0] = board.countBuildingsOwned(players[i]);
@@ -51,6 +54,9 @@ public class ModelFirstBuildingActionSequence {
         }
     }
 
+    /**
+     * @return
+     */
     public boolean nextPlayer(){
         if (currentPlayerIndex<indexOfSequenceForFirstBuilding.length-1){
             currentPlayerIndex+=1;
@@ -61,7 +67,9 @@ public class ModelFirstBuildingActionSequence {
     }
 
 
-
+    /**
+     * @return
+     */
     public ModelPlayer getCurrentPlayer(){
         return players[indexOfSequenceForFirstBuilding[currentPlayerIndex]];
     }

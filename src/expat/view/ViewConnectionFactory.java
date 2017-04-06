@@ -26,6 +26,10 @@ public class ViewConnectionFactory {
         viewCoordinateCalculator = new ViewCoordinateCalculator(hexSize);
     }
 
+    /**
+     * @param modelConnections
+     * @return
+     */
     public ArrayList<ViewConnection> generateConnections(ArrayList<ModelConnection> modelConnections) {
         ArrayList<ViewConnection> viewConnections = new ArrayList<>();
         for (ModelConnection modelConnection : modelConnections) {
@@ -53,6 +57,10 @@ public class ViewConnectionFactory {
         return viewConnections;
     }
 
+    /**
+     * @param color
+     * @return
+     */
     private ColorAdjust generatePlayerColorEffect(String color) {
         ColorAdjust colorAdjust = new ColorAdjust();
         switch (color.toLowerCase()) {
@@ -93,6 +101,11 @@ public class ViewConnectionFactory {
     }
 
 
+    /**
+     * @param xCoord
+     * @param yCoord
+     * @return
+     */
     private ViewConnection generateRoad(int xCoord, int yCoord) {
         Image img = new Image("expat/img/Connection.png");
         ViewConnection viewConnection = new ViewConnection(img, xCoord, yCoord);

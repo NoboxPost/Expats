@@ -24,10 +24,13 @@ public class ModelConnectionFactory {
         this.hexes = hexes;
         this.xHexSize = xSize;
         this.yHexSize = ySize;
-        coordinateCalculator = new ModelCoordinateCalculator(xSize, ySize);
+        coordinateCalculator = new ModelCoordinateCalculator();
     }
 
 
+    /**
+     *
+     */
     public void generateConnectionsForAllHexes() {
         if (hexes != null && xHexSize != 0 && yHexSize != 0) {
             for (int x = 0; x < xHexSize; x++) {

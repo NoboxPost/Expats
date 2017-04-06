@@ -20,6 +20,9 @@ public class ViewDiceNumber extends Button {
         this.yCoord = yCoord;
     }
 
+    /**
+     * @return
+     */
     public int[] getCoords() {
         return new int[]{xCoord,yCoord};
     }

@@ -52,13 +52,18 @@ public class ModelConnection {
     }
 
 
-
-
+    /**
+     * @return
+     */
     public boolean getOnWater(){
         return onWater;
     }
 
 
+    /**
+     * @param hex
+     * @return
+     */
     public boolean addNeighbour(ModelHex hex){
         if (neighbours[1]!=null){
             return false;
@@ -77,20 +82,34 @@ public class ModelConnection {
         }
     }
 
+    /**
+     * @param type
+     * @param owner
+     */
     public void buildRoad(String type,ModelPlayer owner){
         this.owner = owner;
         this.type = type;
     }
 
 
+    /**
+     * @return
+     */
     public int[] getCoords() {
 
         return new int[]{xBuildingCoord,yBuildingCoord};
     }
 
+    /**
+     * @return
+     */
     public ModelPlayer getOwner(){
         return owner;
     }
+
+    /**
+     * @return
+     */
     public String getOrientation() {
         return orientation;
     }

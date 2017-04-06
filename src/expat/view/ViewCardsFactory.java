@@ -47,6 +47,9 @@ public class ViewCardsFactory {
         return unitedCardsHBox;
     }
 
+    /**
+     * @return
+     */
     public Pane generateSplittedCardsVBox() {
         VBox splittedCardsVBox = new VBox();
         splittedCardsVBox.setSpacing(30);
@@ -84,10 +87,18 @@ public class ViewCardsFactory {
         return splittedCardsVBox;
     }
 
+    /**
+     * @param i
+     * @return
+     */
     public ImageView generateCardImageView(int i){
         return generateCardImageView(material.getMaterialNames()[i]);
     }
 
+    /**
+     * @param type
+     * @return
+     */
     public ImageView generateCardImageView(String type){
         ImageView cardImageView;
 

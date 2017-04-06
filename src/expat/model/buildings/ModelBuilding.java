@@ -5,7 +5,11 @@ import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
 
 /**
- * Created by vanonir on 22.03.2017.
+ * is responsible for handling all aspects of a building
+ * <p>
+ * created on 22.03.2017
+ *
+ * @author vanonir
  */
 public class ModelBuilding {
     private ModelHex[] neighbours = new ModelHex[3];
@@ -23,6 +27,12 @@ public class ModelBuilding {
         this.yBuildingCoord = yBuildingCoord;
     }
 
+    /**
+     * Takes a hex field and checks whether this building object is flanking it or not
+     *
+     * @param hexNeighbour
+     * @return boolean, whether the building is flanking a specific hex or not
+     */
     public boolean isFlanking(ModelHex hexNeighbour){
         for (ModelHex hex: neighbours){
             if (hex.equals(hexNeighbour)){//TODO: Test if equals really works. Performance?
@@ -31,6 +41,13 @@ public class ModelBuilding {
         }
         return false;
     }
+
+    /**
+     * Adds hex fields as neighbors of this building object
+     *
+     * @param hex
+     * @return boolean, whether a hex field could get assigned as neighbors to this building object or not
+     */
     public boolean addNeighbour(ModelHex hex){
         if (neighbours[2]!=null){
             return false;
@@ -46,6 +63,11 @@ public class ModelBuilding {
         }
     }
 
+    /**
+     *
+     *
+     * @param material
+     */
     public void giveMaterialToOwner(ModelMaterial material){
         if(!type.equals("empty")){
             for (int i = 0;i<resourceMultiplier;i++){
@@ -54,6 +76,9 @@ public class ModelBuilding {
         }
     }
 
+    /**
+     * @param owner
+     */
     public void buildSettlement(ModelPlayer owner){
         this.owner = owner;
         type = "Settlement";
@@ -61,6 +86,9 @@ public class ModelBuilding {
         resourceMultiplier = 1;
     }
 
+    /**
+     * @param owner
+     */
     public void buildTown(ModelPlayer owner){
         this.owner = owner;
         type = "Town";
@@ -86,22 +114,37 @@ public class ModelBuilding {
         }
     }
 
+    /**
+     * @return
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * @return
+     */
     public int[] getCoords(){
         return new int[]{xBuildingCoord,yBuildingCoord};
     }
 
+    /**
+     * @return
+     */
     public boolean isDisplay() {
         return display;
     }
 
+    /**
+     * @param display
+     */
     public void setDisplay(boolean display) {
         this.display = display;
     }
 
+    /**
+     * @return
+     */
     public ModelPlayer getOwner() {
         return owner;
     }
