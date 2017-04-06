@@ -24,7 +24,7 @@ public class ModelConnectionFactory {
         this.hexes = hexes;
         this.xHexSize = xSize;
         this.yHexSize = ySize;
-        coordinateCalculator = new ModelCoordinateCalculator(xSize, ySize);
+        coordinateCalculator = new ModelCoordinateCalculator();
     }
 
 

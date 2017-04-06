@@ -41,6 +41,7 @@ public class ModelHex {
      * @param newDiceNumber
      * @return assigning boolean
      */
+    @Deprecated
     public boolean assignDiceNumber(int newDiceNumber){
         if (diceNumber == 0){
             if (newDiceNumber>=1&&newDiceNumber<=12){
@@ -88,7 +89,7 @@ public class ModelHex {
      * @param type
      * @param diceNumber
      */
-    public void setTypeAndDiceNumber(String type, int diceNumber){
+    public void assignTypeAndDiceNumber(String type, int diceNumber){
         this.type = type;
         if (!type.equals("Water")){
             allowsBuildings = true;
