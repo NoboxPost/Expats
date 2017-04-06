@@ -6,6 +6,7 @@ import expat.view.ViewPaneDropMaterial;
 import expat.view.ViewPaneTradeGeneral;
 import javafx.event.ActionEvent;
 
+import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,13 +27,13 @@ import javafx.scene.layout.Pane;
  * @author gallatib
  */
 public class PaneActionController {
-    public Button btnNextStep;
-    public Button btnEndTurn;
-    public AnchorPane rightActionPane;
-    public HBox middleActionPane;
-    public Pane leftActionPane;
+    @FXML public Button btnNextStep;
+    @FXML public Button btnEndTurn;
+    @FXML public AnchorPane rightActionPane;
+    @FXML public HBox middleActionPane;
+    @FXML public Pane leftActionPane;
+    @FXML public AnchorPane action;
     private ControllerMainStage controllerMainStage;
-    public AnchorPane action;
     private ImageView roadImageView;
     private ImageView townImageView;
     private ImageView settlementImageView;
@@ -42,11 +43,20 @@ public class PaneActionController {
     private ModelApp app;
 
 
+    /**
+     * Needs to be called at program start. Injects ControllerMainStage and ModelApp into this controller, so he can call back.
+     *
+     * @param controllerMainStage reference to ControllerMainStage.
+     * @param app reference to ModelApp generatet by ControlerMainStage.
+     */
     public void init(ControllerMainStage controllerMainStage, ModelApp app) {
         this.controllerMainStage = controllerMainStage;
         this.app = app;
     }
 
+    /**
+     *
+     */
     public void drawResourceStep() {
         middleActionPane.getChildren().clear();
         if (app.getDiceNumber() != 0) {
