@@ -34,6 +34,11 @@ public class ViewPaneDropMaterial extends HBox {
     private boolean isDone= false;
 
 
+    /**
+     * @param materialAtStartArray
+     * @param paneActionController
+     * @param name
+     */
     public ViewPaneDropMaterial(int[] materialAtStartArray, PaneActionController paneActionController,String name) {
         this.materialAtStartArray = materialAtStartArray;
         materialAtEdnArray = materialAtStartArray.clone();
@@ -51,6 +56,9 @@ public class ViewPaneDropMaterial extends HBox {
     }
 
 
+    /**
+     *
+     */
     public void generateFirstTimeContent() {
         this.getChildren().clear();
         this.getChildren().add(lblPlayerName);
@@ -75,6 +83,9 @@ public class ViewPaneDropMaterial extends HBox {
         this.getChildren().add(vBox);
     }
 
+    /**
+     * @param btnclicked
+     */
     public void adjustMaterial(Button btnclicked) {
         for (int i = 0; i < 5; i++) {
             if (btnclicked == btnsMaterialPlus[i] &&materialAtEdnArray[i]<=materialAtStartArray[i]) {
@@ -94,6 +105,9 @@ public class ViewPaneDropMaterial extends HBox {
         refresh();
     }
 
+    /**
+     *
+     */
     public void refresh() {
         for (int i = 0; i < 5; i++) {
             lblsmaterial[i].setText(materialTypes[i] + " " + materialAtEdnArray[i]);
@@ -107,6 +121,9 @@ public class ViewPaneDropMaterial extends HBox {
         }
     }
 
+    /**
+     * @return
+     */
     public int[] getEndDifference() {
         int[] difference = new int[5];
         for (int i = 0; i < 5; i++) {
@@ -115,10 +132,16 @@ public class ViewPaneDropMaterial extends HBox {
         return difference;
     }
 
+    /**
+     * @param done
+     */
     public void setDone(boolean done) {
         isDone = done;
     }
 
+    /**
+     * @return
+     */
     public boolean isDone() {
         return isDone;
     }

@@ -21,7 +21,7 @@ public class ModelBuildingFactory {
         this.hexes = hexes;
         this.xHexSize = xSize;
         this.yHexSize = ySize;
-        coordinateCalculator = new ModelCoordinateCalculator(xSize, ySize);
+        coordinateCalculator = new ModelCoordinateCalculator();
     }
 
 
@@ -208,6 +208,9 @@ public class ModelBuildingFactory {
         return false;
     }
 
+    /**
+     * @return
+     */
     public ArrayList<ModelBuilding> generateBuildings() {
         generateEmptyBuildingSpotsForAllHexes();
         return modelBuildings;

@@ -125,6 +125,10 @@ public class ViewBuildingFactory {
 
     }
 
+    /**
+     * @param color
+     * @return
+     */
     private ColorAdjust generatePlayerColorEffectForTown(String color) {
         ColorAdjust colorAdjust = new ColorAdjust();
         switch (color.toLowerCase()) {
@@ -164,6 +168,10 @@ public class ViewBuildingFactory {
 
     }
 
+    /**
+     * @param color
+     * @return
+     */
     private Effect generatePlayerColorEffectForSettlement(String color) {
         ColorAdjust colorAdjust = new ColorAdjust();
         switch (color.toLowerCase()) {
