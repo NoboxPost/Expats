@@ -45,6 +45,9 @@ public class ViewPaneTradeGeneral extends HBox {
     }
 
 
+    /**
+     *
+     */
     public void generateFirstTimeContent() {
         this.getChildren().clear();
         ViewCardsFactory cardsFactory = new ViewCardsFactory(new ModelMaterial());
@@ -68,6 +71,9 @@ public class ViewPaneTradeGeneral extends HBox {
         this.getChildren().add(vBox);
     }
 
+    /**
+     * @param btnclicked
+     */
     public void adjustMaterial(Button btnclicked) {
         for (int i = 0; i < 5; i++) {
             if (btnclicked == btnsMaterialPlus[i]) {
@@ -90,6 +96,9 @@ public class ViewPaneTradeGeneral extends HBox {
         refresh();
     }
 
+    /**
+     *
+     */
     public void refresh() {
         for (int i = 0; i < 5; i++) {
             lblsmaterial[i].setText(materialTypes[i] + " " + materialAtEdnArray[i]);
@@ -102,6 +111,10 @@ public class ViewPaneTradeGeneral extends HBox {
             btnTrade.setDisable(true);
         }
     }
+
+    /**
+     * @return
+     */
     public int[] getEndDifference(){
         int[] difference = new int[5];
         for (int i = 0; i < 5; i++) {

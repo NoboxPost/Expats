@@ -204,6 +204,11 @@ public class ModelBuildingAction {
         }
     }
 
+    /**
+     * @param coords
+     * @param connection
+     * @return
+     */
     public boolean checkSettlementforConnectionToBeBuilt(int[] coords, ModelConnection connection) {
         boolean legalPosition = false;
         int xCoordOfNewConnection = coords[0];

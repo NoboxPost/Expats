@@ -27,6 +27,11 @@ public class ViewDiceButtonFactory {
         this.paneBoardController = paneBoardController;
         coordCalculator = new ViewCoordinateCalculator(hexSize);
     }
+
+    /**
+     * @param hexes
+     * @return
+     */
     public List<StackPane> generateDiceButtons(ModelHex[][] hexes){
         List<StackPane> buttonPanes= new ArrayList<StackPane>();
         for (ModelHex[] hexline : hexes) {
@@ -39,6 +44,10 @@ public class ViewDiceButtonFactory {
         return buttonPanes;
     }
 
+    /**
+     * @param hex
+     * @return
+     */
     public StackPane generateDiceButton(ModelHex hex){
         Double[] coords = coordCalculator.calcHexCoords(hex);
         StackPane pane = new StackPane();

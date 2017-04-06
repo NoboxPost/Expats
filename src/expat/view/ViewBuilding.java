@@ -20,6 +20,9 @@ public class ViewBuilding extends ImageView {
         this.yBuildingCoord = yBuildingCoord;
     }
 
+    /**
+     * @return
+     */
     public int[] getBuildingCoord() {
         return new int[]{xBuildingCoord,yBuildingCoord};
     }

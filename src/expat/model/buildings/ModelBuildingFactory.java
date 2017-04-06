@@ -208,6 +208,9 @@ public class ModelBuildingFactory {
         return false;
     }
 
+    /**
+     * @return
+     */
     public ArrayList<ModelBuilding> generateBuildings() {
         generateEmptyBuildingSpotsForAllHexes();
         return modelBuildings;

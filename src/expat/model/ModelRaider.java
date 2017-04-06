@@ -30,14 +30,24 @@ public class ModelRaider {
         hex.raid();
         this.hex = hex;
     }
+
+    /**
+     * @param movementIsAllowed
+     */
     public void setAllowMovement(boolean movementIsAllowed){
         this.allowMovement = movementIsAllowed;
     }
 
+    /**
+     * @return
+     */
     public boolean getAllowMovement() {
         return allowMovement;
     }
 
+    /**
+     * @return
+     */
     public ModelHex getRaiderHex() {
         return hex;
     }

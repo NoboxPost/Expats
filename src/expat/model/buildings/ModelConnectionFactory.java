@@ -28,6 +28,9 @@ public class ModelConnectionFactory {
     }
 
 
+    /**
+     *
+     */
     public void generateConnectionsForAllHexes() {
         if (hexes != null && xHexSize != 0 && yHexSize != 0) {
             for (int x = 0; x < xHexSize; x++) {
