@@ -9,8 +9,9 @@ package expat.model.board;
  */
 public class ModelHexFactory {
 
-    private boolean standardHexLayout = true;
-    private boolean standardDiceDistribution = true;
+    private boolean defaultLayout = true;
+    private boolean standardHexResources = false;
+    private boolean standardDiceDistribution = false;
     private int xSize, ySize;
     private ModelHex[][] hexes;
 
@@ -33,12 +34,18 @@ public class ModelHexFactory {
         }
 
 
-        if (standardDiceDistribution && standardHexLayout) {
-            generateHexesBasicLayout();
-        } else if (standardHexLayout && !standardDiceDistribution) {
-            generateBasicLayoutRandomDiceNumbers();
+        if (defaultLayout) {
+            if (standardDiceDistribution && standardHexResources) {
+                generateHexesDefaultLayoutDefaultDices();
+            } else if (standardHexResources && !standardDiceDistribution) {
+                generateDefautlLayoutRandomDices();
+            } else if (!standardHexResources && standardDiceDistribution){
+                generateDefaultLayoutRandomHexDefaultDices();
+            } else {
+                generateDefaultLayoutRandomHexRandomDices();
+            }
         } else {
-            generateHexesBasicLayout();
+            generateHexesDefaultLayoutDefaultDices();
         }
         //TODO:Implement random deployment of hexes and DiceNumbers
 
@@ -48,9 +55,63 @@ public class ModelHexFactory {
     }
 
     /**
+     * generates default island with randomly distributed resources and dice numbers.
+     */
+    private void generateDefaultLayoutRandomHexRandomDices() {
+        ModelDiceNumberDeployer diceNumberRandomDeployer = new ModelDiceNumberDeployer();
+        ModelHexResourceDeplyoyer resourceDeplyoyer = new ModelHexResourceDeplyoyer();
+        hexes[3][1].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][1].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[5][1].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[2][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[5][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[6][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[2][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][3].assignTypeAndDiceNumber("Desert", 0);
+        hexes[5][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[6][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[2][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[3][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[5][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[6][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+        hexes[4][5].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), diceNumberRandomDeployer.getADiceNumber());
+    }
+
+    /**
+     * changes hexes according to default layout with randomiced resources and default diceNumbers
+     */
+    private void generateDefaultLayoutRandomHexDefaultDices() {
+        ModelHexResourceDeplyoyer resourceDeplyoyer = new ModelHexResourceDeplyoyer();
+        hexes[3][1].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 2);
+        hexes[4][1].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 4);
+        hexes[5][1].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 6);
+        hexes[2][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 9);
+        hexes[3][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 8);
+        hexes[4][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 5);
+        hexes[5][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 12);
+        hexes[6][2].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 9);
+        hexes[2][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 3);
+        hexes[3][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 5);
+        hexes[4][3].assignTypeAndDiceNumber("Desert", 0);
+        hexes[5][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 8);
+        hexes[6][3].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 4);
+        hexes[2][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 3);
+        hexes[3][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 6);
+        hexes[4][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 10);
+        hexes[5][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 11);
+        hexes[6][4].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 10);
+        hexes[4][5].assignTypeAndDiceNumber(resourceDeplyoyer.getAResource(), 11);
+
+    }
+
+    /**
      * changes hexes and dice numbers according to basic game layout.
      */
-    private void generateHexesBasicLayout() {
+    private void generateHexesDefaultLayoutDefaultDices() {
 
         hexes[3][1].assignTypeAndDiceNumber("Clay", 2);
         hexes[4][1].assignTypeAndDiceNumber("Grain", 4);
@@ -76,8 +137,8 @@ public class ModelHexFactory {
     /**
      * changes hexes to basic material distribution and deploys random dice numbers.
      */
-    public void generateBasicLayoutRandomDiceNumbers(){
-        ModelDiceNumberRandomDeployer diceNumberRandomDeployer = new ModelDiceNumberRandomDeployer();
+    public void generateDefautlLayoutRandomDices() {
+        ModelDiceNumberDeployer diceNumberRandomDeployer = new ModelDiceNumberDeployer();
         hexes[3][1].assignTypeAndDiceNumber("Clay", diceNumberRandomDeployer.getADiceNumber());
         hexes[4][1].assignTypeAndDiceNumber("Grain", diceNumberRandomDeployer.getADiceNumber());
         hexes[5][1].assignTypeAndDiceNumber("Wood", diceNumberRandomDeployer.getADiceNumber());
