@@ -1,6 +1,6 @@
 package expat;
 
-import expat.control.ControllerMainStage;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +26,6 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        ModelApp app = new ModelApp(this, controllerBoardPane);
     }
 
 

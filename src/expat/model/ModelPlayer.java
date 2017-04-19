@@ -33,6 +33,10 @@ public class ModelPlayer {
         return false;
     }
 
+    public ModelMaterial takeRandomMaterial(){
+        return materialPool.takeRandomMaterial();
+    }
+
     /**
      * @return
      */
@@ -56,13 +60,7 @@ public class ModelPlayer {
     }
     //TODO: display gets ALL victory Points - maybe has to be split in visibleV P & invisible VP & allVP
 
-    /**
-     * @return
-     */
-    public String getMaterialPoolString(){
-        String materialPoolString = materialPool.allMaterialsString();
-        return materialPoolString;
-    }
+
 
     /**
      * @return

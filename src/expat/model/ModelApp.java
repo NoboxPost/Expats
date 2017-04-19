@@ -3,6 +3,7 @@ package expat.model;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
+import expat.model.buildings.ModelBuilding;
 
 import java.util.LinkedList;
 
@@ -27,14 +28,13 @@ public class ModelApp {
     private ModelBoard board;
     private int diceNumber;
     private ModelDiceRolling diceRolling;
-    private LinkedList<ModelPlayer> players = new LinkedList<>();
-    private ModelPlayer nowPlaying;
+    private ModelPlayer localPlayer;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
     private ModelTradeAction tradeAction;
     private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
-    private ModelFirstBuildingActionSequence firstBuildingActionSequence;
+    private ModelPlayerHandler playerHandler;
 
 
     /**
@@ -45,14 +45,7 @@ public class ModelApp {
         this.board = boardGenerator.generateBoard();
     }
 
-    /**
-     * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
-     */
-    public void generatePlayer() {
-        ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
-        ModelPlayer player = playerGen.newPlayer();
-        players.add(player);
-    }
+
 
     /**
      * handles the beginning of the game
@@ -61,11 +54,9 @@ public class ModelApp {
      * - they get the materials from all flanking hexes
      */
     public void gameBegin() {
-        generatePlayer();
-        generatePlayer();
 
-        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players, board);
-        nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
+
+        playerHandler = new ModelPlayerHandler(2, board);
         currentStep = "FirstBuildingStep";
     }
 
@@ -97,10 +88,10 @@ public class ModelApp {
         diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial();
-            materialBefore.addMaterial(nowPlaying.getMaterial());
+            materialBefore.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
             board.resourceOnDiceEvent(diceNumber);
             nowPlayingDicedMaterial = new ModelMaterial();
-            nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
+            nowPlayingDicedMaterial.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         } else {
             nowPlayingDicedMaterial = new ModelMaterial();
@@ -125,13 +116,15 @@ public class ModelApp {
      */
     public void specialStep() {
         if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            for (ModelPlayer player : players) {
+            for (ModelPlayer player : playerHandler.getPlayers()) {
                 if (player.getMaterial().getSumOfAllMaterials() > 7) {
                     playersMustDrop.add(player);
                 }
             }
         } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            board.activateRaider();
+            if (!board.getRaider().isAllowRaid()){
+                board.activateRaider();
+            }
         }
         currentStep = "SpecialStep";
         diceNumber = 0;
@@ -151,8 +144,7 @@ public class ModelApp {
      */
     public void nextPlayer() {
         board.abortBuildingAction();
-        players.add(players.poll());
-        nowPlaying = players.peek();
+        playerHandler.nextPlayer();
     }
 
     /**
@@ -175,7 +167,7 @@ public class ModelApp {
      * @param type of trading action
      */
     public void newTradeAction(String type) {
-        tradeAction = new ModelTradeAction(type, nowPlaying);
+        tradeAction = new ModelTradeAction(type, playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -201,7 +193,7 @@ public class ModelApp {
      * @param type
      */
     public void firstBuildingAction(String type) {
-        board.firstBuildingAction(type, nowPlaying);
+        board.firstBuildingAction(type, playerHandler.getCurrentPlayer());
     }
 
 
@@ -211,7 +203,7 @@ public class ModelApp {
      * @param type
      */
     public void newBuildingAction(String type) {
-        board.newBuildingAction(type, nowPlaying);
+        board.newBuildingAction(type, playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -219,57 +211,43 @@ public class ModelApp {
      * During first stage it will automaticaly sets next player active, so all can build their first buildings and connections.
      *
      * @param coords coordinates of building which will be built.
-     * @param type
+     * @param type building Type
      */
     public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
+            playerHandler.nextPlayer();
         }
         if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
             if (board.finishBuildingAction(coords, type)) {
                 if (type.equals("Building")) {
-                    nowPlaying.changeVictoryPoints(1);
+                    playerHandler.getCurrentPlayer().changeVictoryPoints(1);
                 }
             }
         }
         boolean allOnSameFirstBuildingStep = true;
         if (firstBuildingStep < 2) {
-            for (ModelPlayer player : players) {
-                if ((board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
-
-                } else {
+            for (ModelPlayer player : playerHandler.getPlayers()) {
+                if (!(board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
                     allOnSameFirstBuildingStep = false;
                 }
             }
             if (allOnSameFirstBuildingStep) {
                 firstBuildingStep += 1;
-                if (firstBuildingActionSequence.nextPlayer()) {
-                    nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-                } else {
-                    nextPlayer();
-                }
+                playerHandler.nextPlayer();
             }
             if (firstBuildingStep >= 2) {
                 resourceStep();
             }
         }
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
+            playerHandler.nextPlayer();
         }
     }
 
     /**
      * Hands given coordinates over to board so raider can be moved to corresponding hex.
      *
-     * @param coords
+     * @param coords coordinates fo hex where raider will be moved to.
      */
     public void moveRaider(int[] coords) {
         if (board.getRaider().getAllowMovement()) {
@@ -280,8 +258,19 @@ public class ModelApp {
                     }
                 }
             }
+            board.getRaider().setAllowRaid(true);
             board.getRaider().setAllowMovement(false);
         }
+    }
+
+    public void takeMaterialFromPlayerAndGiveItToCurrentPlayer(int[] coords){
+
+        for (ModelBuilding building : board.getBuildings()){
+            if (building.checkCoords(coords)){
+                playerHandler.getCurrentPlayer().addMaterial(building.getOwner().takeRandomMaterial());
+            }
+        }
+        board.getRaider().setAllowRaid(false);
     }
 
 
@@ -290,8 +279,8 @@ public class ModelApp {
      *
      * @return sum of buildings
      */
-    public int countBuildingsForCurrentPlayer() {
-        return board.countBuildingsOwned(nowPlaying);
+    private int countBuildingsForCurrentPlayer() {
+        return board.countBuildingsOwned(playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -299,8 +288,8 @@ public class ModelApp {
      *
      * @return sum of connections
      */
-    public int countConnectionsForCurrentPlayer() {
-        return board.countConnectionsOwned(nowPlaying);
+    private int countConnectionsForCurrentPlayer() {
+        return board.countConnectionsOwned(playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -372,7 +361,7 @@ public class ModelApp {
      * @return
      */
     public ModelPlayer getNowPlaying() {
-        return nowPlaying;
+        return playerHandler.getCurrentPlayer();
     }
 
     /**
@@ -390,7 +379,7 @@ public class ModelApp {
      * @return
      */
     public LinkedList<ModelPlayer> getPlayers() {
-        return players;
+        return playerHandler.getPlayers();
     }
 
 }

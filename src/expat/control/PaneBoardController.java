@@ -117,10 +117,10 @@ public class PaneBoardController {
             anchorPaneBoard.getChildren().remove(buildingGroup);
         }
 
-        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE,this);
+        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE);
 
         buildingGroup = new Group();
-        buildingGroup.getChildren().addAll(viewBuildingFactory.generateBuildings(modelBoard.getBuildings()));
+        buildingGroup.getChildren().addAll(viewBuildingFactory.generateBuildingsAndAttachesThemToCorrectLocation(modelBoard.getBuildings(),this));
         anchorPaneBoard.getChildren().add(buildingGroup);
     }
 

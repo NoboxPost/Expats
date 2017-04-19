@@ -13,6 +13,7 @@ import expat.model.buildings.ModelBuilding;
  */
 public class ModelRaider {
     private ModelHex hex;
+    private boolean allowRaid = false;
     private boolean allowMovement =false;
 
     public ModelRaider(ModelHex hex) {
@@ -50,5 +51,13 @@ public class ModelRaider {
      */
     public ModelHex getRaiderHex() {
         return hex;
+    }
+
+    public boolean isAllowRaid() {
+        return allowRaid;
+    }
+
+    public void setAllowRaid(boolean allowRaid) {
+        this.allowRaid = allowRaid;
     }
 }

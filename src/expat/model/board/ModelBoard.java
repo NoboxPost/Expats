@@ -129,6 +129,18 @@ public class ModelBoard {
         }
         return counter;
     }
+    public ArrayList<ModelBuilding> getAllBuildingsBlockedByRaider(){
+        ArrayList<ModelBuilding> blockedByRaider = new ArrayList<>();
+        ModelHex blockedHex = raider.getRaiderHex();
+        for (ModelBuilding building: buildings) {
+            if (building.checkHex(blockedHex)&&!building.getType().equals("empty")){
+                blockedByRaider.add(building);
+            }
+        }
+        return blockedByRaider;
+    }
+
+
 
     /**
      *sets Raider as active so he can be moved after all players have dropped their materials if they got more than 7.
