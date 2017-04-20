@@ -9,7 +9,6 @@ public class ModelMaterial {
     private String[] materialNames = new String[]{"Clay", "Grain", "Stone", "Wood", "Wool"};
     private int[] materialAmount = new int[5];
 
-
     public ModelMaterial() {
         materialAmount = new int[]{0, 0, 0, 0, 0};
     }
@@ -20,6 +19,10 @@ public class ModelMaterial {
 
 
     /**
+     * Methode to add another material containing the amount for each material.
+     *
+     * Does not check if amounts are negative, so there is the posibility to have negative amounts after methode.
+     *
      * @param materialToAdd
      * @return
      */
@@ -31,11 +34,14 @@ public class ModelMaterial {
     }
 
     /**
+     * Reduces the amount given by another material but only if result will not be negative.
+     *
      * @param materialToReduce
      * @return
      */
     public boolean reduceMaterial(ModelMaterial materialToReduce) {
         boolean belowZero = false;
+        //check if there will be a negative amount after transaction.
         int[] materialCheck = materialAmount.clone();
         for (int i = 0; i < 5; i++) {
             materialCheck[i] -= materialToReduce.getMaterialAmount()[i];
@@ -43,6 +49,7 @@ public class ModelMaterial {
                 belowZero = true;
             }
         }
+        //actual transaction or break if there would be a negative amount.
         if (belowZero) {
             return false;
         } else {
@@ -91,6 +98,8 @@ public class ModelMaterial {
 
 
     /**
+     * Combines all amounts of resources and their names to one single string.
+     *
      * @return
      */
     public String allMaterialsString() {

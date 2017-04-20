@@ -1,6 +1,8 @@
 package expat.control;
 
 import expat.model.ModelApp;
+import expat.model.ModelDiceRolling;
+import expat.model.ModelEvent;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
@@ -9,6 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * the main scene that works as collection-pool for all included scenes and also starts the App
@@ -39,6 +44,9 @@ public class ControllerMainStage {
     @FXML
     PanePlayerController panePlayerController;
     private ModelApp app;
+    private ControllerServerConnection connection;
+    private String gameType = "solo";
+    private int playerCount = 2;
 
 
     /**
@@ -46,14 +54,35 @@ public class ControllerMainStage {
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
-        app = new ModelApp();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Game Type Bitte: ('solo' für screenshare, 'host' für LAN Mulitplayer Host, 'client' für LAN Multiplayer Client)");
+        gameType = sc.nextLine();
+        if (gameType.equals("host")||gameType.equals("solo")){
+            System.out.println("Wieviele Spieler sollen mitspielen ( min 2 - max 4):");
+            playerCount = sc.nextInt();
+        }
+        int localplayer = 0;
+        if (gameType.equals("client")||gameType.equals("host")){
+            try {
+                connection = new ControllerServerConnection(this);
+            localplayer = connection.getConnectionID();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        app = new ModelApp(localplayer,gameType,playerCount);
         paneBoardController.init(this,app);
         paneActionController.init(this,app);
         panePlayerController.init(this, app);
         paneMatesController.init(app);
         drawGame();
-
     }
+
+
+    /**
+     * draws the board and fills the other panes with infos of the app.
+     */
     public void drawGame(){
         paneBoardController.drawBoard(app.getBoard());
         app.gameBegin();
@@ -61,6 +90,7 @@ public class ControllerMainStage {
         panePlayerController.refresh();
         paneMatesController.setMatesInformation();
     }
+
 
     /**
      * adjusts the scrollbar when zooming
@@ -93,6 +123,21 @@ public class ControllerMainStage {
      */
     public void raiderMoved() {
         paneActionController.raiderMoved();
+    }
+
+    public void sendEvent(ModelEvent event) {
+        connection.sendEvent(event);
+    }
+
+    public void eventHandler(ModelEvent modelEvent) {
+        switch (modelEvent.getEventType()){
+            case "rolledDice":
+                System.out.println("received dice rolling event");
+                //app.rolledDiceElsewhere((ModelDiceRolling) modelEvent.getSingleObject());
+                break;
+
+        }
+
     }
 }
 

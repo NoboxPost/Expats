@@ -7,6 +7,7 @@ public class ModelPlayer {
     private int victoryPoints = 0;
     private ModelMaterial materialPool;
     private String color;
+
     private int playerID;
 
     public ModelPlayer(String color, int playerID) {
@@ -37,6 +38,14 @@ public class ModelPlayer {
         return materialPool.takeRandomMaterial();
     }
 
+
+    /**
+     * @param victoryPoints
+     */
+    public void changeVictoryPoints(int victoryPoints){
+        this.victoryPoints += victoryPoints;
+    }
+
     /**
      * @return
      */
@@ -65,17 +74,20 @@ public class ModelPlayer {
     /**
      * @return
      */
-    public String getPlayerName(){
+    public String getPlayerName() {
         String playerName = ("Player ");
         playerName += (color);
         return playerName;
     }
 
+
     /**
-     * @param victoryPoints
+     * getter
+     *
+     * @return
      */
-    public void changeVictoryPoints(int victoryPoints){
-        this.victoryPoints += victoryPoints;
+    public int getPlayerID() {
+        return playerID;
     }
 
 }

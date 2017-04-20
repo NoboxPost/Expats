@@ -26,9 +26,8 @@ import java.util.LinkedList;
  */
 public class ModelApp {
     private ModelBoard board;
-    private int diceNumber;
     private ModelDiceRolling diceRolling;
-    private ModelPlayer localPlayer;
+    private int localPlayerID;
     private String clientType;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
@@ -37,14 +36,54 @@ public class ModelApp {
     private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
     private ModelPlayerHandler playerHandler;
 
+    public ModelApp(int localPlayerID, String clientType, int playerCount) {
+        this.localPlayerID = localPlayerID;
+        this.clientType = clientType;
+
+        initializeBoardGeneration();
+        playerHandler = new ModelPlayerHandler(playerCount, board);
+    }
+
+
+
 
     /**
      * constuctor for app. generates a default board of widht 9 and height 7.
      */
-    public ModelApp() {
-        ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
-        this.board = boardGenerator.generateBoard();
+    public ModelApp(String clientType) {
+        this.clientType = clientType;
+        localPlayerID = 0;
+
+        initializeBoardGeneration();
+        playerHandler = new ModelPlayerHandler(2, board);
     }
+    public boolean checkIfSoloElseCheckNowPlayingIsLocal(){
+        if (clientType.equals("solo")){
+            return true;
+        }else {
+            if (playerHandler.getCurrentPlayer().getPlayerID() == localPlayerID){
+                return true;
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Depending on clientType board will be generated.
+     *
+     */
+    private void initializeBoardGeneration() {
+        if (clientType.equals("solo")){
+            ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
+            this.board = boardGenerator.generateBoard();
+        }else if(clientType.equals("host")){
+            ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
+            this.board = boardGenerator.generateBoard();
+        }else if (clientType.equals("client")){
+            //TODO: do some action board and stuff, can be set.
+        }
+    }
+
 
 
 
@@ -55,9 +94,6 @@ public class ModelApp {
      * - they get the materials from all flanking hexes
      */
     public void gameBegin() {
-
-
-        playerHandler = new ModelPlayerHandler(2, board);
         currentStep = "FirstBuildingStep";
     }
 
@@ -77,26 +113,48 @@ public class ModelApp {
      */
     public void resourceStep() {
         currentStep = "ResourceStep";
-        diceNumber = 0;
         diceRolling = null;
     }
 
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
-    public void rollDice() {
+    public ModelDiceRolling rollDice() {
         diceRolling = new ModelDiceRolling();
-        diceNumber = diceRolling.getRolledDices();
+        int diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            ModelMaterial materialBefore = new ModelMaterial();
-            materialBefore.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
-            board.resourceOnDiceEvent(diceNumber);
-            nowPlayingDicedMaterial = new ModelMaterial();
-            nowPlayingDicedMaterial.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
-            nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            if (checkIfSoloElseCheckNowPlayingIsLocal()){
+                ModelMaterial materialBefore = new ModelMaterial();
+                materialBefore.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
+                board.resourceOnDiceEvent(diceNumber);
+                nowPlayingDicedMaterial = new ModelMaterial();
+                nowPlayingDicedMaterial.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
+                nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            }
+
         } else {
             nowPlayingDicedMaterial = new ModelMaterial();
         }
+        return diceRolling;
+    }
+    public void rolledDiceElsewhere(ModelDiceRolling diceRolling){
+        this.diceRolling = diceRolling;
+        int diceNumber = diceRolling.getRolledDices();
+        if (diceNumber != 7) {
+            if (checkIfSoloElseCheckNowPlayingIsLocal()){
+                ModelMaterial materialBefore = new ModelMaterial();
+                materialBefore.addMaterial(playerHandler.getPlayerByID(localPlayerID).getMaterial());
+                board.resourceOnDiceEvent(diceNumber);
+                nowPlayingDicedMaterial = new ModelMaterial();
+                nowPlayingDicedMaterial.addMaterial(playerHandler.getPlayerByID(localPlayerID).getMaterial());
+                nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            }
+
+        } else {
+            nowPlayingDicedMaterial = new ModelMaterial();
+        }
+
+
     }
 
     /**
@@ -128,13 +186,12 @@ public class ModelApp {
             }
         }
         currentStep = "SpecialStep";
-        diceNumber = 0;
     }
 
     /**
      * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
      *
-     * @param endDifference
+     * @param endDifference int array with difference for each resource.
      */
     public void playerDroppedMaterial(int[] endDifference) {
         playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
@@ -317,7 +374,12 @@ public class ModelApp {
      * @return
      */
     public int getDiceNumber() {
-        return diceNumber;
+
+        try {
+            return diceRolling.getRolledDices();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     /**
@@ -383,6 +445,9 @@ public class ModelApp {
         return playerHandler.getPlayers();
     }
 
+    public int getLocalPlayerID() {
+        return localPlayerID;
+    }
 }
 
 

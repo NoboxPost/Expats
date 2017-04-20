@@ -1,6 +1,7 @@
 package expat.control;
 
 import expat.model.ModelApp;
+import expat.model.ModelEvent;
 import expat.model.buildings.ModelBuilding;
 import expat.view.*;
 import javafx.event.ActionEvent;
@@ -94,11 +95,11 @@ public class PaneActionController {
                 middleActionPane.getChildren().add(diceImageView);
             }
             generateCards();
-            if (app.getDiceNumber() == 7) {
+            if (app.getDiceNumber() == 7 && app.checkIfSoloElseCheckNowPlayingIsLocal()) {
                 Button btnDropMaterials = new Button("Materialien abgeben");
                 btnDropMaterials.setOnAction(this::btnDropMaterialsClicked);
                 middleActionPane.getChildren().add(btnDropMaterials);
-            } else {
+            } else if (app.checkIfSoloElseCheckNowPlayingIsLocal()){
                 btnNextStep.setDisable(false);
                 btnEndTurn.setDisable(false);
                 btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
@@ -136,6 +137,9 @@ public class PaneActionController {
      */
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
+        ModelEvent rolledDice = new ModelEvent(app.getLocalPlayerID());
+        rolledDice.setTypeAndAttachSingleObject("rolledDice",rolledDice);
+        controllerMainStage.sendEvent(rolledDice);
         refreshStep();
         controllerMainStage.refreshGameInformations();
     }

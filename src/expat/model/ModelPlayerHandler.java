@@ -29,6 +29,8 @@ public class ModelPlayerHandler {
         for (int i = 0; i < playersAmount; i++) {
             players.add(playerGenerator.newPlayer());
         }
+
+
         playerCounter = players.size();
         playerArray = new ModelPlayer[playerCounter];
         for (int i = 0; i < playerCounter; i++) {
@@ -83,7 +85,7 @@ public class ModelPlayerHandler {
     public ModelPlayer getCurrentPlayer() {
         if (currentPlayerIndex < indexOfSequenceForFirstBuilding.length - 1) {
             return nowPlaying;
-        }else {
+        } else {
             return nowPlaying;
         }
     }
@@ -91,5 +93,16 @@ public class ModelPlayerHandler {
     public LinkedList<ModelPlayer> getPlayers() {
         return players;
     }
+
+
+    public ModelPlayer getPlayerByID(int playerID) {
+        for (ModelPlayer player : players) {
+            if (player.getPlayerID() == playerID) {
+                return player;
+            }
+        }
+        return null;
+    }
+
 }
 
