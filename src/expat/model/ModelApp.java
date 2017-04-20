@@ -29,6 +29,7 @@ public class ModelApp {
     private int diceNumber;
     private ModelDiceRolling diceRolling;
     private ModelPlayer localPlayer;
+    private String clientType;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;

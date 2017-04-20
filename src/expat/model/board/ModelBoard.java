@@ -6,6 +6,7 @@ import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;
 import expat.model.buildings.ModelConnection;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author vanonir
  */
-public class ModelBoard {
+public class ModelBoard implements Serializable {
     private ModelHex[][] hexes;
     private ArrayList<ModelBuilding> buildings;
     private ArrayList<ModelConnection> connections;

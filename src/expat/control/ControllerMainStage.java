@@ -51,6 +51,10 @@ public class ControllerMainStage {
         paneActionController.init(this,app);
         panePlayerController.init(this, app);
         paneMatesController.init(app);
+        drawGame();
+
+    }
+    public void drawGame(){
         paneBoardController.drawBoard(app.getBoard());
         app.gameBegin();
         paneActionController.refreshStep();
