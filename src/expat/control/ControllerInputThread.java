@@ -23,6 +23,7 @@ public class ControllerInputThread extends Thread {
 
     @Override
     public void run() {
+        System.out.println("InputListener active");
         while (true){
             try {
                 ModelEvent modelEvent = (ModelEvent)in.readObject();

@@ -42,29 +42,9 @@ public class ControllerServerConnection {
         }
     }
 
-    public int getConnectionID() {
+    public void getConnectionID() {
         ModelEvent getID = new ModelEvent(-1);
         getID.setEventType("getID");
         sendEvent(getID);
-        boolean waiting = true;
-        int returnint = 0;
-        while (waiting){
-
-            try {
-                getID = (ModelEvent) in.readObject();
-                if (!getID.getMessage().isEmpty()){
-                    returnint = Integer.parseInt(getID.getMessage());
-                    getID = null;
-                    waiting = false;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        }
-        System.out.println(returnint);
-        return returnint;
     }
 }

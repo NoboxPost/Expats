@@ -1,11 +1,12 @@
 package expat.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class ModelMaterial {
+public class ModelMaterial implements Serializable {
     private String[] materialNames = new String[]{"Clay", "Grain", "Stone", "Wood", "Wool"};
     private int[] materialAmount = new int[5];
 

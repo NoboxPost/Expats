@@ -28,8 +28,9 @@ public class ModelApp {
     private ModelBoard board;
     private ModelDiceRolling diceRolling;
     private int localPlayerID;
+    private boolean localPlayerIDSet = false;
     private String clientType;
-    private String currentStep;
+    private String currentStep = "";
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
     private ModelTradeAction tradeAction;
@@ -40,11 +41,16 @@ public class ModelApp {
         this.localPlayerID = localPlayerID;
         this.clientType = clientType;
 
-        initializeBoardGeneration();
-        playerHandler = new ModelPlayerHandler(playerCount, board);
+        if (clientType.equals("solo")) {
+            initializeBoardGeneration();
+            playerHandler = new ModelPlayerHandler(playerCount, board);
+        }
+        if (clientType.equals("host")) {
+            initializeBoardGeneration();
+            playerHandler = new ModelPlayerHandler(playerCount, board);
+        }
+
     }
-
-
 
 
     /**
@@ -57,11 +63,12 @@ public class ModelApp {
         initializeBoardGeneration();
         playerHandler = new ModelPlayerHandler(2, board);
     }
-    public boolean checkIfSoloElseCheckNowPlayingIsLocal(){
-        if (clientType.equals("solo")){
+
+    public boolean checkIfSoloElseCheckNowPlayingIsLocal() {
+        if (clientType.equals("solo")) {
             return true;
-        }else {
-            if (playerHandler.getCurrentPlayer().getPlayerID() == localPlayerID){
+        } else {
+            if (playerHandler.getCurrentPlayer().getPlayerID() == localPlayerID) {
                 return true;
             }
             return false;
@@ -70,21 +77,26 @@ public class ModelApp {
 
     /**
      * Depending on clientType board will be generated.
-     *
      */
     private void initializeBoardGeneration() {
-        if (clientType.equals("solo")){
+        if (clientType.equals("solo")) {
             ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
             this.board = boardGenerator.generateBoard();
-        }else if(clientType.equals("host")){
+        } else if (clientType.equals("host")) {
             ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
             this.board = boardGenerator.generateBoard();
-        }else if (clientType.equals("client")){
+        } else if (clientType.equals("client")) {
             //TODO: do some action board and stuff, can be set.
         }
     }
 
+    public void boardGeneratedElseWhere(ModelBoard board) {
+        this.board = board;
+    }
 
+    public void playerHandlerGenereatedElseWhere(ModelPlayerHandler playerHandler) {
+        this.playerHandler = playerHandler;
+    }
 
 
     /**
@@ -123,13 +135,15 @@ public class ModelApp {
         diceRolling = new ModelDiceRolling();
         int diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            if (checkIfSoloElseCheckNowPlayingIsLocal()){
+            if (checkIfSoloElseCheckNowPlayingIsLocal()) {
                 ModelMaterial materialBefore = new ModelMaterial();
                 materialBefore.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
                 board.resourceOnDiceEvent(diceNumber);
                 nowPlayingDicedMaterial = new ModelMaterial();
                 nowPlayingDicedMaterial.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
                 nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            } else {
+                nowPlayingDicedMaterial = new ModelMaterial();
             }
 
         } else {
@@ -137,11 +151,12 @@ public class ModelApp {
         }
         return diceRolling;
     }
-    public void rolledDiceElsewhere(ModelDiceRolling diceRolling){
+
+    public void rolledDiceElsewhere(ModelDiceRolling diceRolling) {
         this.diceRolling = diceRolling;
         int diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            if (checkIfSoloElseCheckNowPlayingIsLocal()){
+            if (checkIfSoloElseCheckNowPlayingIsLocal()) {
                 ModelMaterial materialBefore = new ModelMaterial();
                 materialBefore.addMaterial(playerHandler.getPlayerByID(localPlayerID).getMaterial());
                 board.resourceOnDiceEvent(diceNumber);
@@ -181,7 +196,7 @@ public class ModelApp {
                 }
             }
         } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            if (!board.getRaider().isAllowRaid()){
+            if (!board.getRaider().isAllowRaid()) {
                 board.activateRaider();
             }
         }
@@ -269,7 +284,7 @@ public class ModelApp {
      * During first stage it will automaticaly sets next player active, so all can build their first buildings and connections.
      *
      * @param coords coordinates of building which will be built.
-     * @param type building Type
+     * @param type   building Type
      */
     public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
@@ -321,10 +336,10 @@ public class ModelApp {
         }
     }
 
-    public void takeMaterialFromPlayerAndGiveItToCurrentPlayer(int[] coords){
+    public void takeMaterialFromPlayerAndGiveItToCurrentPlayer(int[] coords) {
 
-        for (ModelBuilding building : board.getBuildings()){
-            if (building.checkCoords(coords)){
+        for (ModelBuilding building : board.getBuildings()) {
+            if (building.checkCoords(coords)) {
                 playerHandler.getCurrentPlayer().addMaterial(building.getOwner().takeRandomMaterial());
             }
         }
@@ -445,8 +460,37 @@ public class ModelApp {
         return playerHandler.getPlayers();
     }
 
+    public ModelPlayer getLocalPlayer() {
+        return playerHandler.getPlayerByID(localPlayerID);
+    }
+
     public int getLocalPlayerID() {
         return localPlayerID;
+    }
+
+
+    public String getClientType() {
+        return clientType;
+    }
+
+    public boolean isLocalPlayerIDSet() {
+        return localPlayerIDSet;
+    }
+
+    public void setLocalPlayerIDSet(boolean localPlayerIDSet) {
+        this.localPlayerIDSet = localPlayerIDSet;
+    }
+
+    public ModelPlayerHandler getPlayerHandler() {
+        return playerHandler;
+    }
+
+    public void setPlayerHandler(ModelPlayerHandler playerHandler) {
+        this.playerHandler = playerHandler;
+    }
+
+    public void setBoard(ModelBoard board) {
+        this.board = board;
     }
 }
 

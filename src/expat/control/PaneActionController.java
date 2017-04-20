@@ -137,9 +137,11 @@ public class PaneActionController {
      */
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
-        ModelEvent rolledDice = new ModelEvent(app.getLocalPlayerID());
-        rolledDice.setTypeAndAttachSingleObject("rolledDice",rolledDice);
-        controllerMainStage.sendEvent(rolledDice);
+        if (!app.getClientType().equals("solo")) {
+            ModelEvent rolledDice = new ModelEvent(app.getLocalPlayerID());
+            rolledDice.setTypeAndAttachSingleObject("rolledDice",rolledDice);
+            controllerMainStage.sendEvent(rolledDice);
+        }
         refreshStep();
         controllerMainStage.refreshGameInformations();
     }
@@ -526,5 +528,13 @@ public class PaneActionController {
         paneDropMaterial.adjustMaterial((Button) event.getSource());
         refreshStep();
 
+    }
+    public void drawStartButton(){
+        middleActionPane.getChildren().removeAll();
+        HBox hBox =new HBox();
+        Button btn = new Button("Starte Spiel");
+        btn.setOnAction(controllerMainStage::startGame);
+        hBox.getChildren().add(btn);
+        middleActionPane.getChildren().add(hBox);
     }
 }

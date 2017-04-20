@@ -47,11 +47,11 @@ public class PaneBoardController {
     /**
      * Generates complete board with all elements on it and adds it to anchorPaneBoard.
      *
-     * @param modelBoard
      */
-    public void drawBoard(ModelBoard modelBoard) {
-        anchorPaneBoard.getChildren().removeAll();
+    public void drawBoard() {
 
+        anchorPaneBoard.getChildren().removeAll();
+        ModelBoard modelBoard = app.getBoard();
         generateHexGroup(modelBoard);
         generateDiceButtonGroup(modelBoard);
         generateConnectionGroup(modelBoard);
@@ -62,9 +62,9 @@ public class PaneBoardController {
     /**
      * Refreshes all elements which will change during process of game.
      *
-     * @param modelBoard ModelBoard which will hand over the seperate elements to subclasses.
      */
-    public void refreshBoardElements(ModelBoard modelBoard){
+    public void refreshBoardElements(){
+        ModelBoard modelBoard = app.getBoard();
         generateConnectionGroup(modelBoard);
         generateRaiderGroup(modelBoard);
         generateBuildingGroup(modelBoard);
@@ -167,7 +167,7 @@ public class PaneBoardController {
     public void hexClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
         app.moveRaider(button.getCoords());
-        refreshBoardElements(app.getBoard());
+        refreshBoardElements();
         controllerMainStage.raiderMoved();
     }
 
@@ -180,7 +180,7 @@ public class PaneBoardController {
     public void emptyBuildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
         app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(building.getBuildingCoord(),"Building");
-        refreshBoardElements(app.getBoard());
+        refreshBoardElements();
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
     }
@@ -193,7 +193,7 @@ public class PaneBoardController {
     public void connectionClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
         app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
-        refreshBoardElements(app.getBoard());
+        refreshBoardElements();
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
     }

@@ -80,4 +80,8 @@ public class ModelEvent implements Serializable {
     public void setSingleObject(Object singleObject) {
         SingleObject = singleObject;
     }
+
+    public int getSender() {
+        return sender;
+    }
 }

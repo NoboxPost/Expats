@@ -41,8 +41,14 @@ public class PanePlayerController {
      * Sets label with informations about the current players acquired by the app.
      */
     public void setPlayerInformation(){
-        playerLabel.setText("Player " + app.getNowPlaying().getColor());
-        playerVictoryPointsTextArea.setText(app.getNowPlaying().getWinPointsString());
+
+        if (app.getClientType().equals("solo")) {
+            playerLabel.setText("Player " + app.getNowPlaying().getColor());
+            playerVictoryPointsTextArea.setText(app.getNowPlaying().getWinPointsString());
+        }else {
+            playerLabel.setText("Player " +app.getLocalPlayer().getColor());
+            playerVictoryPointsTextArea.setText(app.getLocalPlayer().getWinPointsString());
+        }
     }
 
 
@@ -52,8 +58,13 @@ public class PanePlayerController {
      */
     public void generateCards(){
         playerResourcesVBox.getChildren().clear();
-        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlaying().getMaterial());
-        playerResourcesVBox.getChildren().add(viewCardsFactory.generateSplittedCardsVBox());
+        if (app.getClientType().equals("solo")){
+            ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlaying().getMaterial());
+            playerResourcesVBox.getChildren().add(viewCardsFactory.generateSplittedCardsVBox());
+        }else {
+            ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getLocalPlayer().getMaterial());
+            playerResourcesVBox.getChildren().add(viewCardsFactory.generateSplittedCardsVBox());
+        }
     }
 
 

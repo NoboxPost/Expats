@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ServerClientThread extends Thread {
 
     private Socket clientSocket;
-    private ArrayList<ServerClientThread> serverClientThreats;
+    private ArrayList<ServerClientThread> serverClientThreads;
     int id;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -27,22 +27,29 @@ public class ServerClientThread extends Thread {
     public ServerClientThread(Socket clientSocket, int i, ArrayList<ServerClientThread> serverClientThreads) {
         this.clientSocket = clientSocket;
         this.id = i;
-        this.serverClientThreats = serverClientThreads;
+        this.serverClientThreads = serverClientThreads;
 
     }
 
     @Override
     public void run() {
-        System.out.println("Socket with ID "+id+" created");
+        System.out.println("Socket with ID " + id + " created");
         try {
             in = new ObjectInputStream(clientSocket.getInputStream());
             out = new ObjectOutputStream(clientSocket.getOutputStream());
 
-            while (true){
-                ModelEvent modelEvent = (ModelEvent)in.readObject();
+            while (true) {
+                ModelEvent modelEvent = (ModelEvent) in.readObject();
                 System.out.println(modelEvent.eventToString());
-                if (modelEvent.getEventType().equals("getID")){
-                    modelEvent.setMessage(""+id);
+                if (modelEvent.getEventType().equals("getID")) {
+                    modelEvent.setMessage("" + id);
+                    out.writeObject(modelEvent);
+                    out.flush();
+                } else {
+                    for (ServerClientThread thread : serverClientThreads) {
+                        thread.send(modelEvent);
+
+                    }
                 }
             }
         } catch (IOException e) {
@@ -50,6 +57,18 @@ public class ServerClientThread extends Thread {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
+
+    public void send(ModelEvent event) {
+        synchronized (this) {
+            try {
+                out.writeObject(event);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
+

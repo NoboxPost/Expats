@@ -1,9 +1,11 @@
 package expat.model;
 
+import java.io.Serializable;
+
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class ModelPlayer {
+public class ModelPlayer implements Serializable {
     private int victoryPoints = 0;
     private ModelMaterial materialPool;
     private String color;
