@@ -2,29 +2,27 @@ package expat.model;
 
 import expat.model.board.ModelBoard;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  * Created by Rino on 05.04.2017.
  */
-public class ModelPlayerHandler {
+public class ModelPlayerHandler implements Serializable {
 
 
     private int playerCounter;
     private LinkedList<ModelPlayer> players = new LinkedList<>();
     private ModelPlayer nowPlaying;
     private ModelPlayer[] playerArray;
-    private ModelBoard board;
+
 
     private int[][] amountOfBuildingsPerPlayer;
     private int[] indexOfSequenceForFirstBuilding;
     private int currentPlayerIndex = 0;
 
 
-    /**
-     * @param board
-     */
-    public ModelPlayerHandler(int playersAmount, ModelBoard board) {
+    public ModelPlayerHandler(int playersAmount,ModelBoard board) {
         ModelPlayerGenerator playerGenerator = new ModelPlayerGenerator();
         for (int i = 0; i < playersAmount; i++) {
             players.add(playerGenerator.newPlayer());
@@ -36,7 +34,7 @@ public class ModelPlayerHandler {
         for (int i = 0; i < playerCounter; i++) {
             playerArray[i] = players.get(i);
         }
-        this.board = board;
+
         indexOfSequenceForFirstBuilding = new int[playerCounter * 2];
         int playerindex = 0;
         for (int i = 0; i < playerCounter * 2; i++) {
@@ -50,13 +48,13 @@ public class ModelPlayerHandler {
         }
         nowPlaying = playerArray[indexOfSequenceForFirstBuilding[currentPlayerIndex]];
         amountOfBuildingsPerPlayer = new int[playerCounter * 2][2];
-        checkBuidlingsPerPlayer();
+        checkBuidlingsPerPlayer(board);
     }
 
     /**
      *
      */
-    public void checkBuidlingsPerPlayer() {
+    public void checkBuidlingsPerPlayer(ModelBoard board) {
         for (int i = 0; i < playerCounter; i++) {
             amountOfBuildingsPerPlayer[i][0] = board.countBuildingsOwned(playerArray[i]);
             amountOfBuildingsPerPlayer[i][1] = board.countConnectionsOwned(playerArray[i]);

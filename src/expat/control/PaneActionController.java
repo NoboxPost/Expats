@@ -1,6 +1,7 @@
 package expat.control;
 
 import expat.model.ModelApp;
+import expat.model.ModelDiceRolling;
 import expat.model.ModelEvent;
 import expat.model.buildings.ModelBuilding;
 import expat.view.*;
@@ -136,10 +137,10 @@ public class PaneActionController {
      * @param event
      */
     public void diceRollClicked(ActionEvent event) {
-        app.rollDice();
+        ModelDiceRolling diceRolling = app.rollDice();
         if (!app.getClientType().equals("solo")) {
             ModelEvent rolledDice = new ModelEvent(app.getLocalPlayerID());
-            rolledDice.setTypeAndAttachSingleObject("rolledDice",rolledDice);
+            rolledDice.setTypeAndAttachSingleObject("rolledDice",diceRolling);
             controllerMainStage.sendEvent(rolledDice);
         }
         refreshStep();
@@ -456,6 +457,12 @@ public class PaneActionController {
      */
     public void refreshStep() {
         String currentStep = app.getCurrentStep();
+        if (!app.getClientType().equals("solo")){
+            if (app.getNowPlaying().getPlayerID() !=app.getLocalPlayerID()){
+                middleActionPane.getChildren().clear();
+                return;
+            }
+        }
         switch (currentStep) {
             case "FirstBuildingStep":
                 drawFirstSettlementAndRoadStep();

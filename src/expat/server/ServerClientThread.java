@@ -3,9 +3,7 @@ package expat.server;
 
 import expat.model.ModelEvent;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -35,8 +33,11 @@ public class ServerClientThread extends Thread {
     public void run() {
         System.out.println("Socket with ID " + id + " created");
         try {
-            in = new ObjectInputStream(clientSocket.getInputStream());
+//            BufferedInputStream bufferedInputStream = new BufferedInputStream(clientSocket.getInputStream());
+//            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(clientSocket.getOutputStream());
+
             out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
 
             while (true) {
                 ModelEvent modelEvent = (ModelEvent) in.readObject();
@@ -45,6 +46,7 @@ public class ServerClientThread extends Thread {
                     modelEvent.setMessage("" + id);
                     out.writeObject(modelEvent);
                     out.flush();
+                    out.reset();
                 } else {
                     for (ServerClientThread thread : serverClientThreads) {
                         thread.send(modelEvent);
@@ -64,6 +66,7 @@ public class ServerClientThread extends Thread {
             try {
                 out.writeObject(event);
                 out.flush();
+                out.reset();
             } catch (IOException e) {
                 e.printStackTrace();
             }

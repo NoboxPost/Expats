@@ -2,9 +2,7 @@ package expat.control;
 
 import expat.model.ModelEvent;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -27,6 +25,9 @@ public class ControllerServerConnection {
         this.controllerMainStage = controllerMainStage;
          socket= new Socket("localhost",4227);
         System.out.println("connected to Server");
+//        BufferedInputStream bufferedInputStream = new BufferedInputStream(socket.getInputStream());
+//        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream());
+
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
         inputThread = new ControllerInputThread(in,controllerMainStage);
@@ -37,6 +38,7 @@ public class ControllerServerConnection {
         try {
             out.writeObject(modelEvent);
             out.flush();
+            out.reset();
         } catch (IOException e) {
             e.printStackTrace();
         }

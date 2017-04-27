@@ -189,5 +189,7 @@ public class ModelBoard implements Serializable {
     }
 
 
-
+    public ModelBuildingAction getBuildingAction() {
+        return buildingAction;
+    }
 }

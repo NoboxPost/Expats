@@ -50,6 +50,7 @@ public class ControllerMainStage {
     private ControllerServerConnection connection;
     private String gameType = "solo";
     private int playerCount = 2;
+    ServerMain serverMain;
 
 
     /**
@@ -67,14 +68,31 @@ public class ControllerMainStage {
         int localplayer = 0;
         if (gameType.equals("client") || gameType.equals("host")) {
             if (gameType.equals("host")) {
-                new ServerMain().start();
+                serverMain = new ServerMain();
+                serverMain.start();
+                try {
+                    connection = new ControllerServerConnection(this);
+                    connection.getConnectionID();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                boolean notConnected = true;
+                //loop so player can decide if he wants to repeat to try to connect if connection failed.
+                while (notConnected) {
+                    try {
+                        connection = new ControllerServerConnection(this);
+                        notConnected = false;
+                    } catch (IOException e) {
+                        System.out.println("No Host found, do you want to repeat? j/n");
+                        if (!new Scanner(System.in).nextLine().equals("j")) {
+                            e.printStackTrace();
+                        }
+                    }
+                    connection.getConnectionID();
+                }
             }
-            try {
-                connection = new ControllerServerConnection(this);
-                connection.getConnectionID();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
         if (gameType.equals("solo")) {
             initAppAndControllers(localplayer);
@@ -84,7 +102,7 @@ public class ControllerMainStage {
     }
 
     public void initAppAndControllers(int localplayer) {
-        app = new ModelApp(localplayer, gameType, playerCount);
+        app = new ModelApp(localplayer, gameType, playerCount, this);
         paneBoardController.init(this, app);
         paneActionController.init(this, app);
         panePlayerController.init(this, app);
@@ -101,16 +119,19 @@ public class ControllerMainStage {
             app.gameBegin();
         }
 
-        if (gameType.equals("host")){
+        if (gameType.equals("host")) {
             sendBoard();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             sendPlayerHandler();
+            sendFirstBuildingStep();
         }
         refreshActionStep();
+    }
+
+    private void sendFirstBuildingStep() {
+        ModelEvent modelEvent = new ModelEvent(app.getLocalPlayerID());
+        modelEvent.setEventType("FirstBuildingStep");
+        modelEvent.setMessage("FirstBuildingStep");
+        sendEvent(modelEvent);
     }
 
 
@@ -181,6 +202,7 @@ public class ControllerMainStage {
     public void sendPlayerHandler() {
         ModelEvent modelEvent = new ModelEvent(app.getLocalPlayerID());
         modelEvent.setTypeAndAttachSingleObject("playerHandlerRefresh", app.getPlayerHandler());
+        sendEvent(modelEvent);
     }
 
     /**
@@ -202,18 +224,24 @@ public class ControllerMainStage {
                         }
                         break;
                     case "rolledDice":
-                        System.out.println("received dice rolling event");
                         app.rolledDiceElsewhere((ModelDiceRolling) modelEvent.getSingleObject());
                         break;
                     case "drawBoard":
                         app.setBoard((ModelBoard) modelEvent.getSingleObject());
                         drawBoard();
+                        if (app.getPlayerHandler() != null) {
+                        }
                         break;
                     case "playerHandlerRefresh":
-                        System.out.println(" player Handler refresh");
                         app.setPlayerHandler((ModelPlayerHandler) modelEvent.getSingleObject());
                         refreshGameInformations();
+                        refreshActionStep();
                         break;
+                    case "FirstBuildingStep":
+                        app.gameBegin();
+                        refreshGameInformations();
+                        refreshActionStep();
+
                 }
             }
         });

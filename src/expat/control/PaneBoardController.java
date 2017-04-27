@@ -183,6 +183,10 @@ public class PaneBoardController {
         refreshBoardElements();
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
+        if (!app.getClientType().equals("solo")&& app.getBoard().getBuildingAction()!=null){
+            controllerMainStage.sendBoard();
+            controllerMainStage.sendPlayerHandler();
+        }
     }
     /**
      * Is called by ViewConnection as onMouseReleased event.
@@ -196,6 +200,10 @@ public class PaneBoardController {
         refreshBoardElements();
         controllerMainStage.refreshActionStep();
         controllerMainStage.refreshGameInformations();
+        if (!app.getClientType().equals("solo")){
+            controllerMainStage.sendBoard();
+            controllerMainStage.sendPlayerHandler();
+        }
     }
 
 

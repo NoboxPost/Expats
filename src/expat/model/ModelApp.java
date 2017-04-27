@@ -1,5 +1,6 @@
 package expat.model;
 
+import expat.control.ControllerMainStage;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
@@ -30,6 +31,7 @@ public class ModelApp {
     private int localPlayerID;
     private boolean localPlayerIDSet = false;
     private String clientType;
+    private ControllerMainStage controllerMainStage;
     private String currentStep = "";
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
@@ -37,9 +39,10 @@ public class ModelApp {
     private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
     private ModelPlayerHandler playerHandler;
 
-    public ModelApp(int localPlayerID, String clientType, int playerCount) {
+    public ModelApp(int localPlayerID, String clientType, int playerCount, ControllerMainStage controllerMainStage) {
         this.localPlayerID = localPlayerID;
         this.clientType = clientType;
+        this.controllerMainStage = controllerMainStage;
 
         if (clientType.equals("solo")) {
             initializeBoardGeneration();
@@ -218,6 +221,9 @@ public class ModelApp {
     public void nextPlayer() {
         board.abortBuildingAction();
         playerHandler.nextPlayer();
+        if (!clientType.equals("solo")){
+            controllerMainStage.sendPlayerHandler();
+        }
     }
 
     /**
@@ -288,7 +294,7 @@ public class ModelApp {
      */
     public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            playerHandler.nextPlayer();
+            nextPlayer();
         }
         if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
             if (board.finishBuildingAction(coords, type)) {
@@ -306,14 +312,14 @@ public class ModelApp {
             }
             if (allOnSameFirstBuildingStep) {
                 firstBuildingStep += 1;
-                playerHandler.nextPlayer();
+                nextPlayer();
             }
             if (firstBuildingStep >= 2) {
                 resourceStep();
             }
         }
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            playerHandler.nextPlayer();
+            nextPlayer();
         }
     }
 

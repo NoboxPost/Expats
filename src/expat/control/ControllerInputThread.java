@@ -27,6 +27,7 @@ public class ControllerInputThread extends Thread {
         while (true){
             try {
                 ModelEvent modelEvent = (ModelEvent)in.readObject();
+                System.out.println(modelEvent.getEventType());
                 controllerMainStage.eventHandler(modelEvent);
             } catch (IOException e) {
                 e.printStackTrace();
