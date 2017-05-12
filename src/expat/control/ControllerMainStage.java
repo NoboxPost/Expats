@@ -229,7 +229,7 @@ public class ControllerMainStage {
                     case "drawBoard":
                         app.setBoard((ModelBoard) modelEvent.getSingleObject());
                         drawBoard();
-                        if (app.getPlayerHandler() != null) {
+                        if (app.getPlayerHandler() != null) { //TODO: was hani da wöue mache???
                         }
                         break;
                     case "playerHandlerRefresh":
