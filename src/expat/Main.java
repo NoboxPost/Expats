@@ -1,6 +1,7 @@
 package expat;
 
-import expat.control.ControllerMainStage;
+
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,8 @@ public class Main extends Application {
 
     @Override
     public void start( Stage primaryStage) throws Exception{
+
+
         try {
             FXMLLoader loader = new FXMLLoader();
             Parent root = loader.load(getClass().getResource("view/MainStage.fxml"));
@@ -23,10 +26,11 @@ public class Main extends Application {
             primaryScene.getStylesheets().addAll(this.getClass().getResource("view/style.css").toExternalForm());
             primaryStage.setMaximized(true); //TODO: eventually change to setFullscreen(true)
             primaryStage.show();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        ModelApp app = new ModelApp(this, controllerBoardPane);
     }
 
 

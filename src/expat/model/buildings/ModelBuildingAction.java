@@ -5,6 +5,7 @@ import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;
 import expat.model.buildings.ModelConnection;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * <p>
  * Delivers all methods for the app, so a player can build new Buildings and connections depending on his Materials and aviable building spots.
  */
-public class ModelBuildingAction {
+public class ModelBuildingAction implements Serializable {
     private ModelPlayer player;
     private String buildingType;
     private ArrayList<ModelBuilding> buildings;

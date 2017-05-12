@@ -1,12 +1,15 @@
 package expat.model;
 
+import java.io.Serializable;
+
 /**
  * Created by vanonir on 22.03.2017.
  */
-public class ModelPlayer {
+public class ModelPlayer implements Serializable {
     private int victoryPoints = 0;
     private ModelMaterial materialPool;
     private String color;
+
     private int playerID;
 
     public ModelPlayer(String color, int playerID) {
@@ -33,6 +36,18 @@ public class ModelPlayer {
         return false;
     }
 
+    public ModelMaterial takeRandomMaterial(){
+        return materialPool.takeRandomMaterial();
+    }
+
+
+    /**
+     * @param victoryPoints
+     */
+    public void changeVictoryPoints(int victoryPoints){
+        this.victoryPoints += victoryPoints;
+    }
+
     /**
      * @return
      */
@@ -56,28 +71,25 @@ public class ModelPlayer {
     }
     //TODO: display gets ALL victory Points - maybe has to be split in visibleV P & invisible VP & allVP
 
-    /**
-     * @return
-     */
-    public String getMaterialPoolString(){
-        String materialPoolString = materialPool.allMaterialsString();
-        return materialPoolString;
-    }
+
 
     /**
      * @return
      */
-    public String getPlayerName(){
+    public String getPlayerName() {
         String playerName = ("Player ");
         playerName += (color);
         return playerName;
     }
 
+
     /**
-     * @param victoryPoints
+     * getter
+     *
+     * @return
      */
-    public void changeVictoryPoints(int victoryPoints){
-        this.victoryPoints += victoryPoints;
+    public int getPlayerID() {
+        return playerID;
     }
 
 }

@@ -1,8 +1,10 @@
 package expat.model;
 
+import expat.control.ControllerMainStage;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
+import expat.model.buildings.ModelBuilding;
 
 import java.util.LinkedList;
 
@@ -25,34 +27,80 @@ import java.util.LinkedList;
  */
 public class ModelApp {
     private ModelBoard board;
-    private int diceNumber;
     private ModelDiceRolling diceRolling;
-    private LinkedList<ModelPlayer> players = new LinkedList<>();
-    private ModelPlayer nowPlaying;
-    private String currentStep;
+    private int localPlayerID;
+    private boolean localPlayerIDSet = false;
+    private String clientType;
+    private ControllerMainStage controllerMainStage;
+    private String currentStep = "";
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
     private ModelTradeAction tradeAction;
     private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
-    private ModelFirstBuildingActionSequence firstBuildingActionSequence;
+    private ModelPlayerHandler playerHandler;
+
+    public ModelApp(int localPlayerID, String clientType, int playerCount, ControllerMainStage controllerMainStage) {
+        this.localPlayerID = localPlayerID;
+        this.clientType = clientType;
+        this.controllerMainStage = controllerMainStage;
+
+        if (clientType.equals("solo")) {
+            initializeBoardGeneration();
+            playerHandler = new ModelPlayerHandler(playerCount, board);
+        }
+        if (clientType.equals("host")) {
+            initializeBoardGeneration();
+            playerHandler = new ModelPlayerHandler(playerCount, board);
+        }
+
+    }
 
 
     /**
      * constuctor for app. generates a default board of widht 9 and height 7.
      */
-    public ModelApp() {
-        ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
-        this.board = boardGenerator.generateBoard();
+    public ModelApp(String clientType) {
+        this.clientType = clientType;
+        localPlayerID = 0;
+
+        initializeBoardGeneration();
+        playerHandler = new ModelPlayerHandler(2, board);
+    }
+
+    public boolean checkIfSoloElseCheckNowPlayingIsLocal() {
+        if (clientType.equals("solo")) {
+            return true;
+        } else {
+            if (playerHandler.getCurrentPlayer().getPlayerID() == localPlayerID) {
+                return true;
+            }
+            return false;
+        }
     }
 
     /**
-     * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
+     * Depending on clientType board will be generated.
      */
-    public void generatePlayer() {
-        ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
-        ModelPlayer player = playerGen.newPlayer();
-        players.add(player);
+    private void initializeBoardGeneration() {
+        if (clientType.equals("solo")) {
+            ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
+            this.board = boardGenerator.generateBoard();
+        } else if (clientType.equals("host")) {
+            ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
+            this.board = boardGenerator.generateBoard();
+        } else if (clientType.equals("client")) {
+            //TODO: do some action board and stuff, can be set.
+        }
     }
+
+    public void boardGeneratedElseWhere(ModelBoard board) {
+        this.board = board;
+    }
+
+    public void playerHandlerGenereatedElseWhere(ModelPlayerHandler playerHandler) {
+        this.playerHandler = playerHandler;
+    }
+
 
     /**
      * handles the beginning of the game
@@ -61,11 +109,6 @@ public class ModelApp {
      * - they get the materials from all flanking hexes
      */
     public void gameBegin() {
-        generatePlayer();
-        generatePlayer();
-
-        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players, board);
-        nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
         currentStep = "FirstBuildingStep";
     }
 
@@ -85,26 +128,51 @@ public class ModelApp {
      */
     public void resourceStep() {
         currentStep = "ResourceStep";
-        diceNumber = 0;
         diceRolling = null;
     }
 
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
-    public void rollDice() {
+    public ModelDiceRolling rollDice() {
         diceRolling = new ModelDiceRolling();
-        diceNumber = diceRolling.getRolledDices();
+        int diceNumber = diceRolling.getRolledDices();
         if (diceNumber != 7) {
-            ModelMaterial materialBefore = new ModelMaterial();
-            materialBefore.addMaterial(nowPlaying.getMaterial());
-            board.resourceOnDiceEvent(diceNumber);
-            nowPlayingDicedMaterial = new ModelMaterial();
-            nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
-            nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            if (checkIfSoloElseCheckNowPlayingIsLocal()) {
+                ModelMaterial materialBefore = new ModelMaterial();
+                materialBefore.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
+                board.resourceOnDiceEvent(diceNumber);
+                nowPlayingDicedMaterial = new ModelMaterial();
+                nowPlayingDicedMaterial.addMaterial(playerHandler.getCurrentPlayer().getMaterial());
+                nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            } else {
+                nowPlayingDicedMaterial = new ModelMaterial();
+            }
+
         } else {
             nowPlayingDicedMaterial = new ModelMaterial();
         }
+        return diceRolling;
+    }
+
+    public void rolledDiceElsewhere(ModelDiceRolling diceRolling) {
+        this.diceRolling = diceRolling;
+        int diceNumber = diceRolling.getRolledDices();
+        if (diceNumber != 7) {
+            if (checkIfSoloElseCheckNowPlayingIsLocal()) {
+                ModelMaterial materialBefore = new ModelMaterial();
+                materialBefore.addMaterial(playerHandler.getPlayerByID(localPlayerID).getMaterial());
+                board.resourceOnDiceEvent(diceNumber);
+                nowPlayingDicedMaterial = new ModelMaterial();
+                nowPlayingDicedMaterial.addMaterial(playerHandler.getPlayerByID(localPlayerID).getMaterial());
+                nowPlayingDicedMaterial.reduceMaterial(materialBefore);
+            }
+
+        } else {
+            nowPlayingDicedMaterial = new ModelMaterial();
+        }
+
+
     }
 
     /**
@@ -125,22 +193,23 @@ public class ModelApp {
      */
     public void specialStep() {
         if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            for (ModelPlayer player : players) {
+            for (ModelPlayer player : playerHandler.getPlayers()) {
                 if (player.getMaterial().getSumOfAllMaterials() > 7) {
                     playersMustDrop.add(player);
                 }
             }
         } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            board.activateRaider();
+            if (!board.getRaider().isAllowRaid()) {
+                board.activateRaider();
+            }
         }
         currentStep = "SpecialStep";
-        diceNumber = 0;
     }
 
     /**
      * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
      *
-     * @param endDifference
+     * @param endDifference int array with difference for each resource.
      */
     public void playerDroppedMaterial(int[] endDifference) {
         playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
@@ -151,8 +220,10 @@ public class ModelApp {
      */
     public void nextPlayer() {
         board.abortBuildingAction();
-        players.add(players.poll());
-        nowPlaying = players.peek();
+        playerHandler.nextPlayer();
+        if (!clientType.equals("solo")){
+            controllerMainStage.sendPlayerHandler();
+        }
     }
 
     /**
@@ -175,7 +246,7 @@ public class ModelApp {
      * @param type of trading action
      */
     public void newTradeAction(String type) {
-        tradeAction = new ModelTradeAction(type, nowPlaying);
+        tradeAction = new ModelTradeAction(type, playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -201,7 +272,7 @@ public class ModelApp {
      * @param type
      */
     public void firstBuildingAction(String type) {
-        board.firstBuildingAction(type, nowPlaying);
+        board.firstBuildingAction(type, playerHandler.getCurrentPlayer());
     }
 
 
@@ -211,7 +282,7 @@ public class ModelApp {
      * @param type
      */
     public void newBuildingAction(String type) {
-        board.newBuildingAction(type, nowPlaying);
+        board.newBuildingAction(type, playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -219,57 +290,43 @@ public class ModelApp {
      * During first stage it will automaticaly sets next player active, so all can build their first buildings and connections.
      *
      * @param coords coordinates of building which will be built.
-     * @param type
+     * @param type   building Type
      */
     public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
+            nextPlayer();
         }
         if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
             if (board.finishBuildingAction(coords, type)) {
                 if (type.equals("Building")) {
-                    nowPlaying.changeVictoryPoints(1);
+                    playerHandler.getCurrentPlayer().changeVictoryPoints(1);
                 }
             }
         }
         boolean allOnSameFirstBuildingStep = true;
         if (firstBuildingStep < 2) {
-            for (ModelPlayer player : players) {
-                if ((board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
-
-                } else {
+            for (ModelPlayer player : playerHandler.getPlayers()) {
+                if (!(board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
                     allOnSameFirstBuildingStep = false;
                 }
             }
             if (allOnSameFirstBuildingStep) {
                 firstBuildingStep += 1;
-                if (firstBuildingActionSequence.nextPlayer()) {
-                    nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-                } else {
-                    nextPlayer();
-                }
+                nextPlayer();
             }
             if (firstBuildingStep >= 2) {
                 resourceStep();
             }
         }
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
+            nextPlayer();
         }
     }
 
     /**
      * Hands given coordinates over to board so raider can be moved to corresponding hex.
      *
-     * @param coords
+     * @param coords coordinates fo hex where raider will be moved to.
      */
     public void moveRaider(int[] coords) {
         if (board.getRaider().getAllowMovement()) {
@@ -280,8 +337,19 @@ public class ModelApp {
                     }
                 }
             }
+            board.getRaider().setAllowRaid(true);
             board.getRaider().setAllowMovement(false);
         }
+    }
+
+    public void takeMaterialFromPlayerAndGiveItToCurrentPlayer(int[] coords) {
+
+        for (ModelBuilding building : board.getBuildings()) {
+            if (building.checkCoords(coords)) {
+                playerHandler.getCurrentPlayer().addMaterial(building.getOwner().takeRandomMaterial());
+            }
+        }
+        board.getRaider().setAllowRaid(false);
     }
 
 
@@ -290,8 +358,8 @@ public class ModelApp {
      *
      * @return sum of buildings
      */
-    public int countBuildingsForCurrentPlayer() {
-        return board.countBuildingsOwned(nowPlaying);
+    private int countBuildingsForCurrentPlayer() {
+        return board.countBuildingsOwned(playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -299,8 +367,8 @@ public class ModelApp {
      *
      * @return sum of connections
      */
-    public int countConnectionsForCurrentPlayer() {
-        return board.countConnectionsOwned(nowPlaying);
+    private int countConnectionsForCurrentPlayer() {
+        return board.countConnectionsOwned(playerHandler.getCurrentPlayer());
     }
 
     /**
@@ -327,7 +395,12 @@ public class ModelApp {
      * @return
      */
     public int getDiceNumber() {
-        return diceNumber;
+
+        try {
+            return diceRolling.getRolledDices();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     /**
@@ -372,7 +445,7 @@ public class ModelApp {
      * @return
      */
     public ModelPlayer getNowPlaying() {
-        return nowPlaying;
+        return playerHandler.getCurrentPlayer();
     }
 
     /**
@@ -390,9 +463,41 @@ public class ModelApp {
      * @return
      */
     public LinkedList<ModelPlayer> getPlayers() {
-        return players;
+        return playerHandler.getPlayers();
     }
 
+    public ModelPlayer getLocalPlayer() {
+        return playerHandler.getPlayerByID(localPlayerID);
+    }
+
+    public int getLocalPlayerID() {
+        return localPlayerID;
+    }
+
+
+    public String getClientType() {
+        return clientType;
+    }
+
+    public boolean isLocalPlayerIDSet() {
+        return localPlayerIDSet;
+    }
+
+    public void setLocalPlayerIDSet(boolean localPlayerIDSet) {
+        this.localPlayerIDSet = localPlayerIDSet;
+    }
+
+    public ModelPlayerHandler getPlayerHandler() {
+        return playerHandler;
+    }
+
+    public void setPlayerHandler(ModelPlayerHandler playerHandler) {
+        this.playerHandler = playerHandler;
+    }
+
+    public void setBoard(ModelBoard board) {
+        this.board = board;
+    }
 }
 
 

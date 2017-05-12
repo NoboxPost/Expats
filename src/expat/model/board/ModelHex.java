@@ -2,6 +2,7 @@ package expat.model.board;
 
 import expat.model.ModelMaterial;
 
+import java.io.Serializable;
 
 
 /**
@@ -11,7 +12,7 @@ import expat.model.ModelMaterial;
  *
  * @author vanonir
  */
-public class ModelHex {
+public class ModelHex implements Serializable {
 
     protected String type = "Water";
     protected int xCoord;

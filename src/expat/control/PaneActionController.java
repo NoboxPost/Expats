@@ -1,9 +1,10 @@
 package expat.control;
 
 import expat.model.ModelApp;
-import expat.view.ViewCardsFactory;
-import expat.view.ViewPaneDropMaterial;
-import expat.view.ViewPaneTradeGeneral;
+import expat.model.ModelDiceRolling;
+import expat.model.ModelEvent;
+import expat.model.buildings.ModelBuilding;
+import expat.view.*;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
@@ -17,6 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 
 
 /**
@@ -92,11 +96,11 @@ public class PaneActionController {
                 middleActionPane.getChildren().add(diceImageView);
             }
             generateCards();
-            if (app.getDiceNumber() == 7) {
+            if (app.getDiceNumber() == 7 && app.checkIfSoloElseCheckNowPlayingIsLocal()) {
                 Button btnDropMaterials = new Button("Materialien abgeben");
                 btnDropMaterials.setOnAction(this::btnDropMaterialsClicked);
                 middleActionPane.getChildren().add(btnDropMaterials);
-            } else {
+            } else if (app.checkIfSoloElseCheckNowPlayingIsLocal()){
                 btnNextStep.setDisable(false);
                 btnEndTurn.setDisable(false);
                 btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
@@ -133,7 +137,12 @@ public class PaneActionController {
      * @param event
      */
     public void diceRollClicked(ActionEvent event) {
-        app.rollDice();
+        ModelDiceRolling diceRolling = app.rollDice();
+        if (!app.getClientType().equals("solo")) {
+            ModelEvent rolledDice = new ModelEvent(app.getLocalPlayerID());
+            rolledDice.setTypeAndAttachSingleObject("rolledDice",diceRolling);
+            controllerMainStage.sendEvent(rolledDice);
+        }
         refreshStep();
         controllerMainStage.refreshGameInformations();
     }
@@ -154,7 +163,7 @@ public class PaneActionController {
         middleActionPane.getChildren().clear();
 
 
-        Label playerName = new Label("Player "+app.getNowPlaying().getPlayerName());
+        Label playerName = new Label(app.getNowPlaying().getPlayerName());
 
         Image settlement = new Image("expat/img/Settlement.png");
         settlementImageView = new ImageView(settlement);
@@ -334,9 +343,21 @@ public class PaneActionController {
                 paneDropMaterial = new ViewPaneDropMaterial(app.getPlayersMustDrop().peek().getMaterial().getMaterialAmount(), this,app.getPlayersMustDrop().peek().getPlayerName());
                 middleActionPane.getChildren().add(paneDropMaterial);
             } else {
-                app.getBoard().activateRaider();
-                Label label = new Label("You can move the raider now");
-                middleActionPane.getChildren().add(label);
+                if (app.getBoard().getRaider().isAllowRaid()) {
+                    //raider has been moved and current player needs to choose from whom he will steal ressources.
+                    HBox hBox = drawChoosePlayerToRaid();
+                    if (!hBox.getChildren().isEmpty()){
+                        middleActionPane.getChildren().add(hBox);
+                    }else {
+                        endSpecialTurn();
+                    }
+
+                }else{
+                    //Raider is not yet moved, and label with order will be displayes.
+                    Label label = new Label("You can move the raider now");
+                    middleActionPane.getChildren().add(label);
+                    app.getBoard().activateRaider();
+                }
             }
         } else if (paneDropMaterial != null) {
             if (paneDropMaterial.isDone()) {
@@ -350,6 +371,34 @@ public class PaneActionController {
         }
 
 
+    }
+
+    private void endSpecialTurn() {
+        btnNextStep.setDisable(false);
+        btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
+        btnEndTurn.setDisable(false);
+        app.tradeStep();
+        app.getBoard().getRaider().setAllowRaid(false);
+        refreshStep();
+    }
+
+    private HBox drawChoosePlayerToRaid() {
+        HBox vBoxBlockedBuildings= new HBox();
+        ArrayList<ModelBuilding> blockedModelBuildings = app.getBoard().getAllBuildingsBlockedByRaider();
+        ViewBuildingFactory factory = new ViewBuildingFactory(200);
+        for (ModelBuilding building :blockedModelBuildings) {
+            ViewBuilding viewBuilding = factory.createViewBuilding(building);
+            viewBuilding.setOnMouseReleased(this::playerChosenToRaid);
+            vBoxBlockedBuildings.getChildren().add(viewBuilding);
+        }
+        return vBoxBlockedBuildings;
+    }
+
+    private void playerChosenToRaid(MouseEvent event) {
+        ViewBuilding viewBuilding = (ViewBuilding) event.getSource();
+        app.takeMaterialFromPlayerAndGiveItToCurrentPlayer(viewBuilding.getBuildingCoord());
+        controllerMainStage.refreshGameInformations();
+        endSpecialTurn();
     }
 
     /**
@@ -408,6 +457,12 @@ public class PaneActionController {
      */
     public void refreshStep() {
         String currentStep = app.getCurrentStep();
+        if (!app.getClientType().equals("solo")){
+            if (app.getNowPlaying().getPlayerID() !=app.getLocalPlayerID()){
+                middleActionPane.getChildren().clear();
+                return;
+            }
+        }
         switch (currentStep) {
             case "FirstBuildingStep":
                 drawFirstSettlementAndRoadStep();
@@ -457,10 +512,7 @@ public class PaneActionController {
      * Refreshes buttons after Raider is moved.
      */
     public void raiderMoved() {
-        btnNextStep.setDisable(false);
-        btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
-        btnEndTurn.setDisable(false);
-        //TODO: draw auswahl von Player
+        refreshStep();
     }
 
     /**
@@ -483,5 +535,13 @@ public class PaneActionController {
         paneDropMaterial.adjustMaterial((Button) event.getSource());
         refreshStep();
 
+    }
+    public void drawStartButton(){
+        middleActionPane.getChildren().removeAll();
+        HBox hBox =new HBox();
+        Button btn = new Button("Starte Spiel");
+        btn.setOnAction(controllerMainStage::startGame);
+        hBox.getChildren().add(btn);
+        middleActionPane.getChildren().add(hBox);
     }
 }
