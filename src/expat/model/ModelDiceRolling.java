@@ -8,13 +8,12 @@ package expat.model;
  * @author gallatib
  */
 
-import java.io.Serializable;
 import java.util.Random;
 
 /**
  *
  */
-public class ModelDiceRolling implements Serializable {
+public class ModelDiceRolling {
     private int rand1;
     private int rand2;
 

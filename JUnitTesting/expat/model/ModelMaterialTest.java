@@ -66,12 +66,4 @@ public class ModelMaterialTest {
         assertEquals(10,mat.getSumOfAllMaterials());
     }
 
-    @Test
-    public void takeArandomRessource() throws Exception{
-        ModelMaterial mat = new ModelMaterial(new int[]{0,0,1,0,0});
-        assertEquals(1,mat.getSumOfAllMaterials());
-        ModelMaterial matTaken = mat.takeRandomMaterial();
-        assertEquals(0,mat.getSumOfAllMaterials());
-        assertEquals(1,matTaken.getSumOfAllMaterials());
-    }
 }

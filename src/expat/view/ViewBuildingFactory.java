@@ -20,10 +20,11 @@ import java.util.List;
 
 public class ViewBuildingFactory {
     private ViewCoordinateCalculator viewCoordinateCalculator;
+    PaneBoardController paneBoardController;
     private int hexSize;
 
-    public ViewBuildingFactory(int hexSize) {
-
+    public ViewBuildingFactory(int hexSize, PaneBoardController paneBoardController) {
+        this.paneBoardController = paneBoardController;
         this.hexSize = hexSize;
         viewCoordinateCalculator = new ViewCoordinateCalculator(hexSize);
     }
@@ -35,39 +36,31 @@ public class ViewBuildingFactory {
      * @param modelBuildings ModelBuilding list which leads to generation of ViewBuildings.
      * @return ViewBuilding list, containing all Nodes representing their Model counterpart.
      */
-    public List<ViewBuilding> generateBuildingsAndAttachesThemToCorrectLocation(ArrayList<ModelBuilding> modelBuildings,PaneBoardController paneBoardController) {
+    public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings) {
         List<ViewBuilding> viewBuildings = new ArrayList<ViewBuilding>();
 
         for (ModelBuilding modelBuilding : modelBuildings) {
-            ViewBuilding viewBuilding = createViewBuilding(modelBuilding);
+            int[] modelBuildingCoords = modelBuilding.getCoords();
+            ViewBuilding viewBuilding;
+            if (modelBuilding.getType().equals("Town")) {
+                viewBuilding = generateTown(modelBuildingCoords[0], modelBuildingCoords[1]);
+                viewBuilding.setEffect(generatePlayerColorEffectForTown(modelBuilding.getOwner().getColor()));
+            } else if (modelBuilding.getType().equals("Settlement")) {
+                viewBuilding = generateSettlement(modelBuildingCoords[0], modelBuildingCoords[1]);
+                viewBuilding.setEffect(generatePlayerColorEffectForSettlement(modelBuilding.getOwner().getColor()));
+            } else {
+                viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
+            }
             viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
-            Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuilding.getCoords());
+            Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
             viewBuilding.setLayoutX(pixelCoords[0]);
             viewBuilding.setLayoutY(pixelCoords[1]);
             viewBuildings.add(viewBuilding);
+            //viewBuilding.setEffect(); TODO: set color depending on owner
         }
-        return viewBuildings;
-    }
 
-    /**
-     * Creates a ViewBuidling according to given modelBuilding an gives the coordinates of the modelBuilding to the Viewbuilding.
-     *
-     * @param modelBuilding which will be representated by the ViewBuilding.
-     * @return
-     */
-    public ViewBuilding createViewBuilding(ModelBuilding modelBuilding) {
-        int[] modelBuildingCoords = modelBuilding.getCoords();
-        ViewBuilding viewBuilding;
-        if (modelBuilding.getType().equals("Town")) {
-            viewBuilding = generateTown(modelBuildingCoords[0], modelBuildingCoords[1]);
-            viewBuilding.setEffect(generatePlayerColorEffectForTown(modelBuilding.getOwner().getColor()));
-        } else if (modelBuilding.getType().equals("Settlement")) {
-            viewBuilding = generateSettlement(modelBuildingCoords[0], modelBuildingCoords[1]);
-            viewBuilding.setEffect(generatePlayerColorEffectForSettlement(modelBuilding.getOwner().getColor()));
-        } else {
-            viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
-        }
-        return viewBuilding;
+
+        return viewBuildings;
     }
 
 
