@@ -4,8 +4,6 @@ import expat.model.board.ModelHex;
 import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
 
-import java.io.Serializable;
-
 /**
  * is responsible for handling all aspects of a building
  * <p>
@@ -13,15 +11,15 @@ import java.io.Serializable;
  *
  * @author vanonir
  */
-public class ModelBuilding implements Serializable {
+public class ModelBuilding {
     private ModelHex[] neighbours = new ModelHex[3];
-    private String[] types = new String[]{"empty", "Settlement", "Town"};
+    private String[] types = new String[]{"empty","Settlement","Town"};
     private String type = "empty";
     private int xBuildingCoord, yBuildingCoord;
     private int winPoints;
     private int resourceMultiplier;
     protected ModelPlayer owner;
-    private boolean display = true;
+    private boolean display =true;
 
 
     public ModelBuilding(int xBuildingCoord, int yBuildingCoord) {
@@ -35,9 +33,9 @@ public class ModelBuilding implements Serializable {
      * @param hexNeighbour
      * @return boolean, whether the building is flanking a specific hex or not
      */
-    public boolean isFlanking(ModelHex hexNeighbour) {
-        for (ModelHex hex : neighbours) {
-            if (hex.equals(hexNeighbour)) {//TODO: Test if equals really works. Performance?
+    public boolean isFlanking(ModelHex hexNeighbour){
+        for (ModelHex hex: neighbours){
+            if (hex.equals(hexNeighbour)){//TODO: Test if equals really works. Performance?
                 return true;
             }
         }
@@ -50,10 +48,10 @@ public class ModelBuilding implements Serializable {
      * @param hex
      * @return boolean, whether a hex field could get assigned as neighbors to this building object or not
      */
-    public boolean addNeighbour(ModelHex hex) {
-        if (neighbours[2] != null) {
+    public boolean addNeighbour(ModelHex hex){
+        if (neighbours[2]!=null){
             return false;
-        } else {
+        }else {
             for (int i = 0; i < neighbours.length; i++) {
                 if (neighbours[i] == null) {
                     neighbours[i] = hex;
@@ -66,11 +64,13 @@ public class ModelBuilding implements Serializable {
     }
 
     /**
+     *
+     *
      * @param material
      */
-    public void giveMaterialToOwner(ModelMaterial material) {
-        if (!type.equals("empty")) {
-            for (int i = 0; i < resourceMultiplier; i++) {
+    public void giveMaterialToOwner(ModelMaterial material){
+        if(!type.equals("empty")){
+            for (int i = 0;i<resourceMultiplier;i++){
                 owner.addMaterial(material);
             }
         }
@@ -79,7 +79,7 @@ public class ModelBuilding implements Serializable {
     /**
      * @param owner
      */
-    public void buildSettlement(ModelPlayer owner) {
+    public void buildSettlement(ModelPlayer owner){
         this.owner = owner;
         type = "Settlement";
         winPoints = 1;
@@ -89,7 +89,7 @@ public class ModelBuilding implements Serializable {
     /**
      * @param owner
      */
-    public void buildTown(ModelPlayer owner) {
+    public void buildTown(ModelPlayer owner){
         this.owner = owner;
         type = "Town";
         winPoints = 2;
@@ -102,25 +102,16 @@ public class ModelBuilding implements Serializable {
      * @param coordsToCheck int array with first position standing for x coordinate, second position standing for y coordinate
      * @return true if coords are equal, else false.
      */
-    public boolean checkCoords(int[] coordsToCheck) {
-        return checkCoords(coordsToCheck[0], coordsToCheck[1]);
+    public boolean checkCoords(int[] coordsToCheck){
+        return checkCoords(coordsToCheck[0],coordsToCheck[1]);
     }
 
-    public boolean checkCoords(int xCoord, int yCoord) {
-        if (xCoord == xBuildingCoord && yCoord == yBuildingCoord) {
+    public boolean checkCoords(int xCoord,int yCoord){
+        if (xCoord==xBuildingCoord&&yCoord==yBuildingCoord){
             return true;
-        } else {
+        }else {
             return false;
         }
-    }
-
-    public boolean checkHex(ModelHex foreignHex) {
-        for (ModelHex ownHex : neighbours) {
-            if (ownHex == foreignHex) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -133,8 +124,22 @@ public class ModelBuilding implements Serializable {
     /**
      * @return
      */
-    public int[] getCoords() {
-        return new int[]{xBuildingCoord, yBuildingCoord};
+    public int[] getCoords(){
+        return new int[]{xBuildingCoord,yBuildingCoord};
+    }
+
+    /**
+     * @return
+     */
+    public boolean isDisplay() {
+        return display;
+    }
+
+    /**
+     * @param display
+     */
+    public void setDisplay(boolean display) {
+        this.display = display;
     }
 
     /**

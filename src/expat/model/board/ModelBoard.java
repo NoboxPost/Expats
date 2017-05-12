@@ -6,7 +6,6 @@ import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;
 import expat.model.buildings.ModelConnection;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +15,7 @@ import java.util.ArrayList;
  *
  * @author vanonir
  */
-public class ModelBoard implements Serializable {
+public class ModelBoard {
     private ModelHex[][] hexes;
     private ArrayList<ModelBuilding> buildings;
     private ArrayList<ModelConnection> connections;
@@ -130,18 +129,6 @@ public class ModelBoard implements Serializable {
         }
         return counter;
     }
-    public ArrayList<ModelBuilding> getAllBuildingsBlockedByRaider(){
-        ArrayList<ModelBuilding> blockedByRaider = new ArrayList<>();
-        ModelHex blockedHex = raider.getRaiderHex();
-        for (ModelBuilding building: buildings) {
-            if (building.checkHex(blockedHex)&&!building.getType().equals("empty")){
-                blockedByRaider.add(building);
-            }
-        }
-        return blockedByRaider;
-    }
-
-
 
     /**
      *sets Raider as active so he can be moved after all players have dropped their materials if they got more than 7.
@@ -189,7 +176,5 @@ public class ModelBoard implements Serializable {
     }
 
 
-    public ModelBuildingAction getBuildingAction() {
-        return buildingAction;
-    }
+
 }

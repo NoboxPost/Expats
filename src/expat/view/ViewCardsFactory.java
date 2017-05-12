@@ -78,7 +78,7 @@ public class ViewCardsFactory {
                 splittedMaterialPane.getChildren().add(temp);
             }
             label.setText(Integer.toString(labelCounter));
-            //labelCounter = 0;
+            labelCounter = 0;
             label.setLayoutX(0);
             label.setLayoutY(30);
             splittedMaterialPane.getChildren().add(label);

@@ -4,8 +4,6 @@ import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
 import expat.model.board.ModelHex;
 
-import java.io.Serializable;
-
 /**
  * is responsible for
  * <p>
@@ -13,7 +11,7 @@ import java.io.Serializable;
  *
  * @author vanonir
  */
-public class ModelConnection implements Serializable {
+public class ModelConnection {
     private ModelHex[] neighbours = new ModelHex[2];
     private String[] types = new String[]{"empty","Road","Ship"};
     private String type = "empty";

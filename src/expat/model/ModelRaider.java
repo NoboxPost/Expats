@@ -3,8 +3,6 @@ package expat.model;
 import expat.model.board.ModelHex;
 import expat.model.buildings.ModelBuilding;
 
-import java.io.Serializable;
-
 
 /**
  * is responsible for assigning a hex to the raider
@@ -13,9 +11,8 @@ import java.io.Serializable;
  *
  * @author gallatib
  */
-public class ModelRaider implements Serializable {
+public class ModelRaider {
     private ModelHex hex;
-    private boolean allowRaid = false;
     private boolean allowMovement =false;
 
     public ModelRaider(ModelHex hex) {
@@ -53,13 +50,5 @@ public class ModelRaider implements Serializable {
      */
     public ModelHex getRaiderHex() {
         return hex;
-    }
-
-    public boolean isAllowRaid() {
-        return allowRaid;
-    }
-
-    public void setAllowRaid(boolean allowRaid) {
-        this.allowRaid = allowRaid;
     }
 }
