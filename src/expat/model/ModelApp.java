@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * - all the players
  * <p>
  * this class is built intentionally like the player procedure
- * - dice and material distirbution
+ * - dice and material distribution
  * - trading
  * - building
  * - events
