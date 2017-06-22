@@ -1,4 +1,4 @@
-package expat.control;
+package expat.control.panes;
 
 import expat.model.ModelApp;
 import expat.model.board.ModelBoard;
@@ -25,7 +25,7 @@ public class PaneBoardController {
     @FXML
     private AnchorPane anchorPaneBoard;
 
-    private ControllerMainStage controllerMainStage;
+    private MainStageController controllerMainStage;
     private int HEXSIZE = 200;
     private double SCALE_NUMBER = 1.05;
     private double mousePositionX;
@@ -201,15 +201,16 @@ public class PaneBoardController {
 
     /**
      *
-     * Takes ControllerMainStage, the MainController, and the ModelApp. MainController is used as reference so other controllers can be called.
+     * Takes MainStageController, the MainController, and the ModelApp. MainController is used as reference so other controllers can be called.
      * App is used as a reference so events can be handed over to ModelApp.
      *
      * @param controllerMainStage
      * @param app
      */
-    public void init(ControllerMainStage controllerMainStage,ModelApp app) {
+    public void init(MainStageController controllerMainStage, ModelApp app) {
         this.controllerMainStage = controllerMainStage;
         this.app = app;
+        drawBoard(app.getBoard());
     }
 
     /**

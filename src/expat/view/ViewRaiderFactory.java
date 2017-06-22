@@ -1,14 +1,9 @@
 package expat.view;
 
-import expat.control.PaneBoardController;
+import expat.control.panes.PaneBoardController;
 import expat.model.ModelRaider;
-import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 /**
  * is responsible for the generation of the raider figure on board
