@@ -30,6 +30,9 @@ public class ModelApp {
     //components
     private ModelBoard board;
     private ModelDiceRoller diceRoller;
+    private ModelPlayerGenerator playerGenerator;
+
+
     private LinkedList<ModelPlayer> players = new LinkedList<>();
     private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
     private ModelTradeAction tradeAction;
@@ -57,14 +60,14 @@ public class ModelApp {
         board = boardGenerator.generateBoard();
 
         diceRoller = new ModelDiceRoller();
+        playerGenerator = new ModelPlayerGenerator();
     }
 
     /**
      * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
      */
     public void generatePlayer() {
-        ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
-        ModelPlayer player = playerGen.newPlayer();
+        ModelPlayer player = playerGenerator.newPlayer();
         players.add(player);
     }
 

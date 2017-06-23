@@ -57,7 +57,6 @@ public class MainStageController {
         paneMatesController.init(app);
     }
 
-
     /**
      * adjusts the scrollbar when zooming
      * @param width

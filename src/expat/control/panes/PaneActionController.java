@@ -453,7 +453,6 @@ public class PaneActionController {
 
     }
 
-
     /**
      * Refreshes buttons after Raider is moved.
      */
