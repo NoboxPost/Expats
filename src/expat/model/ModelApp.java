@@ -3,6 +3,9 @@ package expat.model;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
+import expat.model.procedure.ModelDiceRoller;
+import expat.model.procedure.ModelFirstBuildingActionSequence;
+import expat.model.procedure.ModelTradeAction;
 
 import java.util.LinkedList;
 
@@ -15,7 +18,7 @@ import java.util.LinkedList;
  * - all the players
  * <p>
  * this class is built intentionally like the player procedure
- * - dice and material distirbution
+ * - dice and material distribution
  * - trading
  * - building
  * - events
@@ -24,16 +27,22 @@ import java.util.LinkedList;
  * @author vanonir
  */
 public class ModelApp {
+    //components
     private ModelBoard board;
-    private int diceNumber;
-    private ModelDiceRolling diceRolling;
+    private ModelDiceRoller diceRoller;
+    private ModelPlayerGenerator playerGenerator;
+
+
     private LinkedList<ModelPlayer> players = new LinkedList<>();
+    private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
+    private ModelTradeAction tradeAction;
+
+    //procedure
+    private int diceNumber;
     private ModelPlayer nowPlaying;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
-    private ModelTradeAction tradeAction;
-    private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
     private ModelFirstBuildingActionSequence firstBuildingActionSequence;
 
 
@@ -41,16 +50,24 @@ public class ModelApp {
      * constuctor for app. generates a default board of widht 9 and height 7.
      */
     public ModelApp() {
+        initializeGame();
+    }
+
+
+    //TODO: Initialization
+    private void initializeGame(){
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
-        this.board = boardGenerator.generateBoard();
+        board = boardGenerator.generateBoard();
+
+        diceRoller = new ModelDiceRoller();
+        playerGenerator = new ModelPlayerGenerator();
     }
 
     /**
      * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
      */
     public void generatePlayer() {
-        ModelPlayerGenerator playerGen = new ModelPlayerGenerator();
-        ModelPlayer player = playerGen.newPlayer();
+        ModelPlayer player = playerGenerator.newPlayer();
         players.add(player);
     }
 
@@ -60,7 +77,7 @@ public class ModelApp {
      * - players choose the position of their first two settlements
      * - they get the materials from all flanking hexes
      */
-    public void gameBegin() {
+    public void startPreGame() {
         generatePlayer();
         generatePlayer();
 
@@ -86,15 +103,15 @@ public class ModelApp {
     public void resourceStep() {
         currentStep = "ResourceStep";
         diceNumber = 0;
-        diceRolling = null;
+        diceRoller = null;
     }
 
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
     public void rollDice() {
-        diceRolling = new ModelDiceRolling();
-        diceNumber = diceRolling.getRolledDices();
+        diceRoller = new ModelDiceRoller();
+        diceNumber = diceRoller.getRolledDices();
         if (diceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial();
             materialBefore.addMaterial(nowPlaying.getMaterial());
@@ -336,7 +353,7 @@ public class ModelApp {
      * @return
      */
     public int[] getDiceNumbersSeparately() {
-        return diceRolling.getRolledDicesSeperately();
+        return diceRoller.getRolledDicesSeperately();
     }
 
     /**

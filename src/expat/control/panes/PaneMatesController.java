@@ -1,4 +1,4 @@
-package expat.control;
+package expat.control.panes;
 
 
 import expat.model.ModelApp;
@@ -29,6 +29,7 @@ public class PaneMatesController {
      */
     public void init(ModelApp app){
         this.app = app;
+        setMatesInformation();
     }
 
     /**

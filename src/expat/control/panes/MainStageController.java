@@ -1,14 +1,12 @@
-package expat.control;
+package expat.control.panes;
 
 import expat.model.ModelApp;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
 /**
  * the main scene that works as collection-pool for all included scenes and also starts the App
@@ -17,7 +15,7 @@ import javafx.util.Duration;
  *
  * @author vanonir
  */
-public class ControllerMainStage {
+public class MainStageController {
     @FXML
     private ScrollPane scrollPaneCenter;
     @FXML
@@ -46,16 +44,17 @@ public class ControllerMainStage {
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
-        app = new ModelApp();
+        app = new ModelApp(){{
+            startPreGame();
+        }};
+        initializeControllers();
+    }
+
+    private void initializeControllers(){
         paneBoardController.init(this,app);
         paneActionController.init(this,app);
         panePlayerController.init(this, app);
         paneMatesController.init(app);
-        paneBoardController.drawBoard(app.getBoard());
-        app.gameBegin();
-        paneActionController.refreshStep();
-        panePlayerController.refresh();
-        paneMatesController.setMatesInformation();
     }
 
     /**
@@ -75,6 +74,7 @@ public class ControllerMainStage {
     public void refreshActionStep() {
         paneActionController.refreshStep();
     }
+
     /**
      * Refreshes left side of the screen, where infos about the current player are displayed.
      */
@@ -82,7 +82,6 @@ public class ControllerMainStage {
         panePlayerController.refresh();
         paneMatesController.setMatesInformation();
     }
-
 
     /**
      * Enables buttons for next step and end turn again, after paneActionController waitet for Raider to be moved.

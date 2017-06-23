@@ -1,6 +1,6 @@
 package expat.view;
 
-import expat.control.PaneBoardController;
+import expat.control.panes.PaneBoardController;
 import expat.model.board.ModelHex;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;

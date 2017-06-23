@@ -1,4 +1,4 @@
-package expat.control;
+package expat.control.panes;
 
 import expat.model.ModelApp;
 import expat.view.ViewCardsFactory;
@@ -33,7 +33,7 @@ public class PaneActionController {
     @FXML public HBox middleActionPane;
     @FXML public Pane leftActionPane;
     @FXML public AnchorPane action;
-    private ControllerMainStage controllerMainStage;
+    private MainStageController controllerMainStage;
     private ImageView roadImageView;
     private ImageView townImageView;
     private ImageView settlementImageView;
@@ -44,14 +44,15 @@ public class PaneActionController {
 
 
     /**
-     * Needs to be called at program start. Injects ControllerMainStage and ModelApp into this controller, so he can call back.
+     * Needs to be called at program start. Injects MainStageController and ModelApp into this controller, so he can call back.
      *
-     * @param controllerMainStage reference to ControllerMainStage.
+     * @param controllerMainStage reference to MainStageController.
      * @param app reference to ModelApp generatet by ControlerMainStage.
      */
-    public void init(ControllerMainStage controllerMainStage, ModelApp app) {
+    public void init(MainStageController controllerMainStage, ModelApp app) {
         this.controllerMainStage = controllerMainStage;
         this.app = app;
+        refreshStep();
     }
 
     /**
@@ -451,7 +452,6 @@ public class PaneActionController {
         controllerMainStage.refreshGameInformations();
 
     }
-
 
     /**
      * Refreshes buttons after Raider is moved.

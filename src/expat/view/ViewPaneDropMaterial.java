@@ -1,6 +1,6 @@
 package expat.view;
 
-import expat.control.PaneActionController;
+import expat.control.panes.PaneActionController;
 import expat.model.ModelMaterial;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

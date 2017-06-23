@@ -1,6 +1,6 @@
 package expat.view;
 
-import expat.control.PaneBoardController;
+import expat.control.panes.PaneBoardController;
 import expat.model.buildings.ModelBuilding;
 import javafx.scene.Cursor;
 import javafx.scene.effect.ColorAdjust;

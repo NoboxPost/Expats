@@ -1,4 +1,4 @@
-package expat.control;
+package expat.control.panes;
 
 import expat.model.ModelApp;
 import expat.view.ViewCardsFactory;
@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 
 public class PanePlayerController {
 
-    private ControllerMainStage controllerMainStage;
+    private MainStageController controllerMainStage;
     private ModelApp app;
     @FXML public TextArea playerResourcesTextArea;
     @FXML public TextArea playerVictoryPointsTextArea;
@@ -26,15 +26,16 @@ public class PanePlayerController {
     @FXML public Label playerLabel;
 
     /**
-     * Takes a reference for the ControllerMainStage (MainController) and for the apps and stores them in the corresponding fields,
+     * Takes a reference for the MainStageController (MainController) and for the apps and stores them in the corresponding fields,
      * so both can be called from within this class.
      *
      * @param controllerMainStage
      * @param app
      */
-    public void init(ControllerMainStage controllerMainStage, ModelApp app){
+    public void init(MainStageController controllerMainStage, ModelApp app){
         this.controllerMainStage = controllerMainStage;
         this.app= app;
+        refresh();
     }
 
     /**

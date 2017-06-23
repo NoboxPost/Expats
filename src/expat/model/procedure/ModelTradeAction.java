@@ -1,4 +1,7 @@
-package expat.model;
+package expat.model.procedure;
+
+import expat.model.ModelMaterial;
+import expat.model.ModelPlayer;
 
 /**
  * is responsible for
