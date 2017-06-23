@@ -181,8 +181,8 @@ public class PaneBoardController {
         ViewBuilding building = (ViewBuilding)event.getSource();
         app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(building.getBuildingCoord(),"Building");
         refreshBoardElements(app.getBoard());
-        controllerMainStage.refreshActionStep();
-        controllerMainStage.refreshGameInformations();
+        controllerMainStage.refreshActionPane();
+        controllerMainStage.refreshMatesAndPlayerPanes();
     }
     /**
      * Is called by ViewConnection as onMouseReleased event.
@@ -194,8 +194,8 @@ public class PaneBoardController {
         ViewConnection connection = (ViewConnection) event.getSource();
         app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
         refreshBoardElements(app.getBoard());
-        controllerMainStage.refreshActionStep();
-        controllerMainStage.refreshGameInformations();
+        controllerMainStage.refreshActionPane();
+        controllerMainStage.refreshMatesAndPlayerPanes();
     }
 
 

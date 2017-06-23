@@ -1,4 +1,4 @@
-package expat.model.buildings;
+package expat.model.procedure;
 
 import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;

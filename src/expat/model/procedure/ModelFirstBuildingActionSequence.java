@@ -2,7 +2,6 @@ package expat.model.procedure;
 
 import expat.model.ModelPlayer;
 import expat.model.board.ModelBoard;
-import expat.model.buildings.ModelBuildingAction;
 
 import java.util.List;
 

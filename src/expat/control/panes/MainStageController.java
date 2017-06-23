@@ -1,5 +1,6 @@
 package expat.control.panes;
 
+import expat.control.procedure.MainGame;
 import expat.model.ModelApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
@@ -37,6 +38,7 @@ public class MainStageController {
     @FXML
     PanePlayerController panePlayerController;
     private ModelApp app;
+    private MainGame mainGame;
 
 
     /**
@@ -44,10 +46,9 @@ public class MainStageController {
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
-        app = new ModelApp(){{
-            startPreGame();
-        }};
+        app = new ModelApp();
         initializeControllers();
+        mainGame = new MainGame(this, app);
     }
 
     private void initializeControllers(){
@@ -69,18 +70,22 @@ public class MainStageController {
     }
 
     /**
-     * Refreshes lower middle part of the screen, where the different game steps are displayed.
+     * Refreshes Action-Pane, where the different game steps are displayed
      */
-    public void refreshActionStep() {
-        paneActionController.refreshStep();
+    public void refreshActionPane() {
+        paneActionController.refresh();
     }
 
     /**
-     * Refreshes left side of the screen, where infos about the current player are displayed.
+     * Refreshes Mates-Pane and Player-Pane
+     * Mates: info about game process
+     * Player: infos about the current player
+     *
+     * not all panes are refreshed at the same time because of ressource-reasons
      */
-    public void refreshGameInformations() {
+    public void refreshMatesAndPlayerPanes() {
         panePlayerController.refresh();
-        paneMatesController.setMatesInformation();
+        paneMatesController.refresh();
     }
 
     /**

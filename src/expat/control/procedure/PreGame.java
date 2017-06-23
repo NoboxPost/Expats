@@ -16,4 +16,18 @@ public class PreGame extends Game {
     public void processAllTurnSteps(ModelPlayer player) {
 
     }
+
+
+    /*
+
+    Maybe another stage: Pregame should also handle the number of players?
+
+    generatePlayer();
+    generatePlayer();
+
+    firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players, board);
+    currentPlayer = firstBuildingActionSequence.getCurrentPlayer();
+    currentStep = "FirstBuildingStep";
+
+     */
 }

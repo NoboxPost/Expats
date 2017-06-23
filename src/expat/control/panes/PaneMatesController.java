@@ -29,13 +29,13 @@ public class PaneMatesController {
      */
     public void init(ModelApp app){
         this.app = app;
-        setMatesInformation();
+        refresh();
     }
 
     /**
      * Sets Textareas with informations about enemy players acquired from the app.
      */
-    public void setMatesInformation(){
+    public void refresh(){
         LinkedList<ModelPlayer> players = app.getPlayers();
         String allPlayerStats = "";
         for (ModelPlayer element : players) {

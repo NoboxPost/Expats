@@ -42,8 +42,8 @@ public class PanePlayerController {
      * Sets label with informations about the current players acquired by the app.
      */
     public void setPlayerInformation(){
-        playerLabel.setText("Player " + app.getNowPlaying().getColor());
-        playerVictoryPointsTextArea.setText(app.getNowPlaying().getWinPointsString());
+        playerLabel.setText("Player " + app.getCurrentPlayer().getColor());
+        playerVictoryPointsTextArea.setText(app.getCurrentPlayer().getWinPointsString());
     }
 
 
@@ -53,7 +53,7 @@ public class PanePlayerController {
      */
     public void generateCards(){
         playerResourcesVBox.getChildren().clear();
-        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlaying().getMaterial());
+        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getCurrentPlayer().getMaterial());
         playerResourcesVBox.getChildren().add(viewCardsFactory.generateSplittedCardsVBox());
     }
 

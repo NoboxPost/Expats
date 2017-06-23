@@ -39,7 +39,7 @@ public class ModelApp {
 
     //procedure
     private int diceNumber;
-    private ModelPlayer nowPlaying;
+    private ModelPlayer currentPlayer;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
     private int firstBuildingStep = 0;
@@ -71,89 +71,28 @@ public class ModelApp {
         players.add(player);
     }
 
-    /**
-     * handles the beginning of the game
-     * <p>
-     * - players choose the position of their first two settlements
-     * - they get the materials from all flanking hexes
-     */
-    public void startPreGame() {
-        generatePlayer();
-        generatePlayer();
-
-        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players, board);
-        nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-        currentStep = "FirstBuildingStep";
-    }
-
-    /**
-     * last player-step where player can build new buildings.
-     */
-    public void buildingStep() {
-        currentStep = "BuildingStep";
-    }
-
-
-    /**
-     * is the first player-step that distributes materials
-     * <p>
-     * 1. dice
-     * 2. material distribution
-     */
-    public void resourceStep() {
-        currentStep = "ResourceStep";
-        diceNumber = 0;
-        diceRoller = null;
-    }
 
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
     public void rollDice() {
-        diceRoller = new ModelDiceRoller();
         diceNumber = diceRoller.getRolledDices();
+    }
+
+    public void distributeMaterial(){
         if (diceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial();
-            materialBefore.addMaterial(nowPlaying.getMaterial());
+            materialBefore.addMaterial(currentPlayer.getMaterial());
             board.resourceOnDiceEvent(diceNumber);
             nowPlayingDicedMaterial = new ModelMaterial();
-            nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
+            nowPlayingDicedMaterial.addMaterial(currentPlayer.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         } else {
             nowPlayingDicedMaterial = new ModelMaterial();
         }
     }
 
-    /**
-     * is the second player-step that handles trading
-     * <p>
-     * 1. domestic trade (playertrade)
-     * 2. sea trade (2:1, 3:1, 4:1)
-     */
-    public void tradeStep() {
-        currentStep = "TradeStep";
-    }
-
-    /**
-     * is the third player-step that handles special events
-     * <p>
-     * 1. rolled 7 (no resources, >7 cards drop, raider move, resource robbery)
-     * 2. play development cards (knights, development, victory)
-     */
-    public void specialStep() {
-        if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            for (ModelPlayer player : players) {
-                if (player.getMaterial().getSumOfAllMaterials() > 7) {
-                    playersMustDrop.add(player);
-                }
-            }
-        } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            board.activateRaider();
-        }
-        currentStep = "SpecialStep";
-        diceNumber = 0;
-    }
-
+    //TODO: change
     /**
      * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
      *
@@ -163,22 +102,8 @@ public class ModelApp {
         playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
     }
 
-    /**
-     * Changes player, so next player can doo all steps.
-     */
-    public void nextPlayer() {
-        board.abortBuildingAction();
-        players.add(players.poll());
-        nowPlaying = players.peek();
-    }
 
-    /**
-     * handles the end of the game , currently unused.
-     */
-    public void gameOver() {
-        //TODO: implement game over condition
-    }
-
+    //TODO: change
     /**
      * Initiates a new ModelTradingAction for the current player.
      * Trade types will be:
@@ -192,9 +117,10 @@ public class ModelApp {
      * @param type of trading action
      */
     public void newTradeAction(String type) {
-        tradeAction = new ModelTradeAction(type, nowPlaying);
+        tradeAction = new ModelTradeAction(type, currentPlayer);
     }
 
+    //TODO: change
     /**
      * Injects integer array representing
      *
@@ -205,6 +131,7 @@ public class ModelApp {
         tradeAction = null;
     }
 
+    //TODO: change
     /**
      * Frees the reference to a ModelTradeAction, if player decides to abort the step or end his turn prior to ending the action.
      */
@@ -212,76 +139,26 @@ public class ModelApp {
         tradeAction = null;
     }
 
+    //TODO: change
     /**
      * Createsa a new ModelBuildingAction with parameter firstStage = true, so building and connections won't cost anything.
      *
      * @param type
      */
     public void firstBuildingAction(String type) {
-        board.firstBuildingAction(type, nowPlaying);
+        board.firstBuildingAction(type, currentPlayer);
     }
 
-
+    //TODO: change
     /**
      * Initiates
      *
      * @param type
      */
     public void newBuildingAction(String type) {
-        board.newBuildingAction(type, nowPlaying);
+        board.newBuildingAction(type, currentPlayer);
     }
 
-    /**
-     * In first part, it will check state of game, firstStage, so building will not cost anything or otherwise normal building.
-     * During first stage it will automaticaly sets next player active, so all can build their first buildings and connections.
-     *
-     * @param coords coordinates of building which will be built.
-     * @param type
-     */
-    public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
-        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
-        }
-        if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
-            if (board.finishBuildingAction(coords, type)) {
-                if (type.equals("Building")) {
-                    nowPlaying.changeVictoryPoints(1);
-                }
-            }
-        }
-        boolean allOnSameFirstBuildingStep = true;
-        if (firstBuildingStep < 2) {
-            for (ModelPlayer player : players) {
-                if ((board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
-
-                } else {
-                    allOnSameFirstBuildingStep = false;
-                }
-            }
-            if (allOnSameFirstBuildingStep) {
-                firstBuildingStep += 1;
-                if (firstBuildingActionSequence.nextPlayer()) {
-                    nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-                } else {
-                    nextPlayer();
-                }
-            }
-            if (firstBuildingStep >= 2) {
-                resourceStep();
-            }
-        }
-        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
-        }
-    }
 
     /**
      * Hands given coordinates over to board so raider can be moved to corresponding hex.
@@ -302,13 +179,17 @@ public class ModelApp {
     }
 
 
+
+
+
+
     /**
      * counts all buildings for current player
      *
      * @return sum of buildings
      */
     public int countBuildingsForCurrentPlayer() {
-        return board.countBuildingsOwned(nowPlaying);
+        return board.countBuildingsOwned(currentPlayer);
     }
 
     /**
@@ -317,7 +198,7 @@ public class ModelApp {
      * @return sum of connections
      */
     public int countConnectionsForCurrentPlayer() {
-        return board.countConnectionsOwned(nowPlaying);
+        return board.countConnectionsOwned(currentPlayer);
     }
 
     /**
@@ -388,8 +269,8 @@ public class ModelApp {
      *
      * @return
      */
-    public ModelPlayer getNowPlaying() {
-        return nowPlaying;
+    public ModelPlayer getCurrentPlayer() {
+        return currentPlayer;
     }
 
     /**

@@ -1,6 +1,6 @@
 package expat.model.board;
 
-import expat.model.buildings.ModelBuildingAction;
+import expat.model.procedure.ModelBuildingAction;
 import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;

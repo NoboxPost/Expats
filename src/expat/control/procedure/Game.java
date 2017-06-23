@@ -1,5 +1,6 @@
 package expat.control.procedure;
 
+import expat.control.panes.MainStageController;
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
 
@@ -12,12 +13,17 @@ import java.util.LinkedList;
 
 public abstract class Game {
 
-    private boolean stillPlaying;
-    private ModelApp app;
-    private LinkedList<ModelPlayer> players;
+    protected boolean stillPlaying;
+    protected ModelApp app;
+    protected LinkedList<ModelPlayer> players;
+    protected ModelPlayer currentPlayer;
+    protected String currentStep;
+    protected MainStageController mainStageController;
 
 
-    public Game(ModelApp app) {
+    public Game(MainStageController mainStageController, ModelApp app) {
+        this.mainStageController = mainStageController;
+
         this.app = app;
         players = app.getPlayers();
 
@@ -27,10 +33,11 @@ public abstract class Game {
     private void turnBasedGameProcedure(){
         while(stillPlaying){
             for(ModelPlayer player : players){
+                currentPlayer = player;
                 processAllTurnSteps(player);
             }
         }
     }
 
-    public abstract void processAllTurnSteps(ModelPlayer player);
+    protected abstract void processAllTurnSteps(ModelPlayer player);
 }

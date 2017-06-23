@@ -52,7 +52,7 @@ public class PaneActionController {
     public void init(MainStageController controllerMainStage, ModelApp app) {
         this.controllerMainStage = controllerMainStage;
         this.app = app;
-        refreshStep();
+        refresh();
     }
 
     /**
@@ -122,8 +122,8 @@ public class PaneActionController {
      */
     private void btnDropMaterialsClicked(ActionEvent event) {
         app.specialStep();
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
 
     }
 
@@ -135,8 +135,8 @@ public class PaneActionController {
      */
     public void diceRollClicked(ActionEvent event) {
         app.rollDice();
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
     }
 
     /**
@@ -155,7 +155,7 @@ public class PaneActionController {
         middleActionPane.getChildren().clear();
 
 
-        Label playerName = new Label("Player "+app.getNowPlaying().getPlayerName());
+        Label playerName = new Label("Player "+app.getCurrentPlayer().getPlayerName());
 
         Image settlement = new Image("expat/img/Settlement.png");
         settlementImageView = new ImageView(settlement);
@@ -190,7 +190,7 @@ public class PaneActionController {
      * @param event MouseEvent onMouseReleased
      */
     private void generateFirstSettlement(MouseEvent event) {
-        refreshStep();
+        refresh();
         app.firstBuildingAction("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
@@ -202,7 +202,7 @@ public class PaneActionController {
      * @param event MouseEvent onMouseReleased
      */
     private void generateFirstRoad(MouseEvent event) {
-        refreshStep();
+        refresh();
         app.firstBuildingAction("Road");
         roadImageView.setEffect(addDropShadow());
     }
@@ -277,8 +277,8 @@ public class PaneActionController {
      * @param type Building type
      */
     private void generateBuilding(String type) {
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
         app.newBuildingAction(type);
     }
 
@@ -312,7 +312,7 @@ public class PaneActionController {
             btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
         } else if (app.getTradeAction().getType().equals("GeneralTrade")) {
             if (paneTradeGeneral == null) {
-                paneTradeGeneral = new ViewPaneTradeGeneral(app.getNowPlaying().getMaterial().getMaterialAmount(), this);
+                paneTradeGeneral = new ViewPaneTradeGeneral(app.getCurrentPlayer().getMaterial().getMaterialAmount(), this);
                 paneTradeGeneral.refresh();
                 middleActionPane.getChildren().add(paneTradeGeneral);
 
@@ -343,7 +343,7 @@ public class PaneActionController {
             if (paneDropMaterial.isDone()) {
                 app.playerDroppedMaterial(paneDropMaterial.getEndDifference());
                 paneDropMaterial = null;
-                refreshStep();
+                refresh();
             } else {
                 paneDropMaterial.refresh();
                 middleActionPane.getChildren().add(paneDropMaterial);
@@ -361,7 +361,7 @@ public class PaneActionController {
     private void btnGeneralTradingClicked(ActionEvent event) {
         paneTradeGeneral = null;
         app.newTradeAction("GeneralTrade");
-        refreshStep();
+        refresh();
     }
 
     /**
@@ -371,7 +371,7 @@ public class PaneActionController {
      */
     public void btnTradeAdjustMaterialClicked(ActionEvent event) {
         if (paneTradeGeneral != null) {
-            refreshStep();
+            refresh();
             paneTradeGeneral.adjustMaterial((Button) event.getSource());
         }
     }
@@ -385,8 +385,8 @@ public class PaneActionController {
         app.finishTradeAction(paneTradeGeneral.getEndDifference());
         app.resetTrade();
         paneTradeGeneral = null;
-        controllerMainStage.refreshGameInformations();
-        refreshStep();
+        controllerMainStage.refreshMatesAndPlayerPanes();
+        refresh();
     }
 
 
@@ -400,14 +400,14 @@ public class PaneActionController {
         app.resetTrade();
         app.nextPlayer();
         app.resourceStep();
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
     }
 
     /**
      * gets the current step from app, calls the correspoinding draw methode.
      */
-    public void refreshStep() {
+    public void refresh() {
         String currentStep = app.getCurrentStep();
         switch (currentStep) {
             case "FirstBuildingStep":
@@ -436,8 +436,8 @@ public class PaneActionController {
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {
         paneTradeGeneral = null;
         app.tradeStep();
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
     }
 
     /**
@@ -448,8 +448,8 @@ public class PaneActionController {
     public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
         app.buildingStep();
         paneTradeGeneral = null;
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
 
     }
 
@@ -470,8 +470,8 @@ public class PaneActionController {
      */
     public void btnDropMaterialFinishClicked(ActionEvent event) {
         paneDropMaterial.setDone(true);
-        refreshStep();
-        controllerMainStage.refreshGameInformations();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
     }
 
     /**
@@ -481,7 +481,7 @@ public class PaneActionController {
      */
     public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
         paneDropMaterial.adjustMaterial((Button) event.getSource());
-        refreshStep();
+        refresh();
 
     }
 }
