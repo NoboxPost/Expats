@@ -1,7 +1,6 @@
 package expat.control.panes;
 
-import expat.control.procedure.MainGame;
-import expat.model.ModelApp;
+import expat.control.procedure.MainGameController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -37,8 +36,8 @@ public class MainStageController {
     PaneMatesController paneMatesController;
     @FXML
     PanePlayerController panePlayerController;
-    private ModelApp app;
-    private MainGame mainGame;
+
+    private MainGameController mainGame;
 
 
     /**
@@ -46,16 +45,15 @@ public class MainStageController {
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
-        app = new ModelApp();
         initializeControllers();
-        mainGame = new MainGame(this, app);
+        mainGame = new MainGameController(this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
     }
 
     private void initializeControllers(){
-        paneBoardController.init(this,app);
-        paneActionController.init(this,app);
-        panePlayerController.init(this, app);
-        paneMatesController.init(app);
+        paneBoardController.init(this, mainGame);
+        paneActionController.init(this, mainGame);
+        panePlayerController.init(this, mainGame);
+        paneMatesController.init(this.mainGame);
     }
 
     /**

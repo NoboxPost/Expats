@@ -38,7 +38,7 @@ public class ModelApp {
     private ModelTradeAction tradeAction;
 
     //procedure
-    private int diceNumber;
+    private int currentDiceNumber;
     private ModelPlayer currentPlayer;
     private String currentStep;
     private ModelMaterial nowPlayingDicedMaterial;
@@ -76,14 +76,14 @@ public class ModelApp {
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
     public void rollDice() {
-        diceNumber = diceRoller.getRolledDices();
+        currentDiceNumber = diceRoller.getRolledDices();
     }
 
     public void distributeMaterial(){
-        if (diceNumber != 7) {
+        if (currentDiceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial();
             materialBefore.addMaterial(currentPlayer.getMaterial());
-            board.resourceOnDiceEvent(diceNumber);
+            board.resourceOnDiceEvent(currentDiceNumber);
             nowPlayingDicedMaterial = new ModelMaterial();
             nowPlayingDicedMaterial.addMaterial(currentPlayer.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
@@ -224,8 +224,8 @@ public class ModelApp {
      *
      * @return
      */
-    public int getDiceNumber() {
-        return diceNumber;
+    public int getCurrentDiceNumber() {
+        return currentDiceNumber;
     }
 
     /**
@@ -233,7 +233,7 @@ public class ModelApp {
      *
      * @return
      */
-    public int[] getDiceNumbersSeparately() {
+    public int[] getCurrentDiceNumbersSeparately() {
         return diceRoller.getRolledDicesSeperately();
     }
 

@@ -1,15 +1,15 @@
 package expat.control.procedure;
 
-import expat.model.ModelApp;
+import expat.control.panes.MainStageController;
 import expat.model.ModelPlayer;
 
 /**
  * Created by gallatib on 22.06.2017.
  */
-public class PreGame extends Game {
+public class PreGameController extends GameController {
 
-    public PreGame(ModelApp app) {
-        super(app);
+    public PreGameController(MainStageController mainStageController) {
+        super(mainStageController);
     }
 
     @Override

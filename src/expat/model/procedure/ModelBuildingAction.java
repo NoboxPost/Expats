@@ -37,7 +37,7 @@ public class ModelBuildingAction {
     }
 
     /**
-     * To be used at Start of Game,
+     * To be used at Start of GameController,
      *
      * @param player
      * @param buildingType

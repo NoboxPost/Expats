@@ -1,21 +1,23 @@
 package expat.control.procedure;
 
-import expat.control.panes.MainStageController;
+import expat.control.panes.*;
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
 
 /**
  * Created by gallatib on 22.06.2017.
  */
-public class MainGame extends Game {
+public class MainGameController extends GameController {
 
+    private ModelApp app;
 
-    public MainGame(MainStageController mainStageController, ModelApp app) {
-        super(mainStageController, app);
+    public MainGameController(MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController, ModelApp app) {
+        super(mainStageController, paneActionController, paneBoardController, paneMatesController, panePlayerController);
+        this.app = app;
     }
 
 
-/*
+    /*
     public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
         if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
             if (firstBuildingActionSequence.nextPlayer()) {
@@ -65,30 +67,61 @@ public class MainGame extends Game {
 
     @Override
     public void processAllTurnSteps(ModelPlayer player) {
-        rollDiceTurnStep();
-        tradeTurnStep();
-        buildTurnStep();
-        specialTurnStep();
     }
 
-    private void rollDiceTurnStep(){
+    public void nextStepSelector(){
+        switch (currentStep){
+            case "diceResultStep":
+                tradeStep();
+                break;
+            case "trade":
+                buildStep();
+                break;
+            case "build":
+                endTurnStep();
+        }
+    }
+
+    public void startTurnStep(){
+        currentStep = "startTurn";
+        currentPlayer = players.getFirst();
+        rollDiceStep();
+    }
+
+    public void rollDiceStep(){
         currentStep = "rollDice";
+        paneActionController.drawRollDiceStep();
         app.rollDice();
         app.distributeMaterial();
-        mainStageController.refreshAllInformationPanes();
     }
 
-    private void tradeTurnStep(){
+    public void diceResultStep(){
+        currentStep = "diceResultStep";
+        paneActionController.drawDiceResultStep(app.getCurrentDiceNumber(), app.getCurrentDiceNumbersSeparately());
+    }
+
+    public void dropMaterialStep(){
+        currentStep = "dropMaterial";
+
+        /*
+        app.specialStep();
+        refresh();
+        controllerMainStage.refreshMatesAndPlayerPanes();
+         */
+
+    }
+
+    public void tradeStep(){
         currentStep = "trade";
 
     }
 
-    private void buildTurnStep(){
+    public void buildStep(){
         currentStep = "build";
 
     }
 
-    private void specialTurnStep(){
+    public void specialStep(){
         currentStep = "special";
 
         /*
@@ -104,7 +137,13 @@ public class MainGame extends Game {
         currentStep = "SpecialStep";
         diceNumber = 0;
          */
+    }
 
+    public void endTurnStep(){
+        currentStep = "endTurn";
+        players.addLast(players.getFirst());
+        players.removeFirst();
+        startTurnStep();
     }
 }
 
