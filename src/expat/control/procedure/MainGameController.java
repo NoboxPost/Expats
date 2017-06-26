@@ -4,16 +4,14 @@ import expat.control.panes.*;
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
 
+import java.util.LinkedList;
+
 /**
  * Created by gallatib on 22.06.2017.
  */
 public class MainGameController extends GameController {
-
-    private ModelApp app;
-
-    public MainGameController(MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController, ModelApp app) {
-        super(mainStageController, paneActionController, paneBoardController, paneMatesController, panePlayerController);
-        this.app = app;
+    public MainGameController(ModelApp app, MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController) {
+        super(app, mainStageController, paneActionController, paneBoardController, paneMatesController, panePlayerController);
     }
 
 
@@ -64,11 +62,6 @@ public class MainGameController extends GameController {
     }
      */
 
-
-    @Override
-    public void processAllTurnSteps(ModelPlayer player) {
-    }
-
     public void nextStepSelector(){
         switch (currentStep){
             case "diceResultStep":
@@ -82,9 +75,10 @@ public class MainGameController extends GameController {
         }
     }
 
+    @Override
     public void startTurnStep(){
         currentStep = "startTurn";
-        currentPlayer = players.getFirst();
+        app.mainGameNextPlayer();
         rollDiceStep();
     }
 
@@ -97,18 +91,32 @@ public class MainGameController extends GameController {
 
     public void diceResultStep(){
         currentStep = "diceResultStep";
-        paneActionController.drawDiceResultStep(app.getCurrentDiceNumber(), app.getCurrentDiceNumbersSeparately());
+
+        //TODO: now the player must always navigate through the dropMaterialStep when there is a rolled 7, maybe extend this method to check if he has more than 7 materials
+        if (app.getCurrentDiceNumber() == 7) {
+            paneActionController.drawDiceResultNormalStep(app.getCurrentDiceNumbersSeparately(), app.getNowPlayingDicedMaterial());
+        } else {
+            paneActionController.drawDiceResultSpecialStep(app.getCurrentDiceNumbersSeparately(), app.getNowPlayingDicedMaterial());
+        }
+    }
+
+    //TODO: reconsider this method
+    public void moveRaider(int[] coords) {
+        app.moveRaider(coords);
+        paneBoardController.generateRaiderGroup(app.getBoard());
     }
 
     public void dropMaterialStep(){
         currentStep = "dropMaterial";
+        LinkedList<ModelPlayer> playersThatMustDrop = app.getPlayersThatMustDrop();
 
-        /*
-        app.specialStep();
-        refresh();
-        controllerMainStage.refreshMatesAndPlayerPanes();
-         */
+        for(ModelPlayer playerThatMustDrop : playersThatMustDrop){
+            int[] dropAmount = playerThatMustDrop.getMaterial().getMaterialAmount();
+            paneActionController.drawDropMaterialStep(dropAmount, playerThatMustDrop.getPlayerName());
+        }
 
+        app.getBoard().activateRaider();
+        paneActionController.drawMoveRaiderStep();
     }
 
     public void tradeStep(){
@@ -139,11 +147,18 @@ public class MainGameController extends GameController {
          */
     }
 
+    //TODO: Siegpane schreiben
+    @Override
     public void endTurnStep(){
         currentStep = "endTurn";
-        players.addLast(players.getFirst());
-        players.removeFirst();
-        startTurnStep();
+        if(!app.currentPlayerIsTheWinner()) {
+            startTurnStep();
+        } else{}
+    }
+
+    @Override
+    public void createElementOnBoard() {
+
     }
 }
 

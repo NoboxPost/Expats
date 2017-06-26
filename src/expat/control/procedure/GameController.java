@@ -16,8 +16,6 @@ public abstract class GameController {
 
     protected boolean stillPlaying;
     protected ModelApp app;
-    protected LinkedList<ModelPlayer> players;
-    protected ModelPlayer currentPlayer;
     protected String currentStep;
     protected MainStageController mainStageController;
     protected PaneActionController paneActionController;
@@ -26,21 +24,35 @@ public abstract class GameController {
     protected PanePlayerController panePlayerController;
 
 
-    public GameController(MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController) {
+    public GameController(ModelApp app, MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController) {
+        this.app = app;
         this.mainStageController = mainStageController;
         this.paneActionController = paneActionController;
         this.paneBoardController = paneBoardController;
         this.paneMatesController = paneMatesController;
         this.panePlayerController = panePlayerController;
-
-        app = new ModelApp();
-        players = app.getPlayers();
-
-        turnBasedGameProcedure();
     }
 
-    private void turnBasedGameProcedure(){
+    public abstract void startTurnStep();
+    public abstract void endTurnStep();
+
+    public void refreshPlayerInformation(){
+        ModelPlayer currentPlayer = app.getCurrentPlayer();
+        panePlayerController.refresh(currentPlayer.getColor(), currentPlayer.getWinPointsString(), currentPlayer.getMaterial());
     }
 
-    protected abstract void processAllTurnSteps(ModelPlayer player);
+    public void refreshMatesInformation(){
+        paneMatesController.refresh(app.getPlayers());
+    }
+
+    public void refreshBoardElements(){
+        paneBoardController.refreshBoardElements(app.getBoard());
+    }
+
+    public void refreshPlayerAndMatesInformation(){
+        refreshMatesInformation();
+        refreshPlayerInformation();
+    }
+
+    public abstract void createElementOnBoard();
 }

@@ -43,7 +43,7 @@ public class ViewConnectionFactory {
                 if (modelConnection.getOwner()!=null) { //TODO: auskommentieren.
                     viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
                 }
-                viewConnection.setOnMouseReleased(paneBoardController::connectionClicked);
+                viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
                 viewConnections.add(viewConnection);
             }
 

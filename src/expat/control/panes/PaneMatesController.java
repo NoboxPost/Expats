@@ -1,6 +1,9 @@
 package expat.control.panes;
 
 
+import expat.control.procedure.GameController;
+import expat.control.procedure.MainGameController;
+import expat.control.procedure.PreGameController;
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
 
@@ -18,25 +21,22 @@ import java.util.LinkedList;
  */
 public class PaneMatesController {
 
-    private ModelApp app;
+    private MainGameController mainGameController;
     @FXML public TextArea matesVictoryPointsTextArea;
 
 
-    /**
-     * Takes a reference of ModelApp so this controller can call it.
-     *
-     * @param app
-     */
-    public void init(ModelApp app){
-        this.app = app;
-        refresh();
+
+    public void init(MainGameController mainGameController){
+        this.mainGameController = mainGameController;
+        mainGameController.refreshMatesInformation();
     }
 
+
+    //TODO: should be sorted, the player with most victory points on top
     /**
      * Sets Textareas with informations about enemy players acquired from the app.
      */
-    public void refresh(){
-        LinkedList<ModelPlayer> players = app.getPlayers();
+    public void refresh(LinkedList<ModelPlayer> players){
         String allPlayerStats = "";
         for (ModelPlayer element : players) {
             if (element != players.getFirst()) {

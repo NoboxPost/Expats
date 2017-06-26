@@ -51,7 +51,7 @@ public class ViewBuildingFactory {
             } else {
                 viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
             }
-            viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
+            viewBuilding.setOnMouseReleased(paneBoardController::buildingSpotClicked);
             Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
             viewBuilding.setLayoutX(pixelCoords[0]);
             viewBuilding.setLayoutY(pixelCoords[1]);

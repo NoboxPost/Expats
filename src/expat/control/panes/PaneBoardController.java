@@ -1,5 +1,7 @@
 package expat.control.panes;
 
+import expat.control.procedure.MainGameController;
+import expat.control.procedure.PreGameController;
 import expat.model.ModelApp;
 import expat.model.board.ModelBoard;
 import expat.view.*;
@@ -30,12 +32,20 @@ public class PaneBoardController {
     private double SCALE_NUMBER = 1.05;
     private double mousePositionX;
     private double mousePositionY;
-    private ModelApp app;
     private Group buildingGroup;
     private Group raiderGroup;
     private Group hexGroup;
     private Group diceButtonGroup;
     private Group connectionGroup;
+
+    private MainGameController mainGameController;
+    private PreGameController preGameController;
+
+    public void init(MainStageController controllerMainStage, MainGameController mainGameController, PreGameController preGameController) {
+        this.controllerMainStage = controllerMainStage;
+        this.mainGameController = mainGameController;
+        this.preGameController = preGameController;
+    }
 
     /**
      *Run by FXMLLoader attaches ScrollHandler so zooming is possible.
@@ -164,10 +174,9 @@ public class PaneBoardController {
      *
      * @param event ActonEvent
      */
-    public void hexClicked(ActionEvent event) {
+    public void btnHexNumberClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
-        app.moveRaider(button.getCoords());
-        refreshBoardElements(app.getBoard());
+        mainGameController.moveRaider(button.getCoords());
         controllerMainStage.raiderMoved();
     }
 
@@ -177,12 +186,10 @@ public class PaneBoardController {
      *
      * @param event MouseEvent
      */
-    public void emptyBuildingSpotClicked(MouseEvent event){
+    public void buildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(building.getBuildingCoord(),"Building");
-        refreshBoardElements(app.getBoard());
-        controllerMainStage.refreshActionPane();
-        controllerMainStage.refreshMatesAndPlayerPanes();
+        mainGameController.refreshBoardElements();
+        mainGameController.refreshPlayerAndMatesInformation();
     }
     /**
      * Is called by ViewConnection as onMouseReleased event.
@@ -190,27 +197,11 @@ public class PaneBoardController {
      *
      * @param event MouseEvent
      */
-    public void connectionClicked(MouseEvent event){
+    public void connectionSpotClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
         app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
-        refreshBoardElements(app.getBoard());
-        controllerMainStage.refreshActionPane();
-        controllerMainStage.refreshMatesAndPlayerPanes();
-    }
-
-
-    /**
-     *
-     * Takes MainStageController, the MainController, and the ModelApp. MainController is used as reference so other controllers can be called.
-     * App is used as a reference so events can be handed over to ModelApp.
-     *
-     * @param controllerMainStage
-     * @param app
-     */
-    public void init(MainStageController controllerMainStage, ModelApp app) {
-        this.controllerMainStage = controllerMainStage;
-        this.app = app;
-        drawBoard(app.getBoard());
+        mainGameController.refreshBoardElements();
+        mainGameController.refreshPlayerAndMatesInformation();
     }
 
     /**

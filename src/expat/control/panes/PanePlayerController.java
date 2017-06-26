@@ -1,6 +1,7 @@
 package expat.control.panes;
 
-import expat.model.ModelApp;
+import expat.control.procedure.MainGameController;
+import expat.model.ModelMaterial;
 import expat.view.ViewCardsFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,8 +19,7 @@ import javafx.scene.layout.VBox;
 
 public class PanePlayerController {
 
-    private MainStageController controllerMainStage;
-    private ModelApp app;
+    private MainGameController mainGameController;
     @FXML public TextArea playerResourcesTextArea;
     @FXML public TextArea playerVictoryPointsTextArea;
     @FXML public VBox playerResourcesVBox;
@@ -29,40 +29,36 @@ public class PanePlayerController {
      * Takes a reference for the MainStageController (MainController) and for the apps and stores them in the corresponding fields,
      * so both can be called from within this class.
      *
-     * @param controllerMainStage
-     * @param app
+     *
      */
-    public void init(MainStageController controllerMainStage, ModelApp app){
-        this.controllerMainStage = controllerMainStage;
-        this.app= app;
-        refresh();
+    public void init(MainGameController mainGameController){
+        this.mainGameController = mainGameController;
+        mainGameController.refreshPlayerInformation();
     }
 
     /**
      * Sets label with informations about the current players acquired by the app.
      */
-    public void setPlayerInformation(){
-        playerLabel.setText("Player " + app.getCurrentPlayer().getColor());
-        playerVictoryPointsTextArea.setText(app.getCurrentPlayer().getWinPointsString());
+    public void setPlayerInformation(String playerColor, String playerWinpoints){
+        playerLabel.setText("Player " + playerColor);
+        playerVictoryPointsTextArea.setText(playerWinpoints);
     }
-
 
     /**
      * Generates the material cars representing the material stack the current player has.
      * Attaches it to the VBox
      */
-    public void generateCards(){
+    public void generateCards(ModelMaterial playerMaterial){
         playerResourcesVBox.getChildren().clear();
-        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getCurrentPlayer().getMaterial());
+        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(playerMaterial);
         playerResourcesVBox.getChildren().add(viewCardsFactory.generateSplittedCardsVBox());
     }
-
 
     /**
      * calls both methods for player informations and his material amounts.
      */
-    public void refresh() {
-        setPlayerInformation();
-        generateCards();
+    public void refresh(String playerColor, String playerWinpoints, ModelMaterial playerMaterial) {
+        setPlayerInformation(playerColor, playerWinpoints);
+        generateCards(playerMaterial);
     }
 }

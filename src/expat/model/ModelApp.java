@@ -3,9 +3,7 @@ package expat.model;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
-import expat.model.procedure.ModelDiceRoller;
-import expat.model.procedure.ModelFirstBuildingActionSequence;
-import expat.model.procedure.ModelTradeAction;
+import expat.model.procedure.*;
 
 import java.util.LinkedList;
 
@@ -31,18 +29,19 @@ public class ModelApp {
     private ModelBoard board;
     private ModelDiceRoller diceRoller;
     private ModelPlayerGenerator playerGenerator;
-
+    private ModelPreGamePlayerHandler modelPreGamePlayerSelector;
+    private ModelMainGamePlayerHandler modelMainGamePlayerSelector;
 
     private LinkedList<ModelPlayer> players = new LinkedList<>();
-    private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
+    private LinkedList<ModelPlayer> playersThatMustDrop = new LinkedList<>();
     private ModelTradeAction tradeAction;
 
     //procedure
-    private int currentDiceNumber;
+    //TODO: currentDiceNumber = like currentPlayer move to Model DiceRoller and make a getter
     private ModelPlayer currentPlayer;
-    private String currentStep;
+    private int currentDiceNumber;
     private ModelMaterial nowPlayingDicedMaterial;
-    private int firstBuildingStep = 0;
+    private ModelBuildingAction modelBuildingAction;
     private ModelFirstBuildingActionSequence firstBuildingActionSequence;
 
 
@@ -59,6 +58,7 @@ public class ModelApp {
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         board = boardGenerator.generateBoard();
 
+        modelPreGamePlayerSelector = new ModelPreGamePlayerHandler(players);
         diceRoller = new ModelDiceRoller();
         playerGenerator = new ModelPlayerGenerator();
     }
@@ -71,12 +71,21 @@ public class ModelApp {
         players.add(player);
     }
 
-
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
     public void rollDice() {
         currentDiceNumber = diceRoller.getRolledDices();
+    }
+
+    public void preGameNextPlayer(){
+        modelPreGamePlayerSelector.nextPlayer();
+        currentPlayer = modelPreGamePlayerSelector.getCurrentPreGamePlayer();
+    }
+
+    public void mainGameNextPlayer(){
+        modelMainGamePlayerSelector.nextPlayer();
+        currentPlayer = modelMainGamePlayerSelector.getCurrentMainGameUser();
     }
 
     public void distributeMaterial(){
@@ -92,6 +101,13 @@ public class ModelApp {
         }
     }
 
+    public boolean currentPlayerIsTheWinner(){
+        if(currentPlayer.getVictoryPoints() >= 10){
+            return true;
+        }
+        else{ return false; }
+    }
+
     //TODO: change
     /**
      * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
@@ -99,7 +115,7 @@ public class ModelApp {
      * @param endDifference
      */
     public void playerDroppedMaterial(int[] endDifference) {
-        playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
+        playersThatMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
     }
 
 
@@ -179,10 +195,6 @@ public class ModelApp {
     }
 
 
-
-
-
-
     /**
      * counts all buildings for current player
      *
@@ -206,17 +218,8 @@ public class ModelApp {
      *
      * @return
      */
-    public LinkedList<ModelPlayer> getPlayersMustDrop() {
-        return playersMustDrop;
-    }
-
-    /**
-     * getter
-     *
-     * @return
-     */
-    public String getCurrentStep() {
-        return currentStep;
+    public LinkedList<ModelPlayer> getPlayersThatMustDrop() {
+        return playersThatMustDrop;
     }
 
     /**
@@ -234,7 +237,7 @@ public class ModelApp {
      * @return
      */
     public int[] getCurrentDiceNumbersSeparately() {
-        return diceRoller.getRolledDicesSeperately();
+        return diceRoller.getRolledDicesSeparately();
     }
 
     /**
@@ -244,15 +247,6 @@ public class ModelApp {
      */
     public ModelBoard getBoard() {
         return board;
-    }
-
-    /**
-     * getter
-     *
-     * @return
-     */
-    public int getFirstBuildingStep() {
-        return firstBuildingStep;
     }
 
     /**

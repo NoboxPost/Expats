@@ -1,6 +1,8 @@
 package expat.control.panes;
 
 import expat.control.procedure.MainGameController;
+import expat.control.procedure.PreGameController;
+import expat.model.ModelMaterial;
 import expat.view.ViewCardsFactory;
 import expat.view.ViewPaneDropMaterial;
 import expat.view.ViewPaneTradeGeneral;
@@ -44,14 +46,84 @@ public class PaneActionController {
     private ImageView townImageView;
     private ImageView settlementImageView;
     private Button diceRollButton;
+    private Button createGameButton;
     private ViewPaneTradeGeneral paneTradeGeneral;
     private ViewPaneDropMaterial paneDropMaterial;
     private MainGameController mainGameController;
+    private PreGameController preGameController;
 
 
-    public void init(MainStageController controllerMainStage, MainGameController mainGameController) {
+    public void init(MainStageController controllerMainStage, MainGameController mainGameController, PreGameController preGameController) {
         this.controllerMainStage = controllerMainStage;
         this.mainGameController = mainGameController;
+        this.preGameController = preGameController;
+    }
+
+    public void drawCreateGame() {
+        middleActionPane.getChildren().clear();
+
+        //TODO: replace this button with viewPaneCreateGame
+        createGameButton = new Button("create Game");
+        createGameButton.setOnAction(this::btnCreateGame);
+        createGameButton.setMinHeight(60);
+        createGameButton.setMinWidth(60);
+        middleActionPane.getChildren().add(diceRollButton);
+        btnNextStep.setVisible(false);
+        btnEndTurn.setVisible(false);
+    }
+
+    public void drawPreGameBuildingStep() {
+        middleActionPane.getChildren().clear();
+
+        Image settlement = new Image("expat/img/Settlement.png");
+        settlementImageView = new ImageView(settlement);
+        settlementImageView.setFitHeight(80);
+        settlementImageView.setPreserveRatio(true);
+        settlementImageView.setOnMouseReleased(this::generatePreSettlement);
+        settlementImageView.setCursor(Cursor.HAND);
+    }
+
+    private void generatePreSettlement(MouseEvent event) {
+        app.firstBuildingAction("Settlement");
+        settlementImageView.setEffect(addDropShadow());
+    }
+
+    public void drawPreGameRoadStep() {
+        middleActionPane.getChildren().clear();
+
+        Image road = new Image("expat/img/Connection.png");
+        roadImageView = new ImageView(road);
+        roadImageView.setFitHeight(80);
+        roadImageView.setPreserveRatio(true);
+        roadImageView.setOnMouseReleased(this::generatePreRoad);
+        roadImageView.setCursor(Cursor.HAND);
+    }
+
+    //TODO: add ships (connection?)
+    private void generatePreRoad(MouseEvent event) {
+        app.firstBuildingAction("Road");
+        roadImageView.setEffect(addDropShadow());
+    }
+
+    public void drawFirstSettlementAndRoadStep() {
+
+
+
+
+        middleActionPane.getChildren().addAll(playerName, settlementImageView, roadImageView);
+        if (app.getFirstBuildingStep() < 2) {
+            btnNextStep.setDisable(true);
+            btnEndTurn.setDisable(true);
+        } else {
+            btnNextStep.setDisable(false);
+            btnEndTurn.setDisable(false);
+        }
+
+
+    }
+
+    private void btnCreateGame(ActionEvent actionEvent) {
+        preGameController.startTurnStep();
     }
 
     public void btnNextStepClicked(ActionEvent actionEvent) {
@@ -83,10 +155,40 @@ public class PaneActionController {
         mainGameController.diceResultStep();
     }
 
-    public void drawDiceResultStep(int currentDiceNumber, int[] currentDiceNumbersSeperately) {
+
+    public void drawDiceResultNormalStep(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial) {
         middleActionPane.getChildren().clear();
 
-        for (int dice : currentDiceNumbersSeperately) {
+        //display the two rolled dices
+        generateDiceImageViews(currentDiceNumbersSeparately);
+
+        //display the materials a player gets
+        generateCardImageViews(nowPlayingDicedMaterial);
+
+        //next button and end turn button are still disabled from rollDiceStep
+        //because this step is for all events except a rolled 7, the next button must be enabled
+        btnNextStep.setDisable(false);
+        btnEndTurn.setDisable(false);
+    }
+
+    public void drawDiceResultSpecialStep(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial){
+        middleActionPane.getChildren().clear();
+
+        //display the two rolled dices
+        generateDiceImageViews(currentDiceNumbersSeparately);
+
+        //display the materials a player gets
+        generateCardImageViews(nowPlayingDicedMaterial);
+
+        //next button and end turn button are still disabled from rollDiceStep
+        //because this step is a rolled 7, the next step button can stay disabled, but there must be a drop materials button
+        Button btnDropMaterials = new Button("drop materials");
+        btnDropMaterials.setOnAction(this::btnDropMaterialsClicked);
+        middleActionPane.getChildren().add(btnDropMaterials);
+    }
+
+    private void generateDiceImageViews(int[] currentDiceNumbersSeparate){
+        for (int dice : currentDiceNumbersSeparate) {
             ImageView diceImageView;
 
             switch (dice) {
@@ -116,115 +218,56 @@ public class PaneActionController {
 
             middleActionPane.getChildren().add(diceImageView);
         }
+    }
 
-        generateCards();
-
-        if (currentDiceNumber == 7) {
-            Button btnDropMaterials = new Button("drop materials");
-            btnDropMaterials.setOnAction(this::btnDropMaterialsClicked);
-            middleActionPane.getChildren().add(btnDropMaterials);
-        } else {
-            btnNextStep.setDisable(false);
-            btnEndTurn.setDisable(false);
-            btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
-        }
+    private void generateCardImageViews(ModelMaterial nowPlayingDicedMaterial) {
+        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(nowPlayingDicedMaterial);
+        middleActionPane.getChildren().add(viewCardsFactory.generateUnitedCardsHBox());
     }
 
     private void btnDropMaterialsClicked(ActionEvent event) {
         mainGameController.dropMaterialStep();
     }
 
-    private void drawDropMaterialStep() {
-        middleActionPane.getChildren().clear();
-        if (paneDropMaterial == null) {
-            if (!app.getPlayersMustDrop().isEmpty()) {
-                paneDropMaterial = new ViewPaneDropMaterial(app.getPlayersMustDrop().peek().getMaterial().getMaterialAmount(), this, app.getPlayersMustDrop().peek().getPlayerName());
-                middleActionPane.getChildren().add(paneDropMaterial);
-            } else {
-                app.getBoard().activateRaider();
-                Label label = new Label("you can move the raider now");
-                middleActionPane.getChildren().add(label);
-            }
-        } else if (paneDropMaterial != null) {
-            if (paneDropMaterial.isDone()) {
-                app.playerDroppedMaterial(paneDropMaterial.getEndDifference());
-                paneDropMaterial = null;
-                refresh();
-            } else {
-                paneDropMaterial.refresh();
-                middleActionPane.getChildren().add(paneDropMaterial);
-            }
-        }
-    }
 
-
-    /**
-     * Initiates a ViewCardFactory and generates the material cards diplayed after the dice roll event.
-     */
-    public void generateCards() {
-        ViewCardsFactory viewCardsFactory = new ViewCardsFactory(app.getNowPlayingDicedMaterial());
-        middleActionPane.getChildren().add(viewCardsFactory.generateUnitedCardsHBox());
-    }
-
-
-    /**
-     * Generates a Pane displaying, with a settlement and a connection so player can place his fist buildings.
-     */
-    public void drawFirstSettlementAndRoadStep() {
+    public void drawDropMaterialStep(int[] dropAmount, String playerNameThatMustDrop) {
         middleActionPane.getChildren().clear();
 
+        paneDropMaterial = new ViewPaneDropMaterial(dropAmount, this, playerNameThatMustDrop);
+        middleActionPane.getChildren().add(paneDropMaterial);
 
-        Label playerName = new Label("Player " + app.getCurrentPlayer().getPlayerName());
-
-        Image settlement = new Image("expat/img/Settlement.png");
-        settlementImageView = new ImageView(settlement);
-        settlementImageView.setFitHeight(80);
-        settlementImageView.setPreserveRatio(true);
-        settlementImageView.setOnMouseReleased(this::generateFirstSettlement);
-        settlementImageView.setCursor(Cursor.HAND);
-
-        Image road = new Image("expat/img/Connection.png");
-        roadImageView = new ImageView(road);
-        roadImageView.setFitHeight(80);
-        roadImageView.setPreserveRatio(true);
-        roadImageView.setOnMouseReleased(this::generateFirstRoad);
-        roadImageView.setCursor(Cursor.HAND);
-
-        middleActionPane.getChildren().addAll(playerName, settlementImageView, roadImageView);
-        if (app.getFirstBuildingStep() < 2) {
-            btnNextStep.setDisable(true);
-            btnEndTurn.setDisable(true);
+        if (paneDropMaterial.isDone()) {
+            app.playerDroppedMaterial(paneDropMaterial.getEndDifference());
+            paneDropMaterial = null;
         } else {
-            btnNextStep.setDisable(false);
-            btnEndTurn.setDisable(false);
+            paneDropMaterial.refresh();
+            middleActionPane.getChildren().add(paneDropMaterial);
         }
-
-
     }
 
-    /**
-     * Initiates ModelBuildingAction in ModelApp app, so placement checks will be done and building will be built.
-     * Settlement will be built if correct Position is clicked afterwards.
-     *
-     * @param event MouseEvent onMouseReleased
-     */
-    private void generateFirstSettlement(MouseEvent event) {
-        refresh();
-        app.firstBuildingAction("Settlement");
-        settlementImageView.setEffect(addDropShadow());
+
+    public void drawMoveRaiderStep(){
+        middleActionPane.getChildren().clear();
+        Label label = new Label("you can move the raider now");
+        middleActionPane.getChildren().add(label);
     }
 
-    /**
-     * Initiates ModelBuildingAction in ModelApp app, so placement checks will be done and building will be built.
-     * Road will be built if correct Position is clicked afterwards.
-     *
-     * @param event MouseEvent onMouseReleased
-     */
-    private void generateFirstRoad(MouseEvent event) {
-        refresh();
-        app.firstBuildingAction("Road");
-        roadImageView.setEffect(addDropShadow());
+    public void raiderMoved() {
+        btnNextStep.setDisable(false);
+        btnEndTurn.setDisable(false);
+        //TODO: draw auswahl von Player
     }
+
+    public void btnDropMaterialFinishClicked(ActionEvent event) {
+        paneDropMaterial.setDone(true);
+        controllerMainStage.refreshMatesAndPlayerPanes();
+    }
+
+    public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
+        paneDropMaterial.adjustMaterial((Button) event.getSource());
+    }
+
+
 
     /**
      * Initiates ModelBuildingAction in app so, Player can choose building fields afterwards and corresponding Building will be built.
@@ -401,38 +444,6 @@ public class PaneActionController {
         paneTradeGeneral = null;
         refresh();
         controllerMainStage.refreshMatesAndPlayerPanes();
-
-    }
-
-    /**
-     * Refreshes buttons after Raider is moved.
-     */
-    public void raiderMoved() {
-        btnNextStep.setDisable(false);
-        btnNextStep.setOnAction(this::btnNextStepClickedSetTradeStep);
-        btnEndTurn.setDisable(false);
-        //TODO: draw auswahl von Player
-    }
-
-    /**
-     * After materials to drop are choosen and button to finisch is clicked this methode will be called. Calls the ViewDropMaterialAction and changes its done boolean to true.
-     *
-     * @param event
-     */
-    public void btnDropMaterialFinishClicked(ActionEvent event) {
-        paneDropMaterial.setDone(true);
-        refresh();
-        controllerMainStage.refreshMatesAndPlayerPanes();
-    }
-
-    /**
-     * Is called by buttons on drop material screen to adjust corresponding labels.
-     *
-     * @param event
-     */
-    public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
-        paneDropMaterial.adjustMaterial((Button) event.getSource());
-        refresh();
 
     }
 

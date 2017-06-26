@@ -57,7 +57,7 @@ public class ViewDiceButtonFactory {
         ViewDiceNumber viewDiceNumber = new ViewDiceNumber(""+hex.getDiceNumber(),hex.getCoords()[0],hex.getCoords()[1]);
         Button button = (Button) viewDiceNumber;
         button.setCursor(Cursor.HAND);
-        button.setOnAction(paneBoardController::hexClicked);
+        button.setOnAction(paneBoardController::btnHexNumberClicked);
         button.setMinHeight(hexSize*0.25);
         button.setPrefHeight(hexSize*0.25);
         button.setMaxHeight(hexSize*0.25);

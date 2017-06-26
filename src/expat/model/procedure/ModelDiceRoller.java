@@ -40,7 +40,7 @@ public class ModelDiceRoller {
      *
      * @return
      */
-    public int[] getRolledDicesSeperately(){
+    public int[] getRolledDicesSeparately(){
         return(new int[]{rand1, rand2});
     }
 }

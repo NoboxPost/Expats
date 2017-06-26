@@ -1,6 +1,8 @@
 package expat.control.panes;
 
 import expat.control.procedure.MainGameController;
+import expat.control.procedure.PreGameController;
+import expat.model.ModelApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -37,23 +39,32 @@ public class MainStageController {
     @FXML
     PanePlayerController panePlayerController;
 
+    private PreGameController preGame;
     private MainGameController mainGame;
+    private ModelApp app;
 
+
+    //TODO: drawCreateGame as bottom-action should get reconsidered because File - New Game would be more intuitive
 
     /**
      * Runs after initialization of all controllers, initializes an app and starts model logic.
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
+        app = new ModelApp();
         initializeControllers();
-        mainGame = new MainGameController(this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
     }
 
     private void initializeControllers(){
-        paneBoardController.init(this, mainGame);
-        paneActionController.init(this, mainGame);
-        panePlayerController.init(this, mainGame);
-        paneMatesController.init(this.mainGame);
+        //Control-View
+        paneBoardController.init(this, mainGame, preGame);
+        paneActionController.init(this, mainGame, preGame);
+        panePlayerController.init(mainGame);
+        paneMatesController.init(mainGame);
+
+        //Control-Model
+        preGame = new PreGameController(app, this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
+        mainGame = new MainGameController(app, this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
     }
 
     /**
@@ -65,25 +76,6 @@ public class MainStageController {
         scrollPaneCenter.setHvalue(width);
         scrollPaneCenter.setVvalue(height);
         // TODO: entfernen (Testing): System.out.println("vValue: " + scrollPaneCenter.getVvalue() + " hValue: " + scrollPaneCenter.getHvalue());
-    }
-
-    /**
-     * Refreshes Action-Pane, where the different game steps are displayed
-     */
-    public void refreshActionPane() {
-        paneActionController.refresh();
-    }
-
-    /**
-     * Refreshes Mates-Pane and Player-Pane
-     * Mates: info about game process
-     * Player: infos about the current player
-     *
-     * not all panes are refreshed at the same time because of ressource-reasons
-     */
-    public void refreshMatesAndPlayerPanes() {
-        panePlayerController.refresh();
-        paneMatesController.refresh();
     }
 
     /**
