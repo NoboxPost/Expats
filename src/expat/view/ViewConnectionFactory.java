@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class ViewConnectionFactory {
     private ViewCoordinateCalculator viewCoordinateCalculator;
-    PaneBoardController paneBoardController;
+    private PaneBoardController paneBoardController;
     private int hexSize;
 
     public ViewConnectionFactory(int hexSize, PaneBoardController paneBoardController) {
@@ -45,6 +45,8 @@ public class ViewConnectionFactory {
                 }
                 viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
                 viewConnections.add(viewConnection);
+
+                //TODO: handle this
             }
 
         }

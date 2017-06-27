@@ -16,8 +16,8 @@ import javafx.scene.layout.VBox;
  * @author gallatib
  */
 public class ViewCardsFactory {
-    ModelMaterial material;
-    ViewCardsNumberFactory cardsNumberFactory;
+    private ModelMaterial material;
+    private ViewCardsNumberFactory cardsNumberFactory;
 
 
     /**

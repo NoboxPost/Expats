@@ -52,23 +52,13 @@ public class ModelBoard {
 
 
     /**
-     * Creates a new ModelBuildingAction with give building type and for given owner. No materials will be checked and reduced
-     *
-     * @param type type of Building.
-     * @param newOwner ModelPlayer which will be owner of new building.
-     */
-    public void firstBuildingAction(String type, ModelPlayer newOwner) {
-        buildingAction = new ModelBuildingAction(newOwner,type,buildings,connections,true);
-    }
-
-    /**
      * Creates a new ModelBuildingAction with give building type and for given owner. Materials will be checked and reduced
      *
      * @param type Building type
      * @param newOwner ModelPlayer which will be owner of new building.
      */
-    public void newBuildingAction(String type, ModelPlayer newOwner) {
-        buildingAction = new ModelBuildingAction(newOwner, type, buildings, connections);
+    public void newBuildingAction(String type, ModelPlayer newOwner, Boolean isInPreGame) {
+        buildingAction = new ModelBuildingAction(newOwner, type, buildings, connections, isInPreGame);
 
     }
 
@@ -80,8 +70,6 @@ public class ModelBoard {
      * @return true if building is valid.
      */
     public boolean finishBuildingAction(int[] coords, String type) {
-
-
         if (buildingAction != null) {
             if (buildingAction.createBuilding(coords, type)) {
                 buildingAction = null;

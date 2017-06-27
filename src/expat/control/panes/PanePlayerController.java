@@ -33,7 +33,6 @@ public class PanePlayerController {
      */
     public void init(MainGameController mainGameController){
         this.mainGameController = mainGameController;
-        mainGameController.refreshPlayerInformation();
     }
 
     /**

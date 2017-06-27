@@ -28,7 +28,6 @@ public class PaneMatesController {
 
     public void init(MainGameController mainGameController){
         this.mainGameController = mainGameController;
-        mainGameController.refreshMatesInformation();
     }
 
 

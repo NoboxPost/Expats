@@ -24,13 +24,8 @@ public abstract class GameController {
     protected PanePlayerController panePlayerController;
 
 
-    public GameController(ModelApp app, MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController) {
+    public GameController(ModelApp app) {
         this.app = app;
-        this.mainStageController = mainStageController;
-        this.paneActionController = paneActionController;
-        this.paneBoardController = paneBoardController;
-        this.paneMatesController = paneMatesController;
-        this.panePlayerController = panePlayerController;
     }
 
     public abstract void startTurnStep();
@@ -54,5 +49,19 @@ public abstract class GameController {
         refreshPlayerInformation();
     }
 
-    public abstract void createElementOnBoard();
+    public void linkToPanes(MainStageController mainStageController,
+                            PaneActionController paneActionController,
+                            PaneBoardController paneBoardController,
+                            PaneMatesController paneMatesController,
+                            PanePlayerController panePlayerController) {
+
+        this.mainStageController = mainStageController;
+        this.paneActionController = paneActionController;
+        this.paneBoardController = paneBoardController;
+        this.paneMatesController = paneMatesController;
+        this.panePlayerController = panePlayerController;
+    }
+
+    public abstract void initiateBoardElementPlacing(String type);
+    public abstract void finishBoardElementPlacing(int[] coords, String type);
 }

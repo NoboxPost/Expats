@@ -17,19 +17,19 @@ import javafx.scene.layout.VBox;
  * @author vanonir
  */
 public class ViewPaneTradeGeneral extends HBox {
-    PaneActionController paneActionController;
-    String type = "GeneralTrade";
-    String[] materialTypes = new String[]{"Lehm", "Stroh", "Stein", "Holz", "Wolle"};
-    int[] materialAtStartArray = new int[5];
-    int[] materialAtEdnArray;
-    Label[] lblsmaterial = new Label[5];
-    Button[] btnsMaterialPlus = new Button[5];
-    Button[] btnsMaterialMinus = new Button[5];
-    int materialSumPlus = 0;
-    int materialSumMinus = 0;
-    Button btnTrade = new Button("Handeln");
-    Label lblMaterialSumDemanded = new Label("" + materialSumPlus);
-    Label lblMaterialSumOffered = new Label("" + materialSumMinus);
+    private PaneActionController paneActionController;
+    private String type = "GeneralTrade";
+    private String[] materialTypes = new String[]{"Lehm", "Stroh", "Stein", "Holz", "Wolle"};
+    private int[] materialAtStartArray = new int[5];
+    private int[] materialAtEdnArray;
+    private Label[] lblsmaterial = new Label[5];
+    private Button[] btnsMaterialPlus = new Button[5];
+    private Button[] btnsMaterialMinus = new Button[5];
+    private int materialSumPlus = 0;
+    private int materialSumMinus = 0;
+    private Button btnTrade = new Button("Handeln");
+    private Label lblMaterialSumDemanded = new Label("" + materialSumPlus);
+    private Label lblMaterialSumOffered = new Label("" + materialSumMinus);
 
 
     public ViewPaneTradeGeneral(int[] materialAtStartArray, PaneActionController paneActionController) {
@@ -39,7 +39,9 @@ public class ViewPaneTradeGeneral extends HBox {
         this.setSpacing(20);
         generateFirstTimeContent();
         btnTrade.setDisable(true);
-        btnTrade.setOnAction(this.paneActionController::btnTradeFinishClicked);
+        //btnTrade.setOnAction(this.paneActionController::btnTradeFinishClicked);
+
+        //TODO: handle this
     }
 
 

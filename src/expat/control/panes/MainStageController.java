@@ -42,9 +42,10 @@ public class MainStageController {
     private PreGameController preGame;
     private MainGameController mainGame;
     private ModelApp app;
+    private boolean isInPreGameMode = true;
 
 
-    //TODO: drawCreateGame as bottom-action should get reconsidered because File - New Game would be more intuitive
+    //TODO: drawGameSettings as bottom-action should get reconsidered because File - New Game would be more intuitive
 
     /**
      * Runs after initialization of all controllers, initializes an app and starts model logic.
@@ -53,18 +54,24 @@ public class MainStageController {
     public void initialize() {
         app = new ModelApp();
         initializeControllers();
+
+        preGame.gameSettings();
     }
 
     private void initializeControllers(){
-        //Control-View
+        //control-model
+        preGame = new PreGameController(app);
+        mainGame = new MainGameController(app);
+
+        //control-view
         paneBoardController.init(this, mainGame, preGame);
         paneActionController.init(this, mainGame, preGame);
         panePlayerController.init(mainGame);
         paneMatesController.init(mainGame);
 
-        //Control-Model
-        preGame = new PreGameController(app, this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
-        mainGame = new MainGameController(app, this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
+        //link the control-view with the control-model
+        mainGame.linkToPanes(this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
+        preGame.linkToPanes(this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
     }
 
     /**
@@ -83,6 +90,21 @@ public class MainStageController {
      */
     public void raiderMoved() {
         paneActionController.raiderMoved();
+    }
+
+
+    public void selectGameControllerForFinishPlacingElement(int[] coords, String type){
+        if(isInPreGameMode){
+            preGame.finishBoardElementPlacing(coords, type);
+        }
+        else{
+            mainGame.finishBoardElementPlacing(coords, type);
+        }
+    }
+
+    public void switchGameMode(){
+        isInPreGameMode = false;
+        mainGame.startTurnStep();
     }
 }
 

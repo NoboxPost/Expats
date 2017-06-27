@@ -42,7 +42,6 @@ public class ModelApp {
     private int currentDiceNumber;
     private ModelMaterial nowPlayingDicedMaterial;
     private ModelBuildingAction modelBuildingAction;
-    private ModelFirstBuildingActionSequence firstBuildingActionSequence;
 
 
     /**
@@ -54,11 +53,10 @@ public class ModelApp {
 
 
     //TODO: Initialization
-    private void initializeGame(){
+    private void initializeGame() {
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         board = boardGenerator.generateBoard();
 
-        modelPreGamePlayerSelector = new ModelPreGamePlayerHandler(players);
         diceRoller = new ModelDiceRoller();
         playerGenerator = new ModelPlayerGenerator();
     }
@@ -66,9 +64,16 @@ public class ModelApp {
     /**
      * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
      */
-    public void generatePlayer() {
-        ModelPlayer player = playerGenerator.newPlayer();
-        players.add(player);
+    public void generatePlayer(int numberOfPlayers) {
+        for (int i = 0; i < numberOfPlayers; i++) {
+            ModelPlayer player = playerGenerator.newPlayer();
+            players.add(player);
+        }
+    }
+
+    public void generatePlayerHandler() {
+        modelPreGamePlayerSelector = new ModelPreGamePlayerHandler(players);
+        modelMainGamePlayerSelector = new ModelMainGamePlayerHandler(players);
     }
 
     /**
@@ -78,17 +83,17 @@ public class ModelApp {
         currentDiceNumber = diceRoller.getRolledDices();
     }
 
-    public void preGameNextPlayer(){
+    public void preGameNextPlayer() {
         modelPreGamePlayerSelector.nextPlayer();
         currentPlayer = modelPreGamePlayerSelector.getCurrentPreGamePlayer();
     }
 
-    public void mainGameNextPlayer(){
+    public void mainGameNextPlayer() {
         modelMainGamePlayerSelector.nextPlayer();
         currentPlayer = modelMainGamePlayerSelector.getCurrentMainGameUser();
     }
 
-    public void distributeMaterial(){
+    public void distributeMaterial() {
         if (currentDiceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial();
             materialBefore.addMaterial(currentPlayer.getMaterial());
@@ -101,14 +106,16 @@ public class ModelApp {
         }
     }
 
-    public boolean currentPlayerIsTheWinner(){
-        if(currentPlayer.getVictoryPoints() >= 10){
+    public boolean currentPlayerIsTheWinner() {
+        if (currentPlayer.getVictoryPoints() >= 10) {
             return true;
+        } else {
+            return false;
         }
-        else{ return false; }
     }
 
     //TODO: change
+
     /**
      * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
      *
@@ -120,6 +127,7 @@ public class ModelApp {
 
 
     //TODO: change
+
     /**
      * Initiates a new ModelTradingAction for the current player.
      * Trade types will be:
@@ -137,6 +145,7 @@ public class ModelApp {
     }
 
     //TODO: change
+
     /**
      * Injects integer array representing
      *
@@ -148,6 +157,7 @@ public class ModelApp {
     }
 
     //TODO: change
+
     /**
      * Frees the reference to a ModelTradeAction, if player decides to abort the step or end his turn prior to ending the action.
      */
@@ -156,24 +166,18 @@ public class ModelApp {
     }
 
     //TODO: change
-    /**
-     * Createsa a new ModelBuildingAction with parameter firstStage = true, so building and connections won't cost anything.
-     *
-     * @param type
-     */
-    public void firstBuildingAction(String type) {
-        board.firstBuildingAction(type, currentPlayer);
-    }
 
-    //TODO: change
+
     /**
      * Initiates
      *
      * @param type
      */
-    public void newBuildingAction(String type) {
-        board.newBuildingAction(type, currentPlayer);
+    public void initiateMainGamePlacingAction(String type, Boolean isInPreGame) {
+        board.newBuildingAction(type, currentPlayer, isInPreGame);
     }
+
+
 
 
     /**
@@ -284,6 +288,16 @@ public class ModelApp {
     public LinkedList<ModelPlayer> getPlayers() {
         return players;
     }
+
+
+    public void finishPlacingAction(int[] coords, String type) {
+        if (board.finishBuildingAction(coords, type)) {
+            if (type.equals("Building")) {
+                currentPlayer.changeVictoryPoints(1);
+            }
+        }
+    }
+
 
 }
 

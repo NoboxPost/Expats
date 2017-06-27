@@ -1,6 +1,5 @@
 package expat.control.procedure;
 
-import expat.control.panes.*;
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
 
@@ -10,57 +9,10 @@ import java.util.LinkedList;
  * Created by gallatib on 22.06.2017.
  */
 public class MainGameController extends GameController {
-    public MainGameController(ModelApp app, MainStageController mainStageController, PaneActionController paneActionController, PaneBoardController paneBoardController, PaneMatesController paneMatesController, PanePlayerController panePlayerController) {
-        super(app, mainStageController, paneActionController, paneBoardController, paneMatesController, panePlayerController);
+
+    public MainGameController(ModelApp app) {
+        super(app);
     }
-
-
-    /*
-    public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
-        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                currentPlayer = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
-        }
-        if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
-            if (board.finishBuildingAction(coords, type)) {
-                if (type.equals("Building")) {
-                    currentPlayer.changeVictoryPoints(1);
-                }
-            }
-        }
-        boolean allOnSameFirstBuildingStep = true;
-        if (firstBuildingStep < 2) {
-            for (ModelPlayer player : players) {
-                if ((board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
-
-                } else {
-                    allOnSameFirstBuildingStep = false;
-                }
-            }
-            if (allOnSameFirstBuildingStep) {
-                firstBuildingStep += 1;
-                if (firstBuildingActionSequence.nextPlayer()) {
-                    currentPlayer = firstBuildingActionSequence.getCurrentPlayer();
-                } else {
-                    nextPlayer();
-                }
-            }
-            if (firstBuildingStep >= 2) {
-                resourceStep();
-            }
-        }
-        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                currentPlayer = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
-        }
-    }
-     */
 
     public void nextStepSelector(){
         switch (currentStep){
@@ -87,6 +39,7 @@ public class MainGameController extends GameController {
         paneActionController.drawRollDiceStep();
         app.rollDice();
         app.distributeMaterial();
+        refreshPlayerInformation();
     }
 
     public void diceResultStep(){
@@ -112,7 +65,7 @@ public class MainGameController extends GameController {
 
         for(ModelPlayer playerThatMustDrop : playersThatMustDrop){
             int[] dropAmount = playerThatMustDrop.getMaterial().getMaterialAmount();
-            paneActionController.drawDropMaterialStep(dropAmount, playerThatMustDrop.getPlayerName());
+            //paneActionController.drawDropMaterialStep(dropAmount, playerThatMustDrop.getPlayerName());
         }
 
         app.getBoard().activateRaider();
@@ -157,9 +110,16 @@ public class MainGameController extends GameController {
     }
 
     @Override
-    public void createElementOnBoard() {
-
+    public void initiateBoardElementPlacing(String type) {
+        app.initiateMainGamePlacingAction(type, false);
     }
+
+    @Override
+    public void finishBoardElementPlacing(int[] coords, String type) {
+        app.finishPlacingAction(coords, type);
+        refreshBoardElements();
+    }
+
 }
 
 

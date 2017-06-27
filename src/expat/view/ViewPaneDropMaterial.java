@@ -17,20 +17,20 @@ import javafx.scene.layout.VBox;
  * @author vanonir
  */
 public class ViewPaneDropMaterial extends HBox {
-    PaneActionController paneActionController;
-    String type = "GeneralTrade";
-    String[] materialTypes = new String[]{"Lehm", "Stroh", "Stein", "Holz", "Wolle"};
-    int[] materialAtStartArray = new int[5];
-    int[] materialAtEdnArray;
-    Label[] lblsmaterial = new Label[5];
-    Button[] btnsMaterialPlus = new Button[5];
-    Button[] btnsMaterialMinus = new Button[5];
-    int amountToBeDropped = 0;
-    int materialSumMinus = 0;
-    Button btnTrade = new Button("Abgeben");
-    Label lblAmountToBeDropped = new Label("");
-    Label lblMaterialSumOffered = new Label("" + materialSumMinus);
-    Label lblPlayerName = new Label("");
+    private PaneActionController paneActionController;
+    private String type = "GeneralTrade";
+    private String[] materialTypes = new String[]{"Lehm", "Stroh", "Stein", "Holz", "Wolle"};
+    private int[] materialAtStartArray = new int[5];
+    private int[] materialAtEdnArray;
+    private Label[] lblsmaterial = new Label[5];
+    private Button[] btnsMaterialPlus = new Button[5];
+    private Button[] btnsMaterialMinus = new Button[5];
+    private int amountToBeDropped = 0;
+    private int materialSumMinus = 0;
+    private Button btnTrade = new Button("Abgeben");
+    private Label lblAmountToBeDropped = new Label("");
+    private Label lblMaterialSumOffered = new Label("" + materialSumMinus);
+    private Label lblPlayerName = new Label("");
     private boolean isDone= false;
 
 
@@ -52,7 +52,9 @@ public class ViewPaneDropMaterial extends HBox {
         lblAmountToBeDropped.setText("Müssen abgegeben werden: "+amountToBeDropped);
         generateFirstTimeContent();
         btnTrade.setDisable(true);
-        btnTrade.setOnAction(this.paneActionController::btnDropMaterialFinishClicked);
+        //btnTrade.setOnAction(this.paneActionController::btnDropMaterialFinishClicked);
+
+        //TODO: handle this
     }
 
 

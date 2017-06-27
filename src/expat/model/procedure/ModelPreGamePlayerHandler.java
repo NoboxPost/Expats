@@ -3,30 +3,21 @@ package expat.model.procedure;
 import expat.model.ModelPlayer;
 
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Stack;
 
 /**
  * Created by gallatib on 26.06.2017.
  */
 public class ModelPreGamePlayerHandler {
-    private LinkedList<ModelPlayer> players;
-    private PriorityQueue<ModelPlayer> playersQueue;
+    private LinkedList<ModelPlayer> playersQueue;
     private Stack<ModelPlayer> playersStack;
     private ModelPlayer currentPreGamePlayer;
 
     public ModelPreGamePlayerHandler(LinkedList<ModelPlayer> players) {
-        this.players = players;
-        playersQueue = new PriorityQueue<>();
+        playersQueue = new LinkedList();
         playersStack = new Stack<>();
 
-        copyListToQueue();
-    }
-
-    private void copyListToQueue(){
-        for (ModelPlayer player : players) {
-            playersQueue.add(player);
-        }
+        playersQueue.addAll(players);
     }
 
     public void nextPlayer(){

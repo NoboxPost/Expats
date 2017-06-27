@@ -15,10 +15,10 @@ import java.util.List;
 public class ViewHexFactory {
     private int hexSize;
     private ViewCoordinateCalculator coordCalculator;
-    String[] imageUrls = new String[]{"expat/img/Water.png","expat/img/Desert.png","expat/img/Clay.png","expat/img/Grain.png","expat/img/Stone.png","expat/img/Wood.png", "expat/img/Wool.png",};
-    Image[] images;
-    ImagePattern[] imagePatterns;
-    String[] types = new String[]{"Water", "Desert", "Clay", "Grain", "Stone", "Wood", "Wool"};
+    private String[] imageUrls = new String[]{"expat/img/Water.png","expat/img/Desert.png","expat/img/Clay.png","expat/img/Grain.png","expat/img/Stone.png","expat/img/Wood.png", "expat/img/Wool.png",};
+    private Image[] images;
+    private ImagePattern[] imagePatterns;
+    private String[] types = new String[]{"Water", "Desert", "Clay", "Grain", "Stone", "Wood", "Wool"};
 
     /**
      * Generates all the ViewHexes, and has all the Information (IMAGES ,Types) to fill in the ViewHexes.

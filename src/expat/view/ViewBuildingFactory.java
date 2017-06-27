@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ViewBuildingFactory {
     private ViewCoordinateCalculator viewCoordinateCalculator;
-    PaneBoardController paneBoardController;
+    private PaneBoardController paneBoardController;
     private int hexSize;
 
     public ViewBuildingFactory(int hexSize, PaneBoardController paneBoardController) {
@@ -37,7 +37,7 @@ public class ViewBuildingFactory {
      * @return ViewBuilding list, containing all Nodes representing their Model counterpart.
      */
     public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings) {
-        List<ViewBuilding> viewBuildings = new ArrayList<ViewBuilding>();
+        List<ViewBuilding> viewBuildings = new ArrayList<>();
 
         for (ModelBuilding modelBuilding : modelBuildings) {
             int[] modelBuildingCoords = modelBuilding.getCoords();

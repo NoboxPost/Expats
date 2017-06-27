@@ -46,7 +46,6 @@ public class PaneActionController {
     private ImageView townImageView;
     private ImageView settlementImageView;
     private Button diceRollButton;
-    private Button createGameButton;
     private ViewPaneTradeGeneral paneTradeGeneral;
     private ViewPaneDropMaterial paneDropMaterial;
     private MainGameController mainGameController;
@@ -59,17 +58,29 @@ public class PaneActionController {
         this.preGameController = preGameController;
     }
 
-    public void drawCreateGame() {
+    //Todo:
+
+    /*
+    btnNextStep.setVisible(true);
+        btnEndTurn.setVisible(true);
+     */
+
+    public void drawGameSettings() {
         middleActionPane.getChildren().clear();
 
         //TODO: replace this button with viewPaneCreateGame
-        createGameButton = new Button("create Game");
-        createGameButton.setOnAction(this::btnCreateGame);
+        Button createGameButton = new Button("create Game");
+        createGameButton.setOnAction(this::btnCreateGameClicked);
         createGameButton.setMinHeight(60);
         createGameButton.setMinWidth(60);
-        middleActionPane.getChildren().add(diceRollButton);
+        middleActionPane.getChildren().add(createGameButton);
         btnNextStep.setVisible(false);
         btnEndTurn.setVisible(false);
+    }
+
+    //todo: number of players is still hardcoded
+    private void btnCreateGameClicked(ActionEvent actionEvent) {
+        preGameController.buildAndStartGame(3);
     }
 
     public void drawPreGameBuildingStep() {
@@ -81,10 +92,12 @@ public class PaneActionController {
         settlementImageView.setPreserveRatio(true);
         settlementImageView.setOnMouseReleased(this::generatePreSettlement);
         settlementImageView.setCursor(Cursor.HAND);
+
+        middleActionPane.getChildren().addAll(settlementImageView);
     }
 
     private void generatePreSettlement(MouseEvent event) {
-        app.firstBuildingAction("Settlement");
+        preGameController.initiateBoardElementPlacing("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
 
@@ -97,33 +110,24 @@ public class PaneActionController {
         roadImageView.setPreserveRatio(true);
         roadImageView.setOnMouseReleased(this::generatePreRoad);
         roadImageView.setCursor(Cursor.HAND);
+
+        middleActionPane.getChildren().addAll(roadImageView);
     }
 
     //TODO: add ships (connection?)
     private void generatePreRoad(MouseEvent event) {
-        app.firstBuildingAction("Road");
+        preGameController.initiateBoardElementPlacing("Road");
         roadImageView.setEffect(addDropShadow());
     }
 
-    public void drawFirstSettlementAndRoadStep() {
+    private DropShadow addDropShadow() {
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(30);
+        dropShadow.setHeight(250);
+        dropShadow.setWidth(200);
+        dropShadow.setSpread(0.5);
 
-
-
-
-        middleActionPane.getChildren().addAll(playerName, settlementImageView, roadImageView);
-        if (app.getFirstBuildingStep() < 2) {
-            btnNextStep.setDisable(true);
-            btnEndTurn.setDisable(true);
-        } else {
-            btnNextStep.setDisable(false);
-            btnEndTurn.setDisable(false);
-        }
-
-
-    }
-
-    private void btnCreateGame(ActionEvent actionEvent) {
-        preGameController.startTurnStep();
+        return dropShadow;
     }
 
     public void btnNextStepClicked(ActionEvent actionEvent) {
@@ -229,7 +233,7 @@ public class PaneActionController {
         mainGameController.dropMaterialStep();
     }
 
-
+/*
     public void drawDropMaterialStep(int[] dropAmount, String playerNameThatMustDrop) {
         middleActionPane.getChildren().clear();
 
@@ -244,6 +248,7 @@ public class PaneActionController {
             middleActionPane.getChildren().add(paneDropMaterial);
         }
     }
+    */
 
 
     public void drawMoveRaiderStep(){
@@ -258,10 +263,12 @@ public class PaneActionController {
         //TODO: draw auswahl von Player
     }
 
+    /*
     public void btnDropMaterialFinishClicked(ActionEvent event) {
         paneDropMaterial.setDone(true);
         controllerMainStage.refreshMatesAndPlayerPanes();
     }
+    */
 
     public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
         paneDropMaterial.adjustMaterial((Button) event.getSource());
@@ -278,21 +285,21 @@ public class PaneActionController {
         townImageView = new ImageView(town);
         townImageView.setFitHeight(80);
         townImageView.setPreserveRatio(true);
-        townImageView.setOnMouseReleased(this::generateTown);
+        townImageView.setOnMouseReleased(this::selectTown);
         townImageView.setCursor(Cursor.HAND);
 
         Image settlement = new Image("expat/img/Settlement.png");
         settlementImageView = new ImageView(settlement);
         settlementImageView.setFitHeight(80);
         settlementImageView.setPreserveRatio(true);
-        settlementImageView.setOnMouseReleased(this::generateSettlement);
+        settlementImageView.setOnMouseReleased(this::selectSettlement);
         settlementImageView.setCursor(Cursor.HAND);
 
         Image road = new Image("expat/img/Connection.png");
         roadImageView = new ImageView(road);
         roadImageView.setFitHeight(80);
         roadImageView.setPreserveRatio(true);
-        roadImageView.setOnMouseReleased(this::generateRoad);
+        roadImageView.setOnMouseReleased(this::selectRoad);
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
@@ -305,8 +312,9 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void generateRoad(MouseEvent event) {
-        generateBuilding("Road");
+
+    private void selectRoad(MouseEvent event) {
+        initiateBoardElementPlacingAction("Road");
         roadImageView.setEffect(addDropShadow());
     }
 
@@ -316,8 +324,8 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void generateSettlement(MouseEvent event) {
-        generateBuilding("Settlement");
+    private void selectSettlement(MouseEvent event) {
+        initiateBoardElementPlacingAction("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
 
@@ -326,8 +334,8 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void generateTown(MouseEvent event) {
-        generateBuilding("Town");
+    private void selectTown(MouseEvent event) {
+        initiateBoardElementPlacingAction("Town");
         townImageView.setEffect(addDropShadow());
     }
 
@@ -338,31 +346,17 @@ public class PaneActionController {
      *
      * @param type Building type
      */
-    private void generateBuilding(String type) {
-        refresh();
-        controllerMainStage.refreshMatesAndPlayerPanes();
-        app.newBuildingAction(type);
+
+    private void initiateBoardElementPlacingAction(String type) {
+        mainGameController.initiateBoardElementPlacing(type);
     }
 
 
-    /**
-     * Generates a balck Shadow Effect.
-     *
-     * @return
-     */
-    private DropShadow addDropShadow() {
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setRadius(30);
-        dropShadow.setHeight(25);
-        dropShadow.setWidth(200);
-        dropShadow.setSpread(0.5);
-
-        return dropShadow;
-    }
 
     /**
      * draws trade step, first lets player choose which trading action he will take, initiates display of the choosen trading action.
      */
+    /*
     private void drawTradeStep() {
         middleActionPane.getChildren().clear();
         btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
@@ -384,17 +378,20 @@ public class PaneActionController {
             }
         }
     }
+    */
 
     /**
      * General trade is initialised in app. Is called by corresponding trade button.
      *
      * @param event
      */
+
+    /*
     private void btnGeneralTradingClicked(ActionEvent event) {
         paneTradeGeneral = null;
         app.newTradeAction("GeneralTrade");
-        refresh();
     }
+    */
 
     /**
      * adjusts trade amount in trade screen, is called by buttons on trade screen.
@@ -403,7 +400,6 @@ public class PaneActionController {
      */
     public void btnTradeAdjustMaterialClicked(ActionEvent event) {
         if (paneTradeGeneral != null) {
-            refresh();
             paneTradeGeneral.adjustMaterial((Button) event.getSource());
         }
     }
@@ -413,13 +409,15 @@ public class PaneActionController {
      *
      * @param event
      */
+
+    /*
     public void btnTradeFinishClicked(ActionEvent event) {
         app.finishTradeAction(paneTradeGeneral.getEndDifference());
         app.resetTrade();
         paneTradeGeneral = null;
         controllerMainStage.refreshMatesAndPlayerPanes();
-        refresh();
     }
+    */
 
 
     /**
@@ -427,25 +425,25 @@ public class PaneActionController {
      *
      * @param event ActionEvent
      */
+
+    /*
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {
         paneTradeGeneral = null;
         app.tradeStep();
-        refresh();
-        controllerMainStage.refreshMatesAndPlayerPanes();
     }
+    */
 
     /**
      * is called from btnNextStep and calls methode from app for building step
      *
      * @param event ActionEvent
      */
+
+    /*
     public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
-        app.buildingStep();
         paneTradeGeneral = null;
-        refresh();
-        controllerMainStage.refreshMatesAndPlayerPanes();
-
+        app.buildingStep();
     }
-
+    */
 
 }

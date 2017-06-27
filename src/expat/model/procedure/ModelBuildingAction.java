@@ -17,7 +17,7 @@ public class ModelBuildingAction {
     private String buildingType;
     private ArrayList<ModelBuilding> buildings;
     private ArrayList<ModelConnection> connections;
-    private boolean startStage = false;
+    private boolean isInPreGame = false;
 
     /**
      * to be used during game, materials will be checked alongside with connection and building positions.
@@ -27,14 +27,6 @@ public class ModelBuildingAction {
      * @param buildings
      * @param connections
      */
-    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections) {
-        this.player = player;
-        this.buildingType = buildingType;
-        this.buildings = buildings;
-        this.connections = connections;
-        // TODO: depending on buildingType, show possible locations for types
-        // TODO: switch case and COST!, COST is not handled by building, so need to do i here.
-    }
 
     /**
      * To be used at Start of GameController,
@@ -45,12 +37,12 @@ public class ModelBuildingAction {
      * @param connections
      * @param startStage   if true, no Materials will be checked and Settlements can be built independent from roads.
      */
-    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, boolean startStage) {
+    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, boolean isInPreGame) {
         this.player = player;
         this.buildingType = buildingType;
         this.buildings = buildings;
         this.connections = connections;
-        this.startStage = startStage;
+        this.isInPreGame = isInPreGame;
     }
 
     /**
@@ -67,7 +59,7 @@ public class ModelBuildingAction {
                         if (checkConnectionForConnection(coords, connection) && buildingCost(buildingType)) {
                             connection.buildRoad(buildingType, player);
                             return true;
-                        } else if (startStage && checkSettlementforConnectionToBeBuilt(coords, connection)) {
+                        } else if (isInPreGame && checkSettlementforConnectionToBeBuilt(coords, connection)) {
                             connection.buildRoad(buildingType, player);
                         }
                         return false;
@@ -91,7 +83,7 @@ public class ModelBuildingAction {
                                 return true;
                             }
                             return false;
-                        } else if (startStage && checkBuildingForBuilding(coords)) {
+                        } else if (isInPreGame && checkBuildingForBuilding(coords)) {
                             building.buildSettlement(player);
                             return true;
                         }

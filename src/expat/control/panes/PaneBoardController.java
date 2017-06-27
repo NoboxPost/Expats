@@ -188,20 +188,13 @@ public class PaneBoardController {
      */
     public void buildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        mainGameController.refreshBoardElements();
-        mainGameController.refreshPlayerAndMatesInformation();
+        controllerMainStage.selectGameControllerForFinishPlacingElement(building.getBuildingCoord(),"Building");
     }
-    /**
-     * Is called by ViewConnection as onMouseReleased event.
-     * Gets the coordinates stored in event source and hands them over to the corresponding method in the ModelApp
-     *
-     * @param event MouseEvent
-     */
+
+
     public void connectionSpotClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
-        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
-        mainGameController.refreshBoardElements();
-        mainGameController.refreshPlayerAndMatesInformation();
+        controllerMainStage.selectGameControllerForFinishPlacingElement(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
     }
 
     /**

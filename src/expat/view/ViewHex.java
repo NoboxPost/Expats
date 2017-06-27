@@ -12,12 +12,12 @@ import javafx.scene.shape.Polygon;
  * Created by vanonir on 24.03.2017.
  */
 public class ViewHex extends Polygon {
-    double[] xPoints = new double[]{0.25, 0.75, 1, 0.75, 0.25, 0};
-    double[] yPoints = new double[]{0, 0, 0.4, 0.8, 0.8, 0.4};
-    double xOffset = 0.0;
-    double yOffset = 0.0;
-    double size;
-    ImagePattern pattern;
+    private double[] xPoints = new double[]{0.25, 0.75, 1, 0.75, 0.25, 0};
+    private double[] yPoints = new double[]{0, 0, 0.4, 0.8, 0.8, 0.4};
+    private double xOffset = 0.0;
+    private double yOffset = 0.0;
+    private double size;
+    private ImagePattern pattern;
 
     /**
      * Generates a polygon, to be added as a child on the BoardPane.
