@@ -3,6 +3,7 @@ package expat.view;
 import expat.control.panes.PaneBoardController;
 import expat.model.buildings.ModelConnection;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
@@ -47,6 +48,24 @@ public class ViewConnectionFactory {
             }
         }
         return viewConnections;
+    }
+
+    public ViewConnection generateConnectionPlacingSpot(String orientation, int[] coords) {
+        ViewConnection viewConnection;
+        viewConnection = generateRoad(coords[0], coords[1]);
+
+        Double[] placingCoords = viewCoordinateCalculator.calcBuildingCoords(coords);
+        if (orientation.equals("up")) {
+            viewConnection.setRotate(-60);
+        } else if (orientation.equals("down")) {
+            viewConnection.setRotate(60);
+        }
+        viewConnection.setLayoutX(placingCoords[0]);
+        viewConnection.setLayoutY(placingCoords[1]);
+        viewConnection.setCursor(Cursor.HAND);
+        viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
+
+        return viewConnection;
     }
 
     public ArrayList<ViewConnection> generateConnectionPlacingSpots(ArrayList<ModelConnection> modelConnections) {
@@ -131,4 +150,6 @@ public class ViewConnectionFactory {
         viewConnection.setY(-hexSize * 0.1);
         return viewConnection;
     }
+
+
 }

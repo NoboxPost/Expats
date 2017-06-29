@@ -20,23 +20,6 @@ public class ModelBuildingAction {
     private boolean startStage = false;
 
     /**
-     * to be used during game, materials will be checked alongside with connection and building positions.
-     *
-     * @param player
-     * @param buildingType
-     * @param buildings
-     * @param connections
-     */
-    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections) {
-        this.player = player;
-        this.buildingType = buildingType;
-        this.buildings = buildings;
-        this.connections = connections;
-        // TODO: depending on buildingType, show possible locations for types
-        // TODO: switch case and COST!, COST is not handled by building, so need to do i here.
-    }
-
-    /**
      * To be used at Start of Game,
      *
      * @param player

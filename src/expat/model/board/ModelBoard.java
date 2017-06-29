@@ -1,5 +1,6 @@
 package expat.model.board;
 
+import expat.model.buildings.ModelPreGameBuildingListCrawler;
 import expat.model.procedure.ModelBuildingAction;
 import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;
@@ -21,12 +22,15 @@ public class ModelBoard {
     private ArrayList<ModelConnection> connections;
     private ModelRaider raider;
     private ModelBuildingAction buildingAction;
+    private ModelPreGameBuildingListCrawler modelBuildingListCrawler;
 
     public ModelBoard(ModelHex[][] hexes, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, ModelRaider raider) {
         this.hexes = hexes;
         this.buildings = buildings;
         this.raider = raider;
         this.connections = connections;
+
+        modelBuildingListCrawler = new ModelPreGameBuildingListCrawler(this);
     }
 
     /**
@@ -163,6 +167,12 @@ public class ModelBoard {
         return connections;
     }
 
-
-
+    /**
+     * gets modelBuildingListCrawler
+     *
+     * @return value of modelBuildingListCrawler
+     */
+    public ModelPreGameBuildingListCrawler getModelBuildingListCrawler() {
+        return modelBuildingListCrawler;
+    }
 }

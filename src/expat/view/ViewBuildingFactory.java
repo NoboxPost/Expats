@@ -65,6 +65,18 @@ public class ViewBuildingFactory {
         viewBuilding.setLayoutY(pixelCoords[1]);
     }
 
+    public ViewBuilding generateBuildingPlacingSpot(int[] coords) {
+
+        ViewBuilding viewBuilding;
+        viewBuilding = generateEmptyBuilding(coords[0], coords[1]);
+        Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(coords);
+        viewBuilding.setOnMouseReleased(paneBoardController::buildingSpotClicked);
+        viewBuilding.setLayoutX(pixelCoords[0]);
+        viewBuilding.setLayoutY(pixelCoords[1]);
+
+        return viewBuilding;
+    }
+
     public List<ViewBuilding> generateBuildingPlacingSpots(ArrayList<ModelBuilding> modelBuildings) {
 
         List<ViewBuilding> viewBuildings = new ArrayList<>();

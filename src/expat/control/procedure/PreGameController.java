@@ -72,10 +72,10 @@ public class PreGameController extends GameController {
     public void initiateBoardElementPlacing(String type) {
         app.initiateMainGamePlacingAction(type, true);
         if(type.equals("Settlement")){
-            paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard());
+            paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard().getModelBuildingListCrawler().settlementsAPlayerCouldBuild());
         }
         else if(type.equals("Road")){
-            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard());
+            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelBuildingListCrawler().roadsAPlayerCouldBuild(app.getCurrentPlayer()));
         }
     }
 

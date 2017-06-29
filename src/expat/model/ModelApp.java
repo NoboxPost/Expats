@@ -3,6 +3,7 @@ package expat.model;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
+import expat.model.buildings.ModelPreGameBuildingListCrawler;
 import expat.model.procedure.*;
 
 import java.util.LinkedList;
@@ -31,6 +32,7 @@ public class ModelApp {
     private ModelPlayerGenerator playerGenerator;
     private ModelPreGamePlayerHandler modelPreGamePlayerSelector;
     private ModelMainGamePlayerHandler modelMainGamePlayerSelector;
+    private ModelPreGameBuildingListCrawler modelBuildingListCrawler;
 
     private LinkedList<ModelPlayer> players = new LinkedList<>();
     private LinkedList<ModelPlayer> playersThatMustDrop = new LinkedList<>();
