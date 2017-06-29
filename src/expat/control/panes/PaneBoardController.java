@@ -2,7 +2,6 @@ package expat.control.panes;
 
 import expat.control.procedure.MainGameController;
 import expat.control.procedure.PreGameController;
-import expat.model.ModelApp;
 import expat.model.board.ModelBoard;
 import expat.view.*;
 import javafx.event.ActionEvent;
@@ -37,6 +36,8 @@ public class PaneBoardController {
     private Group hexGroup;
     private Group diceButtonGroup;
     private Group connectionGroup;
+    private Group buildingPlacingSpotGroup;
+    private Group connectionPlacingSpotGroup;
 
     private MainGameController mainGameController;
     private PreGameController preGameController;
@@ -91,7 +92,7 @@ public class PaneBoardController {
             anchorPaneBoard.getChildren().remove(hexGroup);
         }
 
-        ViewHexFactory viewHexFactory = new ViewHexFactory(HEXSIZE);
+        ViewHexGenerator viewHexFactory = new ViewHexGenerator(HEXSIZE);
 
         hexGroup = new Group();
         hexGroup.getChildren().addAll(viewHexFactory.generateViewHexList(modelBoard.getHexes()));
@@ -134,6 +135,17 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(buildingGroup);
     }
 
+    public void generateBuildingPlacingSpotGroup(ModelBoard modelBoard){
+        if (buildingPlacingSpotGroup!=null) {
+            anchorPaneBoard.getChildren().remove(buildingPlacingSpotGroup);
+        }
+        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE,this);
+
+        buildingPlacingSpotGroup = new Group();
+        buildingPlacingSpotGroup.getChildren().addAll(viewBuildingFactory.generateBuildingPlacingSpots(modelBoard.getBuildings()));
+        anchorPaneBoard.getChildren().add(buildingPlacingSpotGroup);
+    }
+
     /**
      * Generates all Connections representing the ModelBuildings given as field of parameter ModelBoard.
      * Attaches all Connections as ViewBuilding which is an extended ImageView, directly to the anchorPaneBoard.
@@ -150,6 +162,17 @@ public class PaneBoardController {
         connectionGroup = new Group();
         connectionGroup.getChildren().addAll(viewConnectionFactory.generateConnections(modelBoard.getConnections()));
         anchorPaneBoard.getChildren().add(connectionGroup);
+    }
+
+    public void generateConnectionPlacingSpotGroup(ModelBoard modelBoard){
+        if (connectionPlacingSpotGroup!=null) {
+            anchorPaneBoard.getChildren().remove(connectionPlacingSpotGroup);
+        }
+        ViewConnectionFactory viewConnectionFactory = new ViewConnectionFactory(HEXSIZE,this);
+
+        connectionPlacingSpotGroup = new Group();
+        connectionPlacingSpotGroup.getChildren().addAll(viewConnectionFactory.generateConnectionPlacingSpots(modelBoard.getConnections()));
+        anchorPaneBoard.getChildren().add(connectionPlacingSpotGroup);
     }
 
     /**

@@ -39,11 +39,12 @@ public class MainGameController extends GameController {
         paneActionController.drawRollDiceStep();
         app.rollDice();
         app.distributeMaterial();
-        refreshPlayerInformation();
     }
 
     public void diceResultStep(){
         currentStep = "diceResultStep";
+
+        refreshPlayerInformation();
 
         //TODO: now the player must always navigate through the dropMaterialStep when there is a rolled 7, maybe extend this method to check if he has more than 7 materials
         if (app.getCurrentDiceNumber() == 7) {

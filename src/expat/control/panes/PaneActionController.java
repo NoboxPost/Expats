@@ -3,6 +3,7 @@ package expat.control.panes;
 import expat.control.procedure.MainGameController;
 import expat.control.procedure.PreGameController;
 import expat.model.ModelMaterial;
+import expat.model.board.ModelBoard;
 import expat.view.ViewCardsFactory;
 import expat.view.ViewPaneDropMaterial;
 import expat.view.ViewPaneTradeGeneral;
@@ -123,7 +124,7 @@ public class PaneActionController {
     private DropShadow addDropShadow() {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(30);
-        dropShadow.setHeight(250);
+        dropShadow.setHeight(25);
         dropShadow.setWidth(200);
         dropShadow.setSpread(0.5);
 

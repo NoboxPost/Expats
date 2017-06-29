@@ -30,7 +30,7 @@ public class ViewConnectionFactory {
         ArrayList<ViewConnection> viewConnections = new ArrayList<>();
         for (ModelConnection modelConnection : modelConnections) {
             int[] modelBuildingCoords = modelConnection.getCoords();
-            if (!modelConnection.getOnWater()) {
+            if (!modelConnection.getOnWater() && modelConnection.getOwner() != null) {
                 ViewConnection viewConnection = generateRoad(modelBuildingCoords[0], modelBuildingCoords[1]);
                 Double[] coords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
                 if (modelConnection.getOrientation().equals("up")) {
@@ -40,20 +40,40 @@ public class ViewConnectionFactory {
                 }
                 viewConnection.setLayoutX(coords[0]);
                 viewConnection.setLayoutY(coords[1]);
-                if (modelConnection.getOwner()!=null) { //TODO: auskommentieren.
+                if (modelConnection.getOwner()!=null) {
                     viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
                 }
-                viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
                 viewConnections.add(viewConnection);
-
-                //TODO: handle this
             }
-
         }
-
-
         return viewConnections;
     }
+
+    public ArrayList<ViewConnection> generateConnectionPlacingSpots(ArrayList<ModelConnection> modelConnections) {
+        ArrayList<ViewConnection> viewConnections = new ArrayList<>();
+        for (ModelConnection modelConnection : modelConnections) {
+            int[] modelBuildingCoords = modelConnection.getCoords();
+            ViewConnection viewConnection;
+            if (modelConnection.getOwner() == null){
+                if (!modelConnection.getOnWater()) {
+                    viewConnection = generateRoad(modelBuildingCoords[0], modelBuildingCoords[1]);
+                    Double[] coords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+                    if (modelConnection.getOrientation().equals("up")) {
+                        viewConnection.setRotate(-60);
+                    } else if (modelConnection.getOrientation().equals("down")) {
+                        viewConnection.setRotate(60);
+                    }
+                    viewConnection.setLayoutX(coords[0]);
+                    viewConnection.setLayoutY(coords[1]);
+                    viewConnection.setCursor(Cursor.HAND);
+                    viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
+                    viewConnections.add(viewConnection);
+                }
+            }
+        }
+        return viewConnections;
+    }
+
 
     /**
      * @param color
@@ -107,7 +127,6 @@ public class ViewConnectionFactory {
     private ViewConnection generateRoad(int xCoord, int yCoord) {
         Image img = new Image("expat/img/Connection.png");
         ViewConnection viewConnection = new ViewConnection(img, xCoord, yCoord);
-        viewConnection.setCursor(Cursor.HAND);
         viewConnection.setX(-hexSize * 0.2);
         viewConnection.setY(-hexSize * 0.1);
         return viewConnection;

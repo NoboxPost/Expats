@@ -71,6 +71,12 @@ public class PreGameController extends GameController {
     @Override
     public void initiateBoardElementPlacing(String type) {
         app.initiateMainGamePlacingAction(type, true);
+        if(type.equals("Settlement")){
+            paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard());
+        }
+        else if(type.equals("Road")){
+            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard());
+        }
     }
 
     @Override
@@ -78,6 +84,7 @@ public class PreGameController extends GameController {
         app.finishPlacingAction(coords, type);
         refreshBoardElements();
         nextStepSelector();
+        paneBoardController.drawBoard(app.getBoard());
     }
 
     /*

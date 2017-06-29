@@ -52,7 +52,7 @@ public class ModelApp {
     }
 
 
-    //TODO: Initialization
+    //TODO: x & y size should be in game-creation actionpane
     private void initializeGame() {
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         board = boardGenerator.generateBoard();

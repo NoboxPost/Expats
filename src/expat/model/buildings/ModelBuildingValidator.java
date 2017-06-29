@@ -1,156 +1,73 @@
-package expat.model.procedure;
+package expat.model.buildings;
 
 import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
-import expat.model.buildings.ModelBuilding;
-import expat.model.buildings.ModelConnection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by Rino on 01.04.2017.
- * <p>
- * Delivers all methods for the app, so a player can build new Buildings and connections depending on his Materials and aviable building spots.
+ * Created by gallatib on 28.06.2017.
  */
-public class ModelBuildingAction {
+public class ModelBuildingValidator {
+
     private ModelPlayer player;
     private String buildingType;
     private ArrayList<ModelBuilding> buildings;
     private ArrayList<ModelConnection> connections;
     private boolean startStage = false;
+    private Map<String, ModelMaterial> buildingCostMap = new HashMap<>();
 
-    /**
-     * to be used during game, materials will be checked alongside with connection and building positions.
-     *
-     * @param player
-     * @param buildingType
-     * @param buildings
-     * @param connections
-     */
-    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections) {
-        this.player = player;
-        this.buildingType = buildingType;
-        this.buildings = buildings;
-        this.connections = connections;
-        // TODO: depending on buildingType, show possible locations for types
-        // TODO: switch case and COST!, COST is not handled by building, so need to do i here.
-    }
-
-    /**
-     * To be used at Start of Game,
-     *
-     * @param player
-     * @param buildingType
-     * @param buildings
-     * @param connections
-     * @param startStage   if true, no Materials will be checked and Settlements can be built independent from roads.
-     */
-    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, boolean startStage) {
+    public ModelBuildingValidator(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, boolean startStage) {
         this.player = player;
         this.buildingType = buildingType;
         this.buildings = buildings;
         this.connections = connections;
         this.startStage = startStage;
+        addMaterialsToMap();
     }
 
-    /**
-     * Takes building coords and finishes the building process. Don't touch!
-     *
-     * @param coords
-     */
-    public boolean createBuilding(int[] coords, String type) {
-        if (type.equals("Connection") && buildingType.equals("Road")) {
-            for (ModelConnection connection :
-                    connections) {
-                if (connection.checkCoords(coords)) {
-                    if (connection.getOwner() == null) {
-                        if (checkConnectionForConnection(coords, connection) && buildingCost(buildingType)) {
-                            connection.buildRoad(buildingType, player);
-                            return true;
-                        } else if (startStage && checkSettlementforConnectionToBeBuilt(coords, connection)) {
-                            connection.buildRoad(buildingType, player);
-                        }
-                        return false;
-                    }
-                }
-            }
-        } else if (type.equals("Building")) {
-            for (ModelBuilding building : buildings) {
-                if (building.checkCoords(coords)) {
-                    if ((buildingType.equals("Town") && building.getOwner() == player) && building.getType().equals("Settlement")) {
-                        if (buildingCost(buildingType)) {
-                            building.buildTown(player);
-                            return true;
-                        }
-                        return false;
-                    } else if (buildingType.equals("Settlement") && building.getOwner() == null) {
+    private void addMaterialsToMap() {
+        buildingCostMap.put("Road", new ModelMaterial(new int[]{1, 0, 0, 1, 0}));
+        buildingCostMap.put("Boat", new ModelMaterial(new int[]{0, 0, 0, 1, 1}));
+        buildingCostMap.put("Settlement", new ModelMaterial(new int[]{1, 1, 0, 1, 1}));
+        buildingCostMap.put("Town", new ModelMaterial(new int[]{0, 2, 3, 0, 0}));
+        buildingCostMap.put("Development", new ModelMaterial(new int[]{0, 1, 1, 0, 1}));
+    }
 
-                        if ((checkConnectionForBuilding(building.getCoords()) && checkBuildingForBuilding(coords))) {
-                            if (buildingCost(buildingType)) {
-                                building.buildSettlement(player);
-                                return true;
-                            }
-                            return false;
-                        } else if (startStage && checkBuildingForBuilding(coords)) {
-                            building.buildSettlement(player);
-                            return true;
-                        }
-
-                    }
-                }
-            }
+    public boolean playerHasEnoughMaterials(String type) {
+        if (player.getMaterial().equals(buildingCostMap.get(type))){
+            return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
-    /**
-     * Method stores material costs for a building action to be done.
-     *
-     * @param type
-     * @return
-     */
-    public boolean buildingCost(String type) {
-        switch (type) {
-            case "Road":
-                if (player.reduceMaterial(new ModelMaterial(new int[]{1, 0, 0, 1, 0}))) {
-                    return true;
-                }
-                break;
-            case "Boat":
-                if (player.reduceMaterial(new ModelMaterial(new int[]{0, 0, 0, 1, 1}))) {
-                    return true;
-                }
-                break;
-            case "Settlement":
-                if (player.reduceMaterial(new ModelMaterial(new int[]{1, 1, 0, 1, 1}))) {
-                    return true;
-                }
-                break;
-            case "Town":
-                if (player.reduceMaterial(new ModelMaterial(new int[]{0, 2, 3, 0, 0}))) {
-                    return true;
-                }
-                break;
-            case "Development":
-                if (player.reduceMaterial(new ModelMaterial(new int[]{0, 1, 1, 0, 1}))) {
-                    return true;
-                }
-                break;
-            default:
-                return false;
+    /*
+    public boolean validateRoadPlaces(int[] coords, ModelConnection connection) {
 
-        }
-        return false;
+        //Todo: loop bei Aufruf starten
+        // for (ModelConnection connection :connections) {
+            if (connection.checkCoords(coords) && connection.getOwner() == null) {
+                    if (checkConnectionForConnection(coords, connection) && playerHasEnoughMaterials(buildingType)) {
+                        return true;
+                    } else if (startStage && checkSettlementforConnectionToBeBuilt(coords, connection)) {
+                        return true;
+                    }
+            }
+            else{return false;}
+    }
+
+    public void validateSettlementPlaces(){
+
+    }
+
+    public void validateTownPlaces(){
+
     }
 
 
-    /**
-     * checks if there is a connection in neighbourhood with the same owner.
-     *
-     * @param coords            coordinates of connection to be built.
-     * @param connectionToBuild empty connection to be convertet to built connection.
-     * @return true, if there is a neighbouring connection of same player
-     */
     public boolean checkConnectionForConnection(int[] coords, ModelConnection connectionToBuild) {
         boolean legalPosition = false;
         int xCoordOfNewConnection = coords[0];
@@ -204,11 +121,6 @@ public class ModelBuildingAction {
         }
     }
 
-    /**
-     * @param coords
-     * @param connection
-     * @return
-     */
     public boolean checkSettlementforConnectionToBeBuilt(int[] coords, ModelConnection connection) {
         boolean legalPosition = false;
         int xCoordOfNewConnection = coords[0];
@@ -260,13 +172,6 @@ public class ModelBuildingAction {
         }
     }
 
-
-    /**
-     * Check's according to given coordinates if there is a building at next junction, so building would be forbidden.
-     *
-     * @param coords int array, first position represents x coordinate, second position represents y coordinate.
-     * @return true if placement of building is allowed, false if there is a building, at next junction.
-     */
     public boolean checkBuildingForBuilding(int[] coords) {
         boolean legalPosition = true;
         int xCoordOfNewBuilding = coords[0];
@@ -290,12 +195,6 @@ public class ModelBuildingAction {
         }
     }
 
-    /**
-     * Checks if there is a neighbouring connection, so a building can be placed.
-     *
-     * @param coords int array with coordinates of the building to be built.
-     * @return true if there is a ascending connection, else false.
-     */
     public boolean checkConnectionForBuilding(int[] coords) {
         boolean legalPosition = false;
         int xCoordOfNewBuilding = coords[0];
@@ -331,22 +230,7 @@ public class ModelBuildingAction {
             return false;
         }
     }
+    */
 
 }
 
-
-
-
-    /*
-    switch(type) {
-        case "Road":
-            connection.buildRoad(buildingType, player);
-            break;
-        case "Settlement":
-            building.buildSettlement(player);
-            break;
-        case "Town":
-            building.buildTown(player);
-            break;
-    }
-    */
