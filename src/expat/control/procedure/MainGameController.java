@@ -17,11 +17,12 @@ public class MainGameController extends GameController {
             case "diceResultStep":
                 tradeChoiceStep();
                 break;
-            case "tradeChoice":
+            case "tradingStep":
                 buildStep();
                 break;
-            case "build":
+            case "buildingStep":
                 endTurnStep();
+                break;
         }
     }
 
@@ -33,7 +34,6 @@ public class MainGameController extends GameController {
     }
 
     public void rollDiceStep(){
-        currentStep = "rollDice";
         refreshPlayerInformation();
 
         paneActionController.drawRollDiceStep();
@@ -55,8 +55,6 @@ public class MainGameController extends GameController {
     }
 
     private void specialStep(){
-        currentStep = "special";
-
         int[] currentDiceNumbersSeparately = app.getCurrentDiceNumbersSeparately();
         ModelMaterial nowPlayingDicedMaterial = app.getNowPlayingDicedMaterial();
 
@@ -75,7 +73,6 @@ public class MainGameController extends GameController {
     }
 
     public void firstPlayerDroppingMaterialStep(){
-        currentStep = "droppingMaterial";
         app.nextDroppingPlayer();
         refreshPlayerInformation();
         paneActionController.drawDropMaterialStep(app.amountPlayerMustDrop(), app.getCurrentPlayer().getMaterial().getMaterialAmount());
@@ -91,11 +88,6 @@ public class MainGameController extends GameController {
         }
     }
 
-    public void finishDropping(int[] droppingDifference){
-        app.getCurrentPlayer().addMaterial(new ModelMaterial(droppingDifference));
-        nextPlayerDroppingMaterialStep();
-    }
-
     //TODO: reconsider this method
     public void moveRaider(int[] coords) {
         paneActionController.drawMoveRaiderStep();
@@ -104,19 +96,18 @@ public class MainGameController extends GameController {
     }
 
     private void tradeChoiceStep(){
-        currentStep = "tradeChoice";
+        currentStep = "tradingStep";
         paneActionController.drawTradeChoiceStep();
     }
 
     public void commonTradeStep(){
-        currentStep = "commonTradeChoice";
         app.newTradeAction("CommonTrade");
         paneActionController.drawCommonTradeStep(app.getCurrentPlayer().getMaterial().getMaterialAmount());
     }
 
     public void buildStep(){
-        currentStep = "build";
-
+        currentStep = "buildingStep";
+        paneActionController.drawBuildStep();
     }
 
     //TODO: Siegpane schreiben
@@ -128,10 +119,23 @@ public class MainGameController extends GameController {
         } else{}
     }
 
+
     @Override
     public void initiateBoardElementPlacing(String type) {
+        /*
         app.initiatePlacingAction(type, false);
+        if(type.equals("Settlement")){
+            paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().settlementsAPlayerCouldBuild(app.getCurrentPlayer()));
+        }
+        else if(type.equals("Road")){
+            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().connectionAPlayerCouldBuild(app.getCurrentPlayer()));
+        }
+        else if(type.equals("Town")){
+            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().townAPlayerCouldBuild(app.getCurrentPlayer()));
+        }
+        */
     }
+
 
     @Override
     public void finishBoardElementPlacing(int[] coords, String type) {
@@ -139,19 +143,14 @@ public class MainGameController extends GameController {
         refreshBoardElements();
     }
 
+    public void finishDropping(int[] droppingDifference){
+        app.getCurrentPlayer().addMaterial(new ModelMaterial(droppingDifference));
+        nextPlayerDroppingMaterialStep();
+    }
+
+    public void finishTrading(int[] tradingDifference) {
+        app.getCurrentPlayer().addMaterial(new ModelMaterial(tradingDifference));
+        refreshPlayerInformation();
+        tradeChoiceStep();
+    }
 }
-
-
-
-/*
-
-public void nextPlayer() {
-    board.abortBuildingAction();
-    players.add(players.poll());
-    currentPlayer = players.peek();
-}
-
-public void gameOver() {
-    //TODO: implement game over condition
-}
- */

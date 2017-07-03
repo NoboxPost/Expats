@@ -144,29 +144,6 @@ public class ModelApp {
         tradeAction = new ModelTradeAction(type, currentPlayer);
     }
 
-    //TODO: change
-
-    /**
-     * Injects integer array representing
-     *
-     * @param materialResultSender
-     */
-    public void finishTradeAction(int[] materialResultSender) {
-        tradeAction.finishTradeAction(materialResultSender);
-        tradeAction = null;
-    }
-
-    //TODO: change
-
-    /**
-     * Frees the reference to a ModelTradeAction, if player decides to abort the step or end his turn prior to ending the action.
-     */
-    public void resetTrade() {
-        tradeAction = null;
-    }
-
-    //TODO: change
-
 
     /**
      * Initiates
@@ -193,11 +170,6 @@ public class ModelApp {
         modelRaiderPlayerHandler = new ModelDroppingPlayerHandler(modelMainGamePlayerHandler.getPlayers());
         playersThatMustDrop = modelRaiderPlayerHandler.getPlayersThatMustDrop();
     }
-
-    public void playerDropsMaterial(){
-        //modelRaiderPlayerHandler.nextPlayer().addMaterial(new ModelMaterial(endDifference));
-    }
-
 
 
     /**
@@ -289,15 +261,6 @@ public class ModelApp {
      */
     public ModelPlayer getCurrentPlayer() {
         return currentPlayer;
-    }
-
-    /**
-     * getter
-     *
-     * @return
-     */
-    public ModelTradeAction getTradeAction() {
-        return tradeAction;
     }
 
     /**

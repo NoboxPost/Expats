@@ -24,7 +24,6 @@ public class ViewPaneTradeCommon extends HBox {
     private Label[] lblsMaterial = new Label[5];
     private Button[] btnsMaterialPlus = new Button[5];
     private Button[] btnsMaterialMinus = new Button[5];
-    private int amountToBeDropped = 0;
     private int materialSumPlus = 0;
     private int materialSumMinus = 0;
     private Button btnTrade = new Button("trade!");
@@ -32,13 +31,11 @@ public class ViewPaneTradeCommon extends HBox {
     private Label lblMaterialSumOffered = new Label("" + materialSumMinus);
 
 
-    public ViewPaneTradeCommon(PaneActionController paneActionController, int amountToBeDropped, int[] playerMaterialAmount) {
+    public ViewPaneTradeCommon(PaneActionController paneActionController, int[] playerMaterialAmount) {
         this.setSpacing(20);
         this.paneActionController = paneActionController;
-        this.amountToBeDropped = amountToBeDropped;
         generateCalculationArrays(playerMaterialAmount);
         generateContent();
-        lblMaterialSumDemanded.setText("to drop: " + amountToBeDropped);
         btnTrade.setDisable(true);
         btnTrade.setOnAction(this.paneActionController::btnTradeFinishClicked);
     }
@@ -57,12 +54,11 @@ public class ViewPaneTradeCommon extends HBox {
     }
 
 
-
-    private void generateDroppingCardItems(ViewPaneDropMaterial viewPaneDropMaterial){
+    private void generateDroppingCardItems(ViewPaneTradeCommon viewPaneTradeCommon){
         ViewCardsFactory cardsFactory = new ViewCardsFactory(new ModelMaterial());
         for (int i = 0; i < 5; i++) {
             ImageView materialImageView = cardsFactory.generateCardImageView(i);
-            viewPaneDropMaterial.getChildren().add(materialImageView);
+            viewPaneTradeCommon.getChildren().add(materialImageView);
             btnsMaterialPlus[i] = new Button("+");
             btnsMaterialPlus[i].setOnAction(this::btnAdjustedDropMaterialAmountClicked);
             lblsMaterial[i] = new Label("" + materialAtEndArray[i]);
@@ -72,15 +68,15 @@ public class ViewPaneTradeCommon extends HBox {
             VBox vBox = new VBox();
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().addAll(btnsMaterialPlus[i], lblsMaterial[i], btnsMaterialMinus[i]);
-            viewPaneDropMaterial.getChildren().add(vBox);
+            viewPaneTradeCommon.getChildren().add(vBox);
         }
     }
 
-    private void generateDroppingFinishItems(ViewPaneDropMaterial viewPaneDropMaterial){
+    private void generateDroppingFinishItems(ViewPaneTradeCommon viewPaneTradeCommon){
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(lblMaterialSumDemanded, btnTrade, lblMaterialSumOffered);
-        viewPaneDropMaterial.getChildren().add(vBox);
+        viewPaneTradeCommon.getChildren().add(vBox);
     }
 
     private void btnAdjustedDropMaterialAmountClicked(ActionEvent actionEvent) {
@@ -92,16 +88,20 @@ public class ViewPaneTradeCommon extends HBox {
      */
     public void adjustMaterial(Button btnclicked) {
         for (int i = 0; i < 5; i++) {
-            if (btnclicked == btnsMaterialPlus[i] && materialAtEndArray[i] +1 <= materialAtStartArray[i]) {
+            if (btnclicked == btnsMaterialPlus[i]) {
                 materialAtEndArray[i] += 1;
-            } else if (btnclicked == btnsMaterialMinus[i] && materialAtEndArray[i] - 1 >= 0) {
+            } else if (btnclicked == btnsMaterialMinus[i] && materialAtEndArray[i]-1>=0) {
                 materialAtEndArray[i] -= 1;
             }
+            materialSumPlus = 0;
             materialSumMinus = 0;
+
         }
         for (int i = 0; i < 5; i++) {
             int temp = materialAtEndArray[i] - materialAtStartArray[i];
-            if (temp < 0) {
+            if (temp > 0){
+                materialSumPlus += temp;
+            }else if (temp < 0){
                 materialSumMinus += temp;
             }
         }
@@ -112,12 +112,14 @@ public class ViewPaneTradeCommon extends HBox {
      *
      */
     public void refresh() {
-        lblMaterialSumOffered.setText("yet dropped: " + materialSumMinus);
-        if (amountToBeDropped + materialSumMinus == 0) {
-            generateContent();
+        for (int i = 0; i < 5; i++) {
+            lblsMaterial[i].setText("" + materialAtEndArray[i]);
+        }
+        lblMaterialSumDemanded.setText("" + materialSumPlus);
+        lblMaterialSumOffered.setText("" + materialSumMinus);
+        if ((materialSumPlus * 4 + materialSumMinus) == 0){
             btnTrade.setDisable(false);
-        } else {
-            generateContent();
+        }else {
             btnTrade.setDisable(true);
         }
     }
@@ -125,10 +127,10 @@ public class ViewPaneTradeCommon extends HBox {
     /**
      * @return
      */
-    public int[] getDroppingDifference() {
+    public int[] getTradingDifference() {
         int[] difference = new int[5];
         for (int i = 0; i < 5; i++) {
-            difference[i] = materialAtEndArray[i] - materialAtStartArray[i];
+            difference[i] = materialAtEndArray[i]-materialAtStartArray[i];
         }
         return difference;
     }

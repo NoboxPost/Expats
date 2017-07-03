@@ -22,7 +22,7 @@ public class ModelBoard {
     private ArrayList<ModelConnection> connections;
     private ModelRaider raider;
     private ModelBuildingAction buildingAction;
-    private ModelPreGameBuildingListCrawler modelBuildingListCrawler;
+    private ModelPreGameBuildingListCrawler modelPreGameBuildingListCrawler;
 
     public ModelBoard(ModelHex[][] hexes, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, ModelRaider raider) {
         this.hexes = hexes;
@@ -30,7 +30,7 @@ public class ModelBoard {
         this.raider = raider;
         this.connections = connections;
 
-        modelBuildingListCrawler = new ModelPreGameBuildingListCrawler(this);
+        modelPreGameBuildingListCrawler = new ModelPreGameBuildingListCrawler(this);
     }
 
     /**
@@ -168,11 +168,11 @@ public class ModelBoard {
     }
 
     /**
-     * gets modelBuildingListCrawler
+     * gets modelPreGameBuildingListCrawler
      *
-     * @return value of modelBuildingListCrawler
+     * @return value of modelPreGameBuildingListCrawler
      */
-    public ModelPreGameBuildingListCrawler getModelBuildingListCrawler() {
-        return modelBuildingListCrawler;
+    public ModelPreGameBuildingListCrawler getModelPreGameBuildingListCrawler() {
+        return modelPreGameBuildingListCrawler;
     }
 }

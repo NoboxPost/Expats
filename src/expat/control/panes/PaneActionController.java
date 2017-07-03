@@ -46,7 +46,7 @@ public class PaneActionController {
     private ImageView townImageView;
     private ImageView settlementImageView;
     private Button diceRollButton;
-    private ViewPaneTradeCommon paneTradeGeneral;
+    private ViewPaneTradeCommon paneTradeCommon;
     private ViewPaneDropMaterial paneDropMaterial;
     private MainGameController mainGameController;
     private PreGameController preGameController;
@@ -253,6 +253,22 @@ public class PaneActionController {
     }
 
     /**
+     * draws trade step, first lets player choose which trading action he will take, initiates display of the choosen trading action.
+     */
+    public void drawTradeChoiceStep() {
+        middleActionPane.getChildren().clear();
+        Button btnCommonTrade = new Button("common trade (4:1)");
+        btnCommonTrade.setOnAction(this::btnCommonTradeClicked);
+        middleActionPane.getChildren().add(btnCommonTrade);
+    }
+
+    public void drawCommonTradeStep(int[] currentPlayerMaterialAmount){
+        middleActionPane.getChildren().clear();
+        paneTradeCommon = new ViewPaneTradeCommon(this, currentPlayerMaterialAmount);
+        middleActionPane.getChildren().add(paneTradeCommon);
+    }
+
+    /**
      * Initiates ModelBuildingAction in app so, Player can choose building fields afterwards and corresponding Building will be built.
      */
     public void drawBuildStep() {
@@ -279,9 +295,7 @@ public class PaneActionController {
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
-        btnNextStep.setOnAction(this::btnEndTurnClicked);
     }
-
 
     /**
      * OnMouseReleased called if a road is clicked. Sends correspondint String to generate Building and drows shadow around choosen building
@@ -293,7 +307,6 @@ public class PaneActionController {
         initiateBoardElementPlacingAction("Road");
         roadImageView.setEffect(addDropShadow());
     }
-
 
     /**
      * OnMouseReleased called if a settlement is clicked.Sends correspondint String to generate Building and drows shadow around choosen building
@@ -320,7 +333,6 @@ public class PaneActionController {
         btnEndTurn.setVisible(true);
     }
 
-
     /**
      * Initiates a new ModelBuildingAciton according to received building type.
      * Calls app with String parameter and refreshes screen.
@@ -335,39 +347,17 @@ public class PaneActionController {
 
 
     /**
-     * draws trade step, first lets player choose which trading action he will take, initiates display of the choosen trading action.
-     */
-    public void drawTradeChoiceStep() {
-        middleActionPane.getChildren().clear();
-        Button btnCommonTrade = new Button("common trade (4:1)");
-        btnCommonTrade.setOnAction(this::btnCommonTradeClicked);
-        middleActionPane.getChildren().add(btnCommonTrade);
-    }
-
-    public void drawCommonTradeStep(int[] currentPlayerMaterialAmount){
-        middleActionPane.getChildren().clear();
-        paneTradeGeneral = new ViewPaneTradeCommon(currentPlayerMaterialAmount, this);
-        middleActionPane.getChildren().add(paneTradeGeneral);
-    }
-
-
-
-    /**
      * common trade is initialised in app. Is called by corresponding trade button.
      *
      * @param event
      */
     private void btnCommonTradeClicked(ActionEvent event) {
-        paneTradeGeneral = null;
         mainGameController.commonTradeStep();
     }
 
 
-
-    
-
     public void btnTradeFinishClicked(ActionEvent actionEvent) {
-        paneTradeGeneral.adjustMaterial((Button) event.getSource());
+        mainGameController.finishTrading(paneTradeCommon.getTradingDifference());
     }
 
     /**
@@ -378,38 +368,10 @@ public class PaneActionController {
 
     /*
     public void btnTradeFinishClicked(ActionEvent event) {
-        app.finishTradeAction(paneTradeGeneral.getEndDifference());
+        app.finishTradeAction(paneTradeCommon.getEndDifference());
         app.resetTrade();
-        paneTradeGeneral = null;
+        paneTradeCommon = null;
         controllerMainStage.refreshMatesAndPlayerPanes();
     }
     */
-
-
-    /**
-     * is called from btnNextStep and calls methode from app for trade step
-     *
-     * @param event ActionEvent
-     */
-
-    /*
-    private void btnNextStepClickedSetTradeStep(ActionEvent event) {
-        paneTradeGeneral = null;
-        app.tradeChoiceStep();
-    }
-    */
-
-    /**
-     * is called from btnNextStep and calls methode from app for building step
-     *
-     * @param event ActionEvent
-     */
-
-    /*
-    public void btnNextStepClickedSetBuildingStep(ActionEvent event) {
-        paneTradeGeneral = null;
-        app.buildingStep();
-    }
-    */
-
 }
