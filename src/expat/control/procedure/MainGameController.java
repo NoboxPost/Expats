@@ -18,7 +18,7 @@ public class MainGameController extends GameController {
                 tradeChoiceStep();
                 break;
             case "tradingStep":
-                buildStep();
+                buildingStep();
                 break;
             case "buildingStep":
                 endTurnStep();
@@ -105,9 +105,9 @@ public class MainGameController extends GameController {
         paneActionController.drawCommonTradeStep(app.getCurrentPlayer().getMaterial().getMaterialAmount());
     }
 
-    public void buildStep(){
+    public void buildingStep(){
         currentStep = "buildingStep";
-        paneActionController.drawBuildStep();
+        paneActionController.drawMainGameBuildingStep();
     }
 
     //TODO: Siegpane schreiben
@@ -122,25 +122,25 @@ public class MainGameController extends GameController {
 
     @Override
     public void initiateBoardElementPlacing(String type) {
-        /*
         app.initiatePlacingAction(type, false);
         if(type.equals("Settlement")){
             paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().settlementsAPlayerCouldBuild(app.getCurrentPlayer()));
         }
         else if(type.equals("Road")){
-            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().connectionAPlayerCouldBuild(app.getCurrentPlayer()));
+            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().roadsAPlayerCouldBuild(app.getCurrentPlayer()));
         }
         else if(type.equals("Town")){
-            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().townAPlayerCouldBuild(app.getCurrentPlayer()));
+            paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard().getModelMainGameBuildingListCrawler().townsAPlayerCouldBuild(app.getCurrentPlayer()));
         }
-        */
     }
-
 
     @Override
     public void finishBoardElementPlacing(int[] coords, String type) {
         app.finishPlacingAction(coords, type);
+        paneActionController.activateTurnNavigation();
         refreshBoardElements();
+        paneBoardController.drawBoard(app.getBoard());
+        buildingStep();
     }
 
     public void finishDropping(int[] droppingDifference){

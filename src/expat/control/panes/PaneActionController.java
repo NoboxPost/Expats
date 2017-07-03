@@ -83,13 +83,13 @@ public class PaneActionController {
         settlementImageView = new ImageView(settlement);
         settlementImageView.setFitHeight(80);
         settlementImageView.setPreserveRatio(true);
-        settlementImageView.setOnMouseReleased(this::generatePreSettlement);
+        settlementImageView.setOnMouseReleased(this::generatePreSettlementPlaces);
         settlementImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(settlementImageView);
     }
 
-    private void generatePreSettlement(MouseEvent event) {
+    private void generatePreSettlementPlaces(MouseEvent event) {
         preGameController.initiateBoardElementPlacing("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
@@ -101,14 +101,14 @@ public class PaneActionController {
         roadImageView = new ImageView(road);
         roadImageView.setFitHeight(80);
         roadImageView.setPreserveRatio(true);
-        roadImageView.setOnMouseReleased(this::generatePreRoad);
+        roadImageView.setOnMouseReleased(this::generatePreRoadPlaces);
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(roadImageView);
     }
 
     //TODO: add ships (connection?)
-    private void generatePreRoad(MouseEvent event) {
+    private void generatePreRoadPlaces(MouseEvent event) {
         preGameController.initiateBoardElementPlacing("Road");
         roadImageView.setEffect(addDropShadow());
     }
@@ -271,27 +271,27 @@ public class PaneActionController {
     /**
      * Initiates ModelBuildingAction in app so, Player can choose building fields afterwards and corresponding Building will be built.
      */
-    public void drawBuildStep() {
+    public void drawMainGameBuildingStep() {
         middleActionPane.getChildren().clear();
         Image town = new Image("expat/img/TownColored.png");
         townImageView = new ImageView(town);
         townImageView.setFitHeight(80);
         townImageView.setPreserveRatio(true);
-        townImageView.setOnMouseReleased(this::selectTown);
+        townImageView.setOnMouseReleased(this::generateMainTownPlaces);
         townImageView.setCursor(Cursor.HAND);
 
         Image settlement = new Image("expat/img/Settlement.png");
         settlementImageView = new ImageView(settlement);
         settlementImageView.setFitHeight(80);
         settlementImageView.setPreserveRatio(true);
-        settlementImageView.setOnMouseReleased(this::selectSettlement);
+        settlementImageView.setOnMouseReleased(this::generateMainSettlementPlaces);
         settlementImageView.setCursor(Cursor.HAND);
 
         Image road = new Image("expat/img/Connection.png");
         roadImageView = new ImageView(road);
         roadImageView.setFitHeight(80);
         roadImageView.setPreserveRatio(true);
-        roadImageView.setOnMouseReleased(this::selectRoad);
+        roadImageView.setOnMouseReleased(this::generateMainRoadPlaces);
         roadImageView.setCursor(Cursor.HAND);
 
         middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
@@ -302,9 +302,9 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-
-    private void selectRoad(MouseEvent event) {
-        initiateBoardElementPlacingAction("Road");
+    private void generateMainRoadPlaces(MouseEvent event) {
+        deactivateTurnNavigation();
+        mainGameController.initiateBoardElementPlacing("Road");
         roadImageView.setEffect(addDropShadow());
     }
 
@@ -313,8 +313,9 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void selectSettlement(MouseEvent event) {
-        initiateBoardElementPlacingAction("Settlement");
+    private void generateMainSettlementPlaces(MouseEvent event) {
+        deactivateTurnNavigation();
+        mainGameController.initiateBoardElementPlacing("Settlement");
         settlementImageView.setEffect(addDropShadow());
     }
 
@@ -323,8 +324,9 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void selectTown(MouseEvent event) {
-        initiateBoardElementPlacingAction("Town");
+    private void generateMainTownPlaces(MouseEvent event) {
+        deactivateTurnNavigation();
+        mainGameController.initiateBoardElementPlacing("Town");
         townImageView.setEffect(addDropShadow());
     }
 
@@ -332,6 +334,13 @@ public class PaneActionController {
         btnNextStep.setVisible(true);
         btnEndTurn.setVisible(true);
     }
+
+    public void deactivateTurnNavigation(){
+        btnNextStep.setVisible(false);
+        btnEndTurn.setVisible(false);
+    }
+
+
 
     /**
      * Initiates a new ModelBuildingAciton according to received building type.
