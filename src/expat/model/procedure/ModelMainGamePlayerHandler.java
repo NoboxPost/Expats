@@ -28,7 +28,16 @@ public class ModelMainGamePlayerHandler {
      *
      * @return value of currentPreGameUser
      */
-    public ModelPlayer getCurrentMainGameUser() {
+    public ModelPlayer getCurrentMainGamePlayer() {
         return currentMainGamePlayer;
+    }
+
+    /**
+     * gets players
+     *
+     * @return value of players
+     */
+    public LinkedList<ModelPlayer> getPlayers() {
+        return players;
     }
 }

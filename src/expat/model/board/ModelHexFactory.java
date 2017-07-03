@@ -55,7 +55,7 @@ public class  ModelHexFactory {
         }
         //TODO:Implement random deployment of hexes and DiceNumbers
 
-        //hexes[7][5].assignTypeAndDiceNumber("Stone",8); //Adds an additional Hex, just to show off.
+        hexes[7][5].assignTypeAndDiceNumber("Stone",8); //Adds an additional Hex, just to show off.
 
         return hexes;
     }

@@ -40,7 +40,7 @@ public class PreGameController extends GameController {
     public void startTurnStep() {
         currentStep = "startTurn";
         numberOfPlayerTurns += 1;
-        app.preGameNextPlayer();
+        app.nextPreGamePlayer();
         refreshPlayerAndMatesInformation();
         setBuildingStep();
     }
@@ -61,7 +61,7 @@ public class PreGameController extends GameController {
         currentStep = "endTurn";
 
         //each player must set two connections and two buildings
-        if(numberOfPlayerTurns < 2*(app.getPlayers().size())){
+        if(numberOfPlayerTurns < 2*(app.getAllPlayers().size())){
             startTurnStep();
         }
         else{
@@ -70,12 +70,12 @@ public class PreGameController extends GameController {
     }
     @Override
     public void initiateBoardElementPlacing(String type) {
-        app.initiateMainGamePlacingAction(type, true);
+        app.initiatePlacingAction(type, true);
         if(type.equals("Settlement")){
             paneBoardController.generateBuildingPlacingSpotGroup(app.getBoard().getModelBuildingListCrawler().settlementsAPlayerCouldBuild());
         }
         else if(type.equals("Road")){
-            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelBuildingListCrawler().roadsAPlayerCouldBuild(app.getCurrentPlayer()));
+            paneBoardController.generateConnectionPlacingSpotGroup(app.getBoard().getModelBuildingListCrawler().connectionAPlayerCouldBuild(app.getCurrentPlayer()));
         }
     }
 

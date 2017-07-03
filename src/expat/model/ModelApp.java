@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * therefore it's a collection of:
  * - all the FXML-controlles
  * - the board
- * - all the players
+ * - all the allPlayers
  * <p>
  * this class is built intentionally like the player procedure
  * - dice and material distribution
@@ -30,12 +30,13 @@ public class ModelApp {
     private ModelBoard board;
     private ModelDiceRoller diceRoller;
     private ModelPlayerGenerator playerGenerator;
-    private ModelPreGamePlayerHandler modelPreGamePlayerSelector;
-    private ModelMainGamePlayerHandler modelMainGamePlayerSelector;
+    private ModelPreGamePlayerHandler modelPreGamePlayerHandler;
+    private ModelMainGamePlayerHandler modelMainGamePlayerHandler;
+    private ModelDroppingPlayerHandler modelRaiderPlayerHandler;
     private ModelPreGameBuildingListCrawler modelBuildingListCrawler;
 
-    private LinkedList<ModelPlayer> players = new LinkedList<>();
-    private LinkedList<ModelPlayer> playersThatMustDrop = new LinkedList<>();
+    private LinkedList<ModelPlayer> allPlayers = new LinkedList<>();
+    private LinkedList<ModelPlayer> playersThatMustDrop;
     private ModelTradeAction tradeAction;
 
     //procedure
@@ -69,30 +70,40 @@ public class ModelApp {
     public void generatePlayer(int numberOfPlayers) {
         for (int i = 0; i < numberOfPlayers; i++) {
             ModelPlayer player = playerGenerator.newPlayer();
-            players.add(player);
+            allPlayers.add(player);
         }
     }
 
     public void generatePlayerHandler() {
-        modelPreGamePlayerSelector = new ModelPreGamePlayerHandler(players);
-        modelMainGamePlayerSelector = new ModelMainGamePlayerHandler(players);
+        modelPreGamePlayerHandler = new ModelPreGamePlayerHandler(allPlayers);
+        modelMainGamePlayerHandler = new ModelMainGamePlayerHandler(allPlayers);
     }
 
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
     public void rollDice() {
-        currentDiceNumber = diceRoller.getRolledDices();
+        currentDiceNumber = diceRoller.rollDices();
     }
 
-    public void preGameNextPlayer() {
-        modelPreGamePlayerSelector.nextPlayer();
-        currentPlayer = modelPreGamePlayerSelector.getCurrentPreGamePlayer();
+
+    //Todo: nextPlayer in modelApp is redundant, all you'd need are the handlers
+    public void nextPreGamePlayer() {
+        modelPreGamePlayerHandler.nextPlayer();
+        currentPlayer = modelPreGamePlayerHandler.getCurrentPreGamePlayer();
     }
 
-    public void mainGameNextPlayer() {
-        modelMainGamePlayerSelector.nextPlayer();
-        currentPlayer = modelMainGamePlayerSelector.getCurrentMainGameUser();
+    public void nextMainGamePlayer() {
+        modelMainGamePlayerHandler.nextPlayer();
+        currentPlayer = modelMainGamePlayerHandler.getCurrentMainGamePlayer();
+    }
+
+    public void currentMainGamePlayer(){
+        currentPlayer = modelMainGamePlayerHandler.getCurrentMainGamePlayer();
+    }
+
+    public void nextDroppingPlayer(){
+        currentPlayer = modelRaiderPlayerHandler.nextPlayer();
     }
 
     public void distributeMaterial() {
@@ -116,19 +127,6 @@ public class ModelApp {
         }
     }
 
-    //TODO: change
-
-    /**
-     * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
-     *
-     * @param endDifference
-     */
-    public void playerDroppedMaterial(int[] endDifference) {
-        playersThatMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
-    }
-
-
-    //TODO: change
 
     /**
      * Initiates a new ModelTradingAction for the current player.
@@ -175,10 +173,30 @@ public class ModelApp {
      *
      * @param type
      */
-    public void initiateMainGamePlacingAction(String type, Boolean isInPreGame) {
+    public void initiatePlacingAction(String type, Boolean isInPreGame) {
         board.newBuildingAction(type, currentPlayer, isInPreGame);
     }
 
+    public int amountPlayerMustDrop(){
+        int amountToBeDropped = 0;
+
+        for (int i = 0; i < 5; i++) {
+            amountToBeDropped += currentPlayer.getMaterial().getMaterialAmount()[i];
+        }
+
+        amountToBeDropped /= 2;
+
+        return amountToBeDropped;
+    }
+
+    public void generatePlayersThatMustDrop(){
+        modelRaiderPlayerHandler = new ModelDroppingPlayerHandler(modelMainGamePlayerHandler.getPlayers());
+        playersThatMustDrop = modelRaiderPlayerHandler.getPlayersThatMustDrop();
+    }
+
+    public void playerDropsMaterial(){
+        //modelRaiderPlayerHandler.nextPlayer().addMaterial(new ModelMaterial(endDifference));
+    }
 
 
 
@@ -287,8 +305,8 @@ public class ModelApp {
      *
      * @return
      */
-    public LinkedList<ModelPlayer> getPlayers() {
-        return players;
+    public LinkedList<ModelPlayer> getAllPlayers() {
+        return allPlayers;
     }
 
 

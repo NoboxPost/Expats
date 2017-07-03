@@ -3,10 +3,9 @@ package expat.control.panes;
 import expat.control.procedure.MainGameController;
 import expat.control.procedure.PreGameController;
 import expat.model.ModelMaterial;
-import expat.model.board.ModelBoard;
 import expat.view.ViewCardsFactory;
 import expat.view.ViewPaneDropMaterial;
-import expat.view.ViewPaneTradeGeneral;
+import expat.view.ViewPaneTradeCommon;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
@@ -47,7 +46,7 @@ public class PaneActionController {
     private ImageView townImageView;
     private ImageView settlementImageView;
     private Button diceRollButton;
-    private ViewPaneTradeGeneral paneTradeGeneral;
+    private ViewPaneTradeCommon paneTradeGeneral;
     private ViewPaneDropMaterial paneDropMaterial;
     private MainGameController mainGameController;
     private PreGameController preGameController;
@@ -58,13 +57,6 @@ public class PaneActionController {
         this.mainGameController = mainGameController;
         this.preGameController = preGameController;
     }
-
-    //Todo:
-
-    /*
-    btnNextStep.setVisible(true);
-        btnEndTurn.setVisible(true);
-     */
 
     public void drawGameSettings() {
         middleActionPane.getChildren().clear();
@@ -81,7 +73,7 @@ public class PaneActionController {
 
     //todo: number of players is still hardcoded
     private void btnCreateGameClicked(ActionEvent actionEvent) {
-        preGameController.buildAndStartGame(3);
+        preGameController.buildAndStartGame(2);
     }
 
     public void drawPreGameBuildingStep() {
@@ -136,11 +128,6 @@ public class PaneActionController {
     }
 
     public void btnEndTurnClicked(ActionEvent event) {
-        /*
-        paneTradeGeneral = null;
-        app.resetTrade();
-        controllerMainStage.refreshMatesAndPlayerPanes();
-        */
         mainGameController.endTurnStep();
     }
 
@@ -162,13 +149,7 @@ public class PaneActionController {
 
 
     public void drawDiceResultNormalStep(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial) {
-        middleActionPane.getChildren().clear();
-
-        //display the two rolled dices
-        generateDiceImageViews(currentDiceNumbersSeparately);
-
-        //display the materials a player gets
-        generateCardImageViews(nowPlayingDicedMaterial);
+        generateDiceResultContent(currentDiceNumbersSeparately, nowPlayingDicedMaterial);
 
         //next button and end turn button are still disabled from rollDiceStep
         //because this step is for all events except a rolled 7, the next button must be enabled
@@ -176,20 +157,34 @@ public class PaneActionController {
         btnEndTurn.setDisable(false);
     }
 
-    public void drawDiceResultSpecialStep(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial){
-        middleActionPane.getChildren().clear();
-
-        //display the two rolled dices
-        generateDiceImageViews(currentDiceNumbersSeparately);
-
-        //display the materials a player gets
-        generateCardImageViews(nowPlayingDicedMaterial);
+    public void drawDiceResultDroppingStep(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial){
+        generateDiceResultContent(currentDiceNumbersSeparately, nowPlayingDicedMaterial);
 
         //next button and end turn button are still disabled from rollDiceStep
         //because this step is a rolled 7, the next step button can stay disabled, but there must be a drop materials button
         Button btnDropMaterials = new Button("drop materials");
         btnDropMaterials.setOnAction(this::btnDropMaterialsClicked);
         middleActionPane.getChildren().add(btnDropMaterials);
+    }
+
+    public void drawDiceResultRaiderStep(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial){
+        generateDiceResultContent(currentDiceNumbersSeparately, nowPlayingDicedMaterial);
+
+        //next button and end turn button are still disabled from rollDiceStep
+        //because this step is a rolled 7, the next step button can stay disabled, but there must be a drop materials button
+        Button btnDropMaterials = new Button("move the raider");
+        btnDropMaterials.setOnAction(this::btnMoveRaiderClicked);
+        middleActionPane.getChildren().add(btnDropMaterials);
+    }
+
+    private void btnMoveRaiderClicked(ActionEvent actionEvent) {
+        mainGameController.moveRaiderStep();
+    }
+
+    private void generateDiceResultContent(int[] currentDiceNumbersSeparately, ModelMaterial nowPlayingDicedMaterial){
+        middleActionPane.getChildren().clear();
+        generateDiceImageViews(currentDiceNumbersSeparately);
+        generateCardImageViews(nowPlayingDicedMaterial);
     }
 
     private void generateDiceImageViews(int[] currentDiceNumbersSeparate){
@@ -231,26 +226,15 @@ public class PaneActionController {
     }
 
     private void btnDropMaterialsClicked(ActionEvent event) {
-        mainGameController.dropMaterialStep();
+        mainGameController.firstPlayerDroppingMaterialStep();
     }
 
-/*
-    public void drawDropMaterialStep(int[] dropAmount, String playerNameThatMustDrop) {
+    public void drawDropMaterialStep(int dropAmount, int[] playerMaterialAmount) {
         middleActionPane.getChildren().clear();
 
-        paneDropMaterial = new ViewPaneDropMaterial(dropAmount, this, playerNameThatMustDrop);
+        paneDropMaterial = new ViewPaneDropMaterial(this, dropAmount, playerMaterialAmount);
         middleActionPane.getChildren().add(paneDropMaterial);
-
-        if (paneDropMaterial.isDone()) {
-            app.playerDroppedMaterial(paneDropMaterial.getEndDifference());
-            paneDropMaterial = null;
-        } else {
-            paneDropMaterial.refresh();
-            middleActionPane.getChildren().add(paneDropMaterial);
-        }
     }
-    */
-
 
     public void drawMoveRaiderStep(){
         middleActionPane.getChildren().clear();
@@ -264,18 +248,9 @@ public class PaneActionController {
         //TODO: draw auswahl von Player
     }
 
-    /*
     public void btnDropMaterialFinishClicked(ActionEvent event) {
-        paneDropMaterial.setDone(true);
-        controllerMainStage.refreshMatesAndPlayerPanes();
+        mainGameController.finishDropping(paneDropMaterial.getDroppingDifference());
     }
-    */
-
-    public void btnAdjustedDropMaterialAmountClicked(ActionEvent event) {
-        paneDropMaterial.adjustMaterial((Button) event.getSource());
-    }
-
-
 
     /**
      * Initiates ModelBuildingAction in app so, Player can choose building fields afterwards and corresponding Building will be built.
@@ -340,6 +315,11 @@ public class PaneActionController {
         townImageView.setEffect(addDropShadow());
     }
 
+    public void activateTurnNavigation(){
+        btnNextStep.setVisible(true);
+        btnEndTurn.setVisible(true);
+    }
+
 
     /**
      * Initiates a new ModelBuildingAciton according to received building type.
@@ -357,52 +337,37 @@ public class PaneActionController {
     /**
      * draws trade step, first lets player choose which trading action he will take, initiates display of the choosen trading action.
      */
-    /*
-    private void drawTradeStep() {
+    public void drawTradeChoiceStep() {
         middleActionPane.getChildren().clear();
-        btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
-        if (app.getTradeAction() == null) {
-            paneTradeGeneral = null;
-            Button btnGeneralTrade = new Button("Allgemeiner Handel 4:1");
-            btnGeneralTrade.setOnAction(this::btnGeneralTradingClicked);
-            middleActionPane.getChildren().add(btnGeneralTrade);
-            btnNextStep.setOnAction(this::btnNextStepClickedSetBuildingStep);
-        } else if (app.getTradeAction().getType().equals("GeneralTrade")) {
-            if (paneTradeGeneral == null) {
-                paneTradeGeneral = new ViewPaneTradeGeneral(app.getCurrentPlayer().getMaterial().getMaterialAmount(), this);
-                paneTradeGeneral.refresh();
-                middleActionPane.getChildren().add(paneTradeGeneral);
-
-            } else if (paneTradeGeneral != null) {
-                paneTradeGeneral.refresh();
-                middleActionPane.getChildren().add(paneTradeGeneral);
-            }
-        }
+        Button btnCommonTrade = new Button("common trade (4:1)");
+        btnCommonTrade.setOnAction(this::btnCommonTradeClicked);
+        middleActionPane.getChildren().add(btnCommonTrade);
     }
-    */
+
+    public void drawCommonTradeStep(int[] currentPlayerMaterialAmount){
+        middleActionPane.getChildren().clear();
+        paneTradeGeneral = new ViewPaneTradeCommon(currentPlayerMaterialAmount, this);
+        middleActionPane.getChildren().add(paneTradeGeneral);
+    }
+
+
 
     /**
-     * General trade is initialised in app. Is called by corresponding trade button.
+     * common trade is initialised in app. Is called by corresponding trade button.
      *
      * @param event
      */
-
-    /*
-    private void btnGeneralTradingClicked(ActionEvent event) {
+    private void btnCommonTradeClicked(ActionEvent event) {
         paneTradeGeneral = null;
-        app.newTradeAction("GeneralTrade");
+        mainGameController.commonTradeStep();
     }
-    */
 
-    /**
-     * adjusts trade amount in trade screen, is called by buttons on trade screen.
-     *
-     * @param event AcitonEvent
-     */
-    public void btnTradeAdjustMaterialClicked(ActionEvent event) {
-        if (paneTradeGeneral != null) {
-            paneTradeGeneral.adjustMaterial((Button) event.getSource());
-        }
+
+
+    
+
+    public void btnTradeFinishClicked(ActionEvent actionEvent) {
+        paneTradeGeneral.adjustMaterial((Button) event.getSource());
     }
 
     /**
@@ -430,7 +395,7 @@ public class PaneActionController {
     /*
     private void btnNextStepClickedSetTradeStep(ActionEvent event) {
         paneTradeGeneral = null;
-        app.tradeStep();
+        app.tradeChoiceStep();
     }
     */
 

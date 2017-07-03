@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
  *
  * @author vanonir
  */
-public class ViewPaneDropMaterial extends HBox {
+public class ViewPaneTradeCommon extends HBox {
     private PaneActionController paneActionController;
     private int[] materialAtStartArray = new int[5];
     private int[] materialAtEndArray;
@@ -25,27 +25,27 @@ public class ViewPaneDropMaterial extends HBox {
     private Button[] btnsMaterialPlus = new Button[5];
     private Button[] btnsMaterialMinus = new Button[5];
     private int amountToBeDropped = 0;
+    private int materialSumPlus = 0;
     private int materialSumMinus = 0;
-    private final Button btnDrop = new Button("drop materials and finish step");
-    private Label lblAmountToBeDropped = new Label("");
+    private Button btnTrade = new Button("trade!");
+    private Label lblMaterialSumDemanded = new Label("" + materialSumPlus);
     private Label lblMaterialSumOffered = new Label("" + materialSumMinus);
 
-    public ViewPaneDropMaterial(PaneActionController paneActionController, int amountToBeDropped, int[] playerMaterialAmount) {
+
+    public ViewPaneTradeCommon(PaneActionController paneActionController, int amountToBeDropped, int[] playerMaterialAmount) {
         this.setSpacing(20);
         this.paneActionController = paneActionController;
         this.amountToBeDropped = amountToBeDropped;
         generateCalculationArrays(playerMaterialAmount);
         generateContent();
-        lblAmountToBeDropped.setText("to drop: " + amountToBeDropped);
-        btnDrop.setDisable(true);
-        btnDrop.setOnAction(this.paneActionController::btnDropMaterialFinishClicked);
+        lblMaterialSumDemanded.setText("to drop: " + amountToBeDropped);
+        btnTrade.setDisable(true);
+        btnTrade.setOnAction(this.paneActionController::btnTradeFinishClicked);
     }
-
     private void generateCalculationArrays(int[] playerMaterialAmount){
         materialAtStartArray = playerMaterialAmount;
         materialAtEndArray = materialAtStartArray.clone();
     }
-
 
     /**
      *
@@ -55,6 +55,8 @@ public class ViewPaneDropMaterial extends HBox {
         generateDroppingCardItems(this);
         generateDroppingFinishItems(this);
     }
+
+
 
     private void generateDroppingCardItems(ViewPaneDropMaterial viewPaneDropMaterial){
         ViewCardsFactory cardsFactory = new ViewCardsFactory(new ModelMaterial());
@@ -77,7 +79,7 @@ public class ViewPaneDropMaterial extends HBox {
     private void generateDroppingFinishItems(ViewPaneDropMaterial viewPaneDropMaterial){
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(lblAmountToBeDropped, btnDrop, lblMaterialSumOffered);
+        vBox.getChildren().addAll(lblMaterialSumDemanded, btnTrade, lblMaterialSumOffered);
         viewPaneDropMaterial.getChildren().add(vBox);
     }
 
@@ -113,10 +115,10 @@ public class ViewPaneDropMaterial extends HBox {
         lblMaterialSumOffered.setText("yet dropped: " + materialSumMinus);
         if (amountToBeDropped + materialSumMinus == 0) {
             generateContent();
-            btnDrop.setDisable(false);
+            btnTrade.setDisable(false);
         } else {
             generateContent();
-            btnDrop.setDisable(true);
+            btnTrade.setDisable(true);
         }
     }
 

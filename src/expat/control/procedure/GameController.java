@@ -3,9 +3,6 @@ package expat.control.procedure;
 import expat.control.panes.*;
 import expat.model.ModelApp;
 import expat.model.ModelPlayer;
-import javafx.scene.layout.Pane;
-
-import java.util.LinkedList;
 
 /**
  * Created by gallatib on 22.06.2017.
@@ -37,7 +34,7 @@ public abstract class GameController {
     }
 
     public void refreshMatesInformation(){
-        paneMatesController.refresh(app.getPlayers());
+        paneMatesController.refresh(app.getAllPlayers());
     }
 
     public void refreshBoardElements(){

@@ -29,7 +29,7 @@ public class ModelTradeAction {
  */
  public ModelTradeAction(String type,ModelPlayer sender) {
         this.type = type;
-        this.sender =sender;
+        this.sender = sender;
     }
 
 

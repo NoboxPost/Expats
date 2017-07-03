@@ -15,6 +15,7 @@ public class ModelPreGameBuildingListCrawler {
     private ArrayList<ModelBuilding> buildingsWithoutOwner;
     private ArrayList<ModelConnection> allConnections;
     private ModelBoard modelBoard;
+    private boolean foundOwner;
 
     public ModelPreGameBuildingListCrawler(ModelBoard modelBoard) {
         this.modelBoard = modelBoard;
@@ -22,7 +23,7 @@ public class ModelPreGameBuildingListCrawler {
         allConnections = modelBoard.getConnections();
     }
 
-    public ArrayList<ModelBuilding> settlementsAPlayerCouldBuild(){
+    public ArrayList<ModelBuilding> settlementsAPlayerCouldBuild() {
         createBuildingsArray();
 
         ArrayList<ModelBuilding> buildingsAPlayerCouldBuild = new ArrayList<>();
@@ -30,9 +31,9 @@ public class ModelPreGameBuildingListCrawler {
         //creates a model list with all places a player could build
         //a place ("building") where a player could build has no owner (is empty) and is not right next to a building with owner
         buildingLoop:
-        for(ModelBuilding buildingWithoutOwner : buildingsWithoutOwner){
-            for(ModelBuilding buildingWithOwner : buildingsWithOwner){
-                if(buildingWithoutOwnerIsNextToABuildingWithOwner(buildingWithoutOwner, buildingWithOwner)){
+        for (ModelBuilding buildingWithoutOwner : buildingsWithoutOwner) {
+            for (ModelBuilding buildingWithOwner : buildingsWithOwner) {
+                if (buildingWithoutOwnerIsNextToABuildingWithOwner(buildingWithoutOwner, buildingWithOwner)) {
                     continue buildingLoop;
                 }
             }
@@ -42,14 +43,13 @@ public class ModelPreGameBuildingListCrawler {
         return buildingsAPlayerCouldBuild;
     }
 
-    public void createBuildingsArray(){
+    public void createBuildingsArray() {
         buildingsWithOwner = new ArrayList<>();
         buildingsWithoutOwner = new ArrayList<>();
-        for(ModelBuilding modelBuilding : allBuildings){
-            if(modelBuilding.getOwner() != null){
+        for (ModelBuilding modelBuilding : allBuildings) {
+            if (modelBuilding.getOwner() != null) {
                 buildingsWithOwner.add(modelBuilding);
-            }
-            else{
+            } else {
                 buildingsWithoutOwner.add(modelBuilding);
             }
         }
@@ -64,64 +64,66 @@ public class ModelPreGameBuildingListCrawler {
         int[] yCoordModulator = new int[]{-2, -2, +2, +2, 0, 0};
 
         for (int i = 0; i < 6; i++) {
-            if (buildingWithOwner.checkCoords(xCoordOfNewBuilding + xCoordModulator[i] , yCoordOfNewBuilding + yCoordModulator[i])) {
+            if (buildingWithOwner.checkCoords(xCoordOfNewBuilding + xCoordModulator[i], yCoordOfNewBuilding + yCoordModulator[i])) {
                 hasANeighbour = true;
             }
         }
         return hasANeighbour;
     }
 
+    public ArrayList<ModelConnection> connectionAPlayerCouldBuild(ModelPlayer player) {
 
-    public ArrayList<ModelConnection> roadsAPlayerCouldBuild(ModelPlayer player){
         ArrayList<ModelConnection> roadsAPlayerCouldBuild = new ArrayList<>();
 
-        for(ModelConnection modelConnection : allConnections){
-            int xCoordOfNewConnection = modelConnection.getCoords()[0];
-            int yCoordOfNewConnection = modelConnection.getCoords()[1];
+        for (ModelBuilding modelBuilding : allBuildings) {
+            ArrayList<ModelConnection> roadsAroundPlayerBuilding = new ArrayList<>();
             int[] xCoordModulator;
             int[] yCoordModulator;
 
-            switch (modelConnection.getOrientation()) {
-                case "straight":
-                    xCoordModulator = new int[]{-2, +2};
-                    yCoordModulator = new int[]{0, 0};
-                    if(asdasd(xCoordOfNewConnection, yCoordOfNewConnection, xCoordModulator, yCoordModulator, player)){
-                        roadsAPlayerCouldBuild.add(modelConnection);
-                    }
-                    break;
+            if (modelBuilding.getOwner() == player) {
+                int xCoordOfPlayerBuilding = modelBuilding.getCoords()[0];
+                int yCoordOfPlayerBuilding = modelBuilding.getCoords()[1];
+                foundOwner = false;
 
-                case "up":
-                    xCoordModulator = new int[]{+1, -1};
-                    yCoordModulator = new int[]{-1, +1};
-                    if(asdasd(xCoordOfNewConnection, yCoordOfNewConnection, xCoordModulator, yCoordModulator, player)){
-                        roadsAPlayerCouldBuild.add(modelConnection);
-                    }
-                    break;
+                if (xCoordOfPlayerBuilding % 6 == 0) {
+                    xCoordModulator = new int[]{-2, +1, +1};
+                    yCoordModulator = new int[]{0, -1, +1};
 
-                case "down":
-                    xCoordModulator = new int[]{-1, +1};
-                    yCoordModulator = new int[]{-1, +1};
-                    if(asdasd(xCoordOfNewConnection, yCoordOfNewConnection, xCoordModulator, yCoordModulator, player)){
-                        roadsAPlayerCouldBuild.add(modelConnection);
-                    }
+                } else {
+                    xCoordModulator = new int[]{+2, -1, -1};
+                    yCoordModulator = new int[]{0, -1, +1};
+                }
+
+                roadsAroundPlayerBuilding = connectionsAroundBuilding(xCoordModulator, yCoordModulator, xCoordOfPlayerBuilding, yCoordOfPlayerBuilding);
+
+                if (!foundOwner) {
+                    roadsAPlayerCouldBuild.addAll(roadsAroundPlayerBuilding);
+                } else {
+                    roadsAroundPlayerBuilding.clear();
+                }
+
             }
-
         }
         return roadsAPlayerCouldBuild;
     }
 
-    public boolean asdasd(int xCoordOfNewConnection, int yCoordOfNewConnection, int[] xCoordModulator, int[] yCoordModulator, ModelPlayer player){
-        boolean dings = false;
-        for (ModelBuilding building : allBuildings) {
-            if (building.getOwner() == player) {
-                for (int i = 0; i < 2; i++) {
-                    if (building.checkCoords(xCoordOfNewConnection + xCoordModulator[i], yCoordOfNewConnection + yCoordModulator[i])) {
-                        dings = true;
+
+    private ArrayList<ModelConnection> connectionsAroundBuilding(int[] xCoordModulator, int[] yCoordModulator, int xCoordOfPlayerBuilding, int yCoordOfPlayerBuilding){
+        ArrayList<ModelConnection> roadsAroundPlayerBuilding = new ArrayList<>();
+        for (ModelConnection modelConnection : allConnections) {
+            for (int i = 0; i < 3; i++) {
+                if (modelConnection.checkCoords(xCoordOfPlayerBuilding + xCoordModulator[i], yCoordOfPlayerBuilding + yCoordModulator[i])) {
+                    if (modelConnection.getOwner() == null) {
+                        if(!modelConnection.getOnWater()){
+                            roadsAroundPlayerBuilding.add(modelConnection);
+                        }
+                    } else {
+                        foundOwner = true;
                     }
                 }
             }
         }
-        return dings;
+        return roadsAroundPlayerBuilding;
     }
-
 }
+

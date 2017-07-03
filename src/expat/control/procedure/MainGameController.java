@@ -1,9 +1,7 @@
 package expat.control.procedure;
 
 import expat.model.ModelApp;
-import expat.model.ModelPlayer;
-
-import java.util.LinkedList;
+import expat.model.ModelMaterial;
 
 /**
  * Created by gallatib on 22.06.2017.
@@ -17,9 +15,9 @@ public class MainGameController extends GameController {
     public void nextStepSelector(){
         switch (currentStep){
             case "diceResultStep":
-                tradeStep();
+                tradeChoiceStep();
                 break;
-            case "trade":
+            case "tradeChoice":
                 buildStep();
                 break;
             case "build":
@@ -30,12 +28,14 @@ public class MainGameController extends GameController {
     @Override
     public void startTurnStep(){
         currentStep = "startTurn";
-        app.mainGameNextPlayer();
+        app.nextMainGamePlayer();
         rollDiceStep();
     }
 
     public void rollDiceStep(){
         currentStep = "rollDice";
+        refreshPlayerInformation();
+
         paneActionController.drawRollDiceStep();
         app.rollDice();
         app.distributeMaterial();
@@ -43,62 +43,80 @@ public class MainGameController extends GameController {
 
     public void diceResultStep(){
         currentStep = "diceResultStep";
-
         refreshPlayerInformation();
 
-        //TODO: now the player must always navigate through the dropMaterialStep when there is a rolled 7, maybe extend this method to check if he has more than 7 materials
         if (app.getCurrentDiceNumber() == 7) {
+            app.generatePlayersThatMustDrop();
+            specialStep();
+        }
+        else {
             paneActionController.drawDiceResultNormalStep(app.getCurrentDiceNumbersSeparately(), app.getNowPlayingDicedMaterial());
-        } else {
-            paneActionController.drawDiceResultSpecialStep(app.getCurrentDiceNumbersSeparately(), app.getNowPlayingDicedMaterial());
         }
     }
 
-    //TODO: reconsider this method
-    public void moveRaider(int[] coords) {
-        app.moveRaider(coords);
-        paneBoardController.generateRaiderGroup(app.getBoard());
+    private void specialStep(){
+        currentStep = "special";
+
+        int[] currentDiceNumbersSeparately = app.getCurrentDiceNumbersSeparately();
+        ModelMaterial nowPlayingDicedMaterial = app.getNowPlayingDicedMaterial();
+
+        if(!app.getPlayersThatMustDrop().isEmpty()){
+            paneActionController.drawDiceResultDroppingStep(currentDiceNumbersSeparately, nowPlayingDicedMaterial);
+        }else{
+            paneActionController.drawDiceResultRaiderStep(currentDiceNumbersSeparately, nowPlayingDicedMaterial);
+        }
     }
 
-    public void dropMaterialStep(){
-        currentStep = "dropMaterial";
-        LinkedList<ModelPlayer> playersThatMustDrop = app.getPlayersThatMustDrop();
-
-        for(ModelPlayer playerThatMustDrop : playersThatMustDrop){
-            int[] dropAmount = playerThatMustDrop.getMaterial().getMaterialAmount();
-            //paneActionController.drawDropMaterialStep(dropAmount, playerThatMustDrop.getPlayerName());
-        }
-
+    public void moveRaiderStep(){
+        app.currentMainGamePlayer();
+        refreshPlayerInformation();
         app.getBoard().activateRaider();
         paneActionController.drawMoveRaiderStep();
     }
 
-    public void tradeStep(){
-        currentStep = "trade";
+    public void firstPlayerDroppingMaterialStep(){
+        currentStep = "droppingMaterial";
+        app.nextDroppingPlayer();
+        refreshPlayerInformation();
+        paneActionController.drawDropMaterialStep(app.amountPlayerMustDrop(), app.getCurrentPlayer().getMaterial().getMaterialAmount());
+    }
 
+    public void nextPlayerDroppingMaterialStep(){
+        if(app.getPlayersThatMustDrop().isEmpty()){
+            moveRaiderStep();
+        }else{
+            app.nextDroppingPlayer();
+            refreshPlayerInformation();
+            paneActionController.drawDropMaterialStep(app.amountPlayerMustDrop(), app.getCurrentPlayer().getMaterial().getMaterialAmount());
+        }
+    }
+
+    public void finishDropping(int[] droppingDifference){
+        app.getCurrentPlayer().addMaterial(new ModelMaterial(droppingDifference));
+        nextPlayerDroppingMaterialStep();
+    }
+
+    //TODO: reconsider this method
+    public void moveRaider(int[] coords) {
+        paneActionController.drawMoveRaiderStep();
+        app.moveRaider(coords);
+        paneBoardController.generateRaiderGroup(app.getBoard());
+    }
+
+    private void tradeChoiceStep(){
+        currentStep = "tradeChoice";
+        paneActionController.drawTradeChoiceStep();
+    }
+
+    public void commonTradeStep(){
+        currentStep = "commonTradeChoice";
+        app.newTradeAction("CommonTrade");
+        paneActionController.drawCommonTradeStep(app.getCurrentPlayer().getMaterial().getMaterialAmount());
     }
 
     public void buildStep(){
         currentStep = "build";
 
-    }
-
-    public void specialStep(){
-        currentStep = "special";
-
-        /*
-        if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            for (ModelPlayer player : players) {
-                if (player.getMaterial().getSumOfAllMaterials() > 7) {
-                    playersMustDrop.add(player);
-                }
-            }
-        } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            board.activateRaider();
-        }
-        currentStep = "SpecialStep";
-        diceNumber = 0;
-         */
     }
 
     //TODO: Siegpane schreiben
@@ -112,7 +130,7 @@ public class MainGameController extends GameController {
 
     @Override
     public void initiateBoardElementPlacing(String type) {
-        app.initiateMainGamePlacingAction(type, false);
+        app.initiatePlacingAction(type, false);
     }
 
     @Override
