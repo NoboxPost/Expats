@@ -4,12 +4,14 @@ import expat.control.procedure.MainGameController;
 import expat.control.procedure.PreGameController;
 import expat.model.ModelMaterial;
 import expat.view.ViewCardsFactory;
+import expat.view.ViewPaneBuild;
 import expat.view.ViewPaneDropMaterial;
 import expat.view.ViewPaneTradeCommon;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -19,6 +21,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+
+import java.util.HashMap;
 
 
 /**
@@ -56,6 +60,9 @@ public class PaneActionController {
         this.controllerMainStage = controllerMainStage;
         this.mainGameController = mainGameController;
         this.preGameController = preGameController;
+
+        btnNextStep.setCursor(Cursor.HAND);
+        btnEndTurn.setCursor(Cursor.HAND);
     }
 
     public void drawGameSettings() {
@@ -63,6 +70,7 @@ public class PaneActionController {
 
         //TODO: replace this button with viewPaneCreateGame
         Button createGameButton = new Button("create Game");
+        createGameButton.setCursor(Cursor.HAND);
         createGameButton.setOnAction(this::btnCreateGameClicked);
         createGameButton.setMinHeight(60);
         createGameButton.setMinWidth(60);
@@ -91,7 +99,6 @@ public class PaneActionController {
 
     private void generatePreSettlementPlaces(MouseEvent event) {
         preGameController.initiateBoardElementPlacing("Settlement");
-        settlementImageView.setEffect(addDropShadow());
     }
 
     public void drawPreGameRoadStep() {
@@ -110,17 +117,6 @@ public class PaneActionController {
     //TODO: add ships (connection?)
     private void generatePreRoadPlaces(MouseEvent event) {
         preGameController.initiateBoardElementPlacing("Road");
-        roadImageView.setEffect(addDropShadow());
-    }
-
-    private DropShadow addDropShadow() {
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setRadius(30);
-        dropShadow.setHeight(25);
-        dropShadow.setWidth(200);
-        dropShadow.setSpread(0.5);
-
-        return dropShadow;
     }
 
     public void btnNextStepClicked(ActionEvent actionEvent) {
@@ -135,6 +131,7 @@ public class PaneActionController {
         middleActionPane.getChildren().clear();
 
         diceRollButton = new Button("roll dice!");
+        diceRollButton.setCursor(Cursor.HAND);
         diceRollButton.setOnAction(this::btnRollDiceClicked);
         diceRollButton.setMinHeight(60);
         diceRollButton.setMinWidth(60);
@@ -173,6 +170,7 @@ public class PaneActionController {
         //next button and end turn button are still disabled from rollDiceStep
         //because this step is a rolled 7, the next step button can stay disabled, but there must be a drop materials button
         Button btnDropMaterials = new Button("move the raider");
+        btnDropMaterials.setCursor(Cursor.HAND);
         btnDropMaterials.setOnAction(this::btnMoveRaiderClicked);
         middleActionPane.getChildren().add(btnDropMaterials);
     }
@@ -240,12 +238,14 @@ public class PaneActionController {
         middleActionPane.getChildren().clear();
         Label label = new Label("you can move the raider now");
         middleActionPane.getChildren().add(label);
+        controllerMainStage.changeCursorOverAll(new ImageCursor(new Image("expat/img/Raider.png")));
     }
 
     public void raiderMoved() {
         btnNextStep.setDisable(false);
         btnEndTurn.setDisable(false);
-        //TODO: draw auswahl von Player
+        mainGameController.nextStepSelector();
+        controllerMainStage.changeCursorOverAll(Cursor.DEFAULT);
     }
 
     public void btnDropMaterialFinishClicked(ActionEvent event) {
@@ -258,6 +258,7 @@ public class PaneActionController {
     public void drawTradeChoiceStep() {
         middleActionPane.getChildren().clear();
         Button btnCommonTrade = new Button("common trade (4:1)");
+        btnCommonTrade.setCursor(Cursor.HAND);
         btnCommonTrade.setOnAction(this::btnCommonTradeClicked);
         middleActionPane.getChildren().add(btnCommonTrade);
     }
@@ -271,30 +272,25 @@ public class PaneActionController {
     /**
      * Initiates ModelBuildingAction in app so, Player can choose building fields afterwards and corresponding Building will be built.
      */
-    public void drawMainGameBuildingStep() {
+    public void drawMainGameBuildingStep(HashMap<String, Boolean> playerBuildingAbilities) {
         middleActionPane.getChildren().clear();
-        Image town = new Image("expat/img/TownColored.png");
-        townImageView = new ImageView(town);
-        townImageView.setFitHeight(80);
-        townImageView.setPreserveRatio(true);
-        townImageView.setOnMouseReleased(this::generateMainTownPlaces);
-        townImageView.setCursor(Cursor.HAND);
+        controllerMainStage.changeCursorOverAll(Cursor.DEFAULT);
 
-        Image settlement = new Image("expat/img/Settlement.png");
-        settlementImageView = new ImageView(settlement);
-        settlementImageView.setFitHeight(80);
-        settlementImageView.setPreserveRatio(true);
-        settlementImageView.setOnMouseReleased(this::generateMainSettlementPlaces);
-        settlementImageView.setCursor(Cursor.HAND);
+        ViewPaneBuild viewPaneBuild = new ViewPaneBuild(playerBuildingAbilities, this);
 
-        Image road = new Image("expat/img/Connection.png");
-        roadImageView = new ImageView(road);
-        roadImageView.setFitHeight(80);
-        roadImageView.setPreserveRatio(true);
-        roadImageView.setOnMouseReleased(this::generateMainRoadPlaces);
-        roadImageView.setCursor(Cursor.HAND);
+        roadImageView = viewPaneBuild.generateRoadImageView();
+        settlementImageView = viewPaneBuild.generateSettlementImageView();
+        townImageView = viewPaneBuild.generateTownImageView();
 
-        middleActionPane.getChildren().addAll(townImageView, settlementImageView, roadImageView);
+        Button btnCancelBuildingAction = new Button("cancel building-action");
+        btnCancelBuildingAction.setOnAction(this::btnCancelBuildingAction);
+        btnCancelBuildingAction.setCursor(Cursor.HAND);
+
+        middleActionPane.getChildren().addAll(roadImageView, settlementImageView, townImageView);
+    }
+
+    private void btnCancelBuildingAction(ActionEvent actionEvent) {
+        mainGameController.buildingStep();
     }
 
     /**
@@ -302,10 +298,11 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void generateMainRoadPlaces(MouseEvent event) {
+    public void generateMainRoadPlaces(MouseEvent event) {
         deactivateTurnNavigation();
         mainGameController.initiateBoardElementPlacing("Road");
-        roadImageView.setEffect(addDropShadow());
+        Image roadImage = roadImageView.getImage();
+        controllerMainStage.changeCursorOverAll(new ImageCursor(roadImage, 0, 0));
     }
 
     /**
@@ -313,10 +310,11 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void generateMainSettlementPlaces(MouseEvent event) {
+    public void generateMainSettlementPlaces(MouseEvent event) {
         deactivateTurnNavigation();
         mainGameController.initiateBoardElementPlacing("Settlement");
-        settlementImageView.setEffect(addDropShadow());
+        Image settlementImage = settlementImageView.getImage();
+        controllerMainStage.changeCursorOverAll(new ImageCursor(settlementImage, 0, 0));
     }
 
     /**
@@ -324,10 +322,11 @@ public class PaneActionController {
      *
      * @param event onMouseReleased
      */
-    private void generateMainTownPlaces(MouseEvent event) {
+    public void generateMainTownPlaces(MouseEvent event) {
         deactivateTurnNavigation();
         mainGameController.initiateBoardElementPlacing("Town");
-        townImageView.setEffect(addDropShadow());
+        Image townImage = townImageView.getImage();
+        controllerMainStage.changeCursorOverAll(new ImageCursor(townImage, 0, 0));
     }
 
     public void activateTurnNavigation(){
@@ -339,20 +338,6 @@ public class PaneActionController {
         btnNextStep.setVisible(false);
         btnEndTurn.setVisible(false);
     }
-
-
-
-    /**
-     * Initiates a new ModelBuildingAciton according to received building type.
-     * Calls app with String parameter and refreshes screen.
-     *
-     * @param type Building type
-     */
-
-    private void initiateBoardElementPlacingAction(String type) {
-        mainGameController.initiateBoardElementPlacing(type);
-    }
-
 
 
     /**
@@ -368,19 +353,4 @@ public class PaneActionController {
     public void btnTradeFinishClicked(ActionEvent actionEvent) {
         mainGameController.finishTrading(paneTradeCommon.getTradingDifference());
     }
-
-    /**
-     * Sends trade result to app, which will adjust the players material amount.
-     *
-     * @param event
-     */
-
-    /*
-    public void btnTradeFinishClicked(ActionEvent event) {
-        app.finishTradeAction(paneTradeCommon.getEndDifference());
-        app.resetTrade();
-        paneTradeCommon = null;
-        controllerMainStage.refreshMatesAndPlayerPanes();
-    }
-    */
 }

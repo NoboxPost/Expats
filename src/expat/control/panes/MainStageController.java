@@ -4,6 +4,7 @@ import expat.control.procedure.MainGameController;
 import expat.control.procedure.PreGameController;
 import expat.model.ModelApp;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
@@ -106,6 +107,11 @@ public class MainStageController {
         isInPreGameMode = false;
         mainGame.startTurnStep();
         paneActionController.activateTurnNavigation();
+    }
+
+    public void changeCursorOverAll(Cursor cursor){
+        scrollPaneCenter.setCursor(cursor);
+        paneActionController.middleActionPane.setCursor(cursor);
     }
 }
 

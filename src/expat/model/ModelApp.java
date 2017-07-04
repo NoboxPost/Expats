@@ -3,7 +3,7 @@ package expat.model;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
-import expat.model.buildings.ModelPreGameBuildingListCrawler;
+import expat.model.procedure.ModelPreGameBuildingListCrawler;
 import expat.model.procedure.*;
 
 import java.util.LinkedList;
@@ -34,6 +34,7 @@ public class ModelApp {
     private ModelMainGamePlayerHandler modelMainGamePlayerHandler;
     private ModelDroppingPlayerHandler modelRaiderPlayerHandler;
     private ModelPreGameBuildingListCrawler modelBuildingListCrawler;
+    private ModelMainGamePlayerBuildingAbilitiesCalculator modelMainGamePlayerBuildingAbilitiesCalculator;
 
     private LinkedList<ModelPlayer> allPlayers = new LinkedList<>();
     private LinkedList<ModelPlayer> playersThatMustDrop;
@@ -62,6 +63,7 @@ public class ModelApp {
 
         diceRoller = new ModelDiceRoller();
         playerGenerator = new ModelPlayerGenerator();
+        modelMainGamePlayerBuildingAbilitiesCalculator = new ModelMainGamePlayerBuildingAbilitiesCalculator();
     }
 
     /**
@@ -281,7 +283,14 @@ public class ModelApp {
         }
     }
 
-
+    /**
+     * gets modelMainGamePlayerBuildingAbilitiesCalculator
+     *
+     * @return value of modelMainGamePlayerBuildingAbilitiesCalculator
+     */
+    public ModelMainGamePlayerBuildingAbilitiesCalculator getModelMainGamePlayerBuildingAbilitiesCalculator() {
+        return modelMainGamePlayerBuildingAbilitiesCalculator;
+    }
 }
 
 

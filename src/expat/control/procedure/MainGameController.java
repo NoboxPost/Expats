@@ -107,7 +107,8 @@ public class MainGameController extends GameController {
 
     public void buildingStep(){
         currentStep = "buildingStep";
-        paneActionController.drawMainGameBuildingStep();
+        paneActionController.drawMainGameBuildingStep(app.getModelMainGamePlayerBuildingAbilitiesCalculator().playerBuildingAbilities(app.getCurrentPlayer().getMaterial().getMaterialAmount()));
+
     }
 
     //TODO: Siegpane schreiben
@@ -141,6 +142,7 @@ public class MainGameController extends GameController {
         refreshBoardElements();
         paneBoardController.drawBoard(app.getBoard());
         buildingStep();
+        refreshPlayerInformation();
     }
 
     public void finishDropping(int[] droppingDifference){

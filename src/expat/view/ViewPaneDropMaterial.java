@@ -4,6 +4,7 @@ import expat.control.panes.PaneActionController;
 import expat.model.ModelMaterial;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -37,6 +38,7 @@ public class ViewPaneDropMaterial extends HBox {
         generateCalculationArrays(playerMaterialAmount);
         generateContent();
         lblAmountToBeDropped.setText("to drop: " + amountToBeDropped);
+        btnDrop.setCursor(Cursor.HAND);
         btnDrop.setDisable(true);
         btnDrop.setOnAction(this.paneActionController::btnDropMaterialFinishClicked);
     }
@@ -62,9 +64,11 @@ public class ViewPaneDropMaterial extends HBox {
             ImageView materialImageView = cardsFactory.generateCardImageView(i);
             viewPaneDropMaterial.getChildren().add(materialImageView);
             btnsMaterialPlus[i] = new Button("+");
+            btnsMaterialPlus[i].setCursor(Cursor.HAND);
             btnsMaterialPlus[i].setOnAction(this::btnAdjustedDropMaterialAmountClicked);
             lblsMaterial[i] = new Label("" + materialAtEndArray[i]);
             btnsMaterialMinus[i] = new Button("-");
+            btnsMaterialMinus[i].setCursor(Cursor.HAND);
             btnsMaterialMinus[i].setOnAction(this::btnAdjustedDropMaterialAmountClicked);
 
             VBox vBox = new VBox();

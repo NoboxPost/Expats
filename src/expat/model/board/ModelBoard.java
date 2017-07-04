@@ -1,7 +1,7 @@
 package expat.model.board;
 
-import expat.model.buildings.ModelMainGameBuildingListCrawler;
-import expat.model.buildings.ModelPreGameBuildingListCrawler;
+import expat.model.procedure.ModelMainGameBuildingListCrawler;
+import expat.model.procedure.ModelPreGameBuildingListCrawler;
 import expat.model.procedure.ModelBuildingAction;
 import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;

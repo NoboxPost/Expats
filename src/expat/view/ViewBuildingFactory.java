@@ -59,7 +59,7 @@ public class ViewBuildingFactory {
     }
 
     private void addQualitiesToBuilding(ViewBuilding viewBuilding, int[] modelBuildingCoords, ModelBuilding modelBuilding){
-        viewBuilding.setEffect(generatePlayerColorEffectForSettlement(modelBuilding.getOwner().getColor()));
+        viewBuilding.setEffect(generatePlayerColorEffectForBuilding(modelBuilding.getOwner().getColor()));
         Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
         viewBuilding.setLayoutX(pixelCoords[0]);
         viewBuilding.setLayoutY(pixelCoords[1]);
@@ -160,50 +160,7 @@ public class ViewBuildingFactory {
      * @param color
      * @return
      */
-    private ColorAdjust generatePlayerColorEffectForTown(String color) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        switch (color.toLowerCase()) {
-            case "green":
-                colorAdjust.setHue(0.3);
-                colorAdjust.setSaturation(0.5);
-                colorAdjust.setBrightness(-0.3);
-                break;
-            case "red":
-                colorAdjust.setHue(-0.3);
-                colorAdjust.setSaturation(0.8);
-                colorAdjust.setBrightness(-0.15);
-                break;
-            case "blue":
-                colorAdjust.setHue(0.95);
-                colorAdjust.setSaturation(0.8);
-                colorAdjust.setBrightness(-0.3);
-                break;
-            case "orange":
-                colorAdjust.setHue(-0.15);
-                colorAdjust.setSaturation(0.9);
-                colorAdjust.setBrightness(-0.1);
-                break;
-            case "yellow":
-                colorAdjust.setHue(-0.04);
-                colorAdjust.setSaturation(1);
-                colorAdjust.setBrightness(0.1);
-                break;
-            default:
-                colorAdjust.setHue(0);
-                colorAdjust.setSaturation(0);
-                colorAdjust.setBrightness(0);
-                break;
-
-        }
-        return colorAdjust;
-
-    }
-
-    /**
-     * @param color
-     * @return
-     */
-    private Effect generatePlayerColorEffectForSettlement(String color) {
+    private Effect generatePlayerColorEffectForBuilding(String color) {
         ColorAdjust colorAdjust = new ColorAdjust();
         switch (color.toLowerCase()) {
             case "green":

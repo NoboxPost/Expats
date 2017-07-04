@@ -1,7 +1,9 @@
-package expat.model.buildings;
+package expat.model.procedure;
 
 import expat.model.ModelPlayer;
 import expat.model.board.ModelBoard;
+import expat.model.buildings.ModelBuilding;
+import expat.model.buildings.ModelConnection;
 
 import java.util.ArrayList;
 
