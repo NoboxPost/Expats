@@ -70,6 +70,8 @@ public class MainGameController extends GameController {
         refreshPlayerInformation();
         app.getBoard().activateRaider();
         paneActionController.drawMoveRaiderStep();
+        paneBoardController.generateDiceButtonEnabledGroup(app.getBoard());
+        refreshBoardElements();
     }
 
     public void firstPlayerDroppingMaterialStep(){
@@ -89,10 +91,12 @@ public class MainGameController extends GameController {
     }
 
     //TODO: reconsider this method
-    public void moveRaider(int[] coords) {
+    public void finishMoveRaider(int[] coords) {
         paneActionController.drawMoveRaiderStep();
         app.moveRaider(coords);
         paneBoardController.generateRaiderGroup(app.getBoard());
+        paneBoardController.generateDiceButtonDisabledGroup(app.getBoard());
+        refreshBoardElements();
     }
 
     private void tradeChoiceStep(){
@@ -108,6 +112,7 @@ public class MainGameController extends GameController {
     public void buildingStep(){
         currentStep = "buildingStep";
         paneActionController.drawMainGameBuildingStep(app.getModelMainGamePlayerBuildingAbilitiesCalculator().playerBuildingAbilities(app.getCurrentPlayer().getMaterial().getMaterialAmount()));
+        refreshBoardElements();
 
     }
 

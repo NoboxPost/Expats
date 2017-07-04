@@ -32,12 +32,24 @@ public class ViewDiceButtonFactory {
      * @param hexes
      * @return
      */
-    public List<StackPane> generateDiceButtons(ModelHex[][] hexes){
+    public List<StackPane> generateDiceButtonsEnabled(ModelHex[][] hexes){
         List<StackPane> buttonPanes= new ArrayList<StackPane>();
         for (ModelHex[] hexline : hexes) {
             for (ModelHex hex : hexline) {
                 if (hex.getDiceNumber()!=0){
-                    buttonPanes.add(generateDiceButton(hex));
+                    buttonPanes.add(generateEnabledDiceButton(hex));
+                }
+            }
+        }
+        return buttonPanes;
+    }
+
+    public List<StackPane> generateDiceButtonsDisabled(ModelHex[][] hexes){
+        List<StackPane> buttonPanes= new ArrayList<StackPane>();
+        for (ModelHex[] hexline : hexes) {
+            for (ModelHex hex : hexline) {
+                if (hex.getDiceNumber()!=0){
+                    buttonPanes.add(generateDisabledDiceButton(hex));
                 }
             }
         }
@@ -48,27 +60,48 @@ public class ViewDiceButtonFactory {
      * @param hex
      * @return
      */
-    public StackPane generateDiceButton(ModelHex hex){
+    private StackPane generateEnabledDiceButton(ModelHex hex){
         Double[] coords = coordCalculator.calcHexCoords(hex);
         StackPane pane = new StackPane();
         pane.setPrefHeight(hexSize*0.8);
         pane.setPrefWidth(hexSize);
         pane.getStyleClass().add("diceButtonPane");
         ViewDiceNumber viewDiceNumber = new ViewDiceNumber(""+hex.getDiceNumber(),hex.getCoords()[0],hex.getCoords()[1]);
-        Button button = (Button) viewDiceNumber;
+        Button button = createDiceButton(viewDiceNumber);
         button.setCursor(Cursor.HAND);
         button.setOnAction(paneBoardController::btnHexNumberClicked);
+        styleDiceNumber(hex, button);
+        pane.getChildren().add(button);
+        pane.setLayoutX(coords[0]);
+        pane.setLayoutY(coords[1]);
+        return pane;
+    }
+
+    private StackPane generateDisabledDiceButton(ModelHex hex){
+        Double[] coords = coordCalculator.calcHexCoords(hex);
+        StackPane pane = new StackPane();
+        pane.setPrefHeight(hexSize*0.8);
+        pane.setPrefWidth(hexSize);
+        pane.getStyleClass().add("diceButtonPane");
+        ViewDiceNumber viewDiceNumber = new ViewDiceNumber(""+hex.getDiceNumber(),hex.getCoords()[0],hex.getCoords()[1]);
+        Button button = createDiceButton(viewDiceNumber);
+        styleDiceNumber(hex, button);
+        pane.getChildren().add(button);
+        pane.setLayoutX(coords[0]);
+        pane.setLayoutY(coords[1]);
+        return pane;
+    }
+
+    private Button createDiceButton(ViewDiceNumber viewDiceNumber){
+        Button button = (Button) viewDiceNumber;
         button.setMinHeight(hexSize*0.25);
         button.setPrefHeight(hexSize*0.25);
         button.setMaxHeight(hexSize*0.25);
         button.setMinWidth(hexSize*0.25);
         button.setPrefWidth(hexSize*0.25);
         button.setMaxWidth(hexSize*0.25);
-        styleDiceNumber(hex, button);
-        pane.getChildren().add(button);
-        pane.setLayoutX(coords[0]);
-        pane.setLayoutY(coords[1]);
-        return pane;
+
+        return button;
     }
 
     /**

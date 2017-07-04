@@ -16,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -69,7 +68,7 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().removeAll();
 
         generateHexGroup(modelBoard);
-        generateDiceButtonGroup(modelBoard);
+        generateDiceButtonDisabledGroup(modelBoard);
         generateConnectionGroup(modelBoard);
         generateRaiderGroup(modelBoard);
         generateBuildingGroup(modelBoard);
@@ -110,7 +109,7 @@ public class PaneBoardController {
      *
      * @param modelBoard  takes the ModelBoard so method can acquire the diceNumber form every hex.
      */
-    public void generateDiceButtonGroup(ModelBoard modelBoard){
+    public void generateDiceButtonEnabledGroup(ModelBoard modelBoard){
         if (diceButtonGroup!=null) {
             anchorPaneBoard.getChildren().remove(diceButtonGroup);
         }
@@ -118,7 +117,19 @@ public class PaneBoardController {
         ViewDiceButtonFactory viewDiceButtonFactory = new ViewDiceButtonFactory(HEXSIZE, this);
 
         diceButtonGroup = new Group();
-        diceButtonGroup.getChildren().addAll(viewDiceButtonFactory.generateDiceButtons(modelBoard.getHexes()));
+        diceButtonGroup.getChildren().addAll(viewDiceButtonFactory.generateDiceButtonsEnabled(modelBoard.getHexes()));
+        anchorPaneBoard.getChildren().add(diceButtonGroup);
+    }
+
+    public void generateDiceButtonDisabledGroup(ModelBoard modelBoard){
+        if (diceButtonGroup!=null) {
+            anchorPaneBoard.getChildren().remove(diceButtonGroup);
+        }
+
+        ViewDiceButtonFactory viewDiceButtonFactory = new ViewDiceButtonFactory(HEXSIZE, this);
+
+        diceButtonGroup = new Group();
+        diceButtonGroup.getChildren().addAll(viewDiceButtonFactory.generateDiceButtonsDisabled(modelBoard.getHexes()));
         anchorPaneBoard.getChildren().add(diceButtonGroup);
     }
 
@@ -212,7 +223,7 @@ public class PaneBoardController {
      */
     public void btnHexNumberClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
-        mainGameController.moveRaider(button.getCoords());
+        mainGameController.finishMoveRaider(button.getCoords());
         controllerMainStage.raiderMoved();
     }
 

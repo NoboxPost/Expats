@@ -282,11 +282,11 @@ public class PaneActionController {
         settlementImageView = viewPaneBuild.generateSettlementImageView();
         townImageView = viewPaneBuild.generateTownImageView();
 
-        Button btnCancelBuildingAction = new Button("cancel building-action");
+        Button btnCancelBuildingAction = new Button("cancel building");
         btnCancelBuildingAction.setOnAction(this::btnCancelBuildingAction);
         btnCancelBuildingAction.setCursor(Cursor.HAND);
 
-        middleActionPane.getChildren().addAll(roadImageView, settlementImageView, townImageView);
+        middleActionPane.getChildren().addAll(roadImageView, settlementImageView, townImageView, btnCancelBuildingAction);
     }
 
     private void btnCancelBuildingAction(ActionEvent actionEvent) {
