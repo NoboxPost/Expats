@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ViewBuildingFactory {
     private ViewCoordinateCalculator viewCoordinateCalculator;
-    PaneBoardController paneBoardController;
+    private PaneBoardController paneBoardController;
     private int hexSize;
 
     public ViewBuildingFactory(int hexSize, PaneBoardController paneBoardController) {
@@ -37,29 +37,62 @@ public class ViewBuildingFactory {
      * @return ViewBuilding list, containing all Nodes representing their Model counterpart.
      */
     public List<ViewBuilding> generateBuildings(ArrayList<ModelBuilding> modelBuildings) {
-        List<ViewBuilding> viewBuildings = new ArrayList<ViewBuilding>();
+
+        List<ViewBuilding> viewBuildings = new ArrayList<>();
 
         for (ModelBuilding modelBuilding : modelBuildings) {
             int[] modelBuildingCoords = modelBuilding.getCoords();
             ViewBuilding viewBuilding;
             if (modelBuilding.getType().equals("Town")) {
                 viewBuilding = generateTown(modelBuildingCoords[0], modelBuildingCoords[1]);
-                viewBuilding.setEffect(generatePlayerColorEffectForTown(modelBuilding.getOwner().getColor()));
+                addQualitiesToBuilding(viewBuilding, modelBuildingCoords, modelBuilding);
+                viewBuildings.add(viewBuilding);
             } else if (modelBuilding.getType().equals("Settlement")) {
                 viewBuilding = generateSettlement(modelBuildingCoords[0], modelBuildingCoords[1]);
-                viewBuilding.setEffect(generatePlayerColorEffectForSettlement(modelBuilding.getOwner().getColor()));
-            } else {
-                viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
+                addQualitiesToBuilding(viewBuilding, modelBuildingCoords, modelBuilding);
+                viewBuildings.add(viewBuilding);
             }
-            viewBuilding.setOnMouseReleased(paneBoardController::emptyBuildingSpotClicked);
-            Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
-            viewBuilding.setLayoutX(pixelCoords[0]);
-            viewBuilding.setLayoutY(pixelCoords[1]);
-            viewBuildings.add(viewBuilding);
-            //viewBuilding.setEffect(); TODO: set color depending on owner
         }
 
+        //
+        return viewBuildings;
+    }
 
+    private void addQualitiesToBuilding(ViewBuilding viewBuilding, int[] modelBuildingCoords, ModelBuilding modelBuilding){
+        viewBuilding.setEffect(generatePlayerColorEffectForBuilding(modelBuilding.getOwner().getColor()));
+        Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+        viewBuilding.setLayoutX(pixelCoords[0]);
+        viewBuilding.setLayoutY(pixelCoords[1]);
+    }
+
+    public ViewBuilding generateBuildingPlacingSpot(int[] coords) {
+
+        ViewBuilding viewBuilding;
+        viewBuilding = generateEmptyBuilding(coords[0], coords[1]);
+        Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(coords);
+        viewBuilding.setOnMouseReleased(paneBoardController::buildingSpotClicked);
+        viewBuilding.setLayoutX(pixelCoords[0]);
+        viewBuilding.setLayoutY(pixelCoords[1]);
+
+        return viewBuilding;
+    }
+
+    public List<ViewBuilding> generateBuildingPlacingSpots(ArrayList<ModelBuilding> modelBuildings) {
+
+        List<ViewBuilding> viewBuildings = new ArrayList<>();
+
+        for (ModelBuilding modelBuilding : modelBuildings) {
+            int[] modelBuildingCoords = modelBuilding.getCoords();
+            ViewBuilding viewBuilding;
+            if (modelBuilding.getType().equals("empty")) {
+                viewBuilding = generateEmptyBuilding(modelBuildingCoords[0], modelBuildingCoords[1]);
+                viewBuilding.setOnMouseReleased(paneBoardController::buildingSpotClicked);
+                Double[] pixelCoords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+                viewBuilding.setLayoutX(pixelCoords[0]);
+                viewBuilding.setLayoutY(pixelCoords[1]);
+                viewBuildings.add(viewBuilding);
+            }
+        }
         return viewBuildings;
     }
 
@@ -96,7 +129,6 @@ public class ViewBuildingFactory {
         ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
         viewBuilding.setX(-(hexSize * 0.1));
         viewBuilding.setY(-(hexSize * 0.1));
-        viewBuilding.setCursor(Cursor.HAND);
 
         return viewBuilding;
 
@@ -118,7 +150,6 @@ public class ViewBuildingFactory {
         ViewBuilding viewBuilding = new ViewBuilding(img, xCoord, yCoord);
         viewBuilding.setX(-(hexSize * 0.1));
         viewBuilding.setY(-(hexSize * 0.1));
-        viewBuilding.setCursor(Cursor.HAND);
 
         return viewBuilding;
 
@@ -129,50 +160,7 @@ public class ViewBuildingFactory {
      * @param color
      * @return
      */
-    private ColorAdjust generatePlayerColorEffectForTown(String color) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        switch (color.toLowerCase()) {
-            case "green":
-                colorAdjust.setHue(0.3);
-                colorAdjust.setSaturation(0.5);
-                colorAdjust.setBrightness(-0.3);
-                break;
-            case "red":
-                colorAdjust.setHue(-0.3);
-                colorAdjust.setSaturation(0.8);
-                colorAdjust.setBrightness(-0.15);
-                break;
-            case "blue":
-                colorAdjust.setHue(0.95);
-                colorAdjust.setSaturation(0.8);
-                colorAdjust.setBrightness(-0.3);
-                break;
-            case "orange":
-                colorAdjust.setHue(-0.15);
-                colorAdjust.setSaturation(0.9);
-                colorAdjust.setBrightness(-0.1);
-                break;
-            case "yellow":
-                colorAdjust.setHue(-0.04);
-                colorAdjust.setSaturation(1);
-                colorAdjust.setBrightness(0.1);
-                break;
-            default:
-                colorAdjust.setHue(0);
-                colorAdjust.setSaturation(0);
-                colorAdjust.setBrightness(0);
-                break;
-
-        }
-        return colorAdjust;
-
-    }
-
-    /**
-     * @param color
-     * @return
-     */
-    private Effect generatePlayerColorEffectForSettlement(String color) {
+    private Effect generatePlayerColorEffectForBuilding(String color) {
         ColorAdjust colorAdjust = new ColorAdjust();
         switch (color.toLowerCase()) {
             case "green":

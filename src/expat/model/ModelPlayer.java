@@ -80,6 +80,14 @@ public class ModelPlayer {
         this.victoryPoints += victoryPoints;
     }
 
+    /**
+     * gets victoryPoints
+     *
+     * @return value of victoryPoints
+     */
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
 }
 
 

@@ -1,6 +1,8 @@
 package expat.model.board;
 
-import expat.model.buildings.ModelBuildingAction;
+import expat.model.procedure.ModelMainGameBuildingListCrawler;
+import expat.model.procedure.ModelPreGameBuildingListCrawler;
+import expat.model.procedure.ModelBuildingAction;
 import expat.model.ModelPlayer;
 import expat.model.buildings.ModelBuilding;
 import expat.model.ModelRaider;
@@ -21,12 +23,17 @@ public class ModelBoard {
     private ArrayList<ModelConnection> connections;
     private ModelRaider raider;
     private ModelBuildingAction buildingAction;
+    private ModelPreGameBuildingListCrawler modelPreGameBuildingListCrawler;
+    private ModelMainGameBuildingListCrawler modelMainGameBuildingListCrawler;
 
     public ModelBoard(ModelHex[][] hexes, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections, ModelRaider raider) {
         this.hexes = hexes;
         this.buildings = buildings;
         this.raider = raider;
         this.connections = connections;
+
+        modelPreGameBuildingListCrawler = new ModelPreGameBuildingListCrawler(this);
+        modelMainGameBuildingListCrawler = new ModelMainGameBuildingListCrawler(this);
     }
 
     /**
@@ -52,23 +59,13 @@ public class ModelBoard {
 
 
     /**
-     * Creates a new ModelBuildingAction with give building type and for given owner. No materials will be checked and reduced
-     *
-     * @param type type of Building.
-     * @param newOwner ModelPlayer which will be owner of new building.
-     */
-    public void firstBuildingAction(String type, ModelPlayer newOwner) {
-        buildingAction = new ModelBuildingAction(newOwner,type,buildings,connections,true);
-    }
-
-    /**
      * Creates a new ModelBuildingAction with give building type and for given owner. Materials will be checked and reduced
      *
      * @param type Building type
      * @param newOwner ModelPlayer which will be owner of new building.
      */
-    public void newBuildingAction(String type, ModelPlayer newOwner) {
-        buildingAction = new ModelBuildingAction(newOwner, type, buildings, connections);
+    public void newBuildingAction(String type, ModelPlayer newOwner, Boolean isInPreGame) {
+        buildingAction = new ModelBuildingAction(newOwner, type, buildings, connections, isInPreGame);
 
     }
 
@@ -80,8 +77,6 @@ public class ModelBoard {
      * @return true if building is valid.
      */
     public boolean finishBuildingAction(int[] coords, String type) {
-
-
         if (buildingAction != null) {
             if (buildingAction.createBuilding(coords, type)) {
                 buildingAction = null;
@@ -175,6 +170,16 @@ public class ModelBoard {
         return connections;
     }
 
+    /**
+     * gets modelPreGameBuildingListCrawler
+     *
+     * @return value of modelPreGameBuildingListCrawler
+     */
+    public ModelPreGameBuildingListCrawler getModelPreGameBuildingListCrawler() {
+        return modelPreGameBuildingListCrawler;
+    }
 
-
+    public ModelMainGameBuildingListCrawler getModelMainGameBuildingListCrawler() {
+        return modelMainGameBuildingListCrawler;
+    }
 }

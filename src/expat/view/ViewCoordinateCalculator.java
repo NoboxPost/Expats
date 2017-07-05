@@ -12,7 +12,7 @@ import java.awt.geom.Arc2D;
  * @author vanonir
  */
 public class ViewCoordinateCalculator {
-    int HEXSIZE;
+    private int HEXSIZE;
 
     public ViewCoordinateCalculator(int hexSize){
         this.HEXSIZE = hexSize;

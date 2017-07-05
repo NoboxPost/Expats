@@ -1,4 +1,4 @@
-package expat.model.buildings;
+package expat.model.procedure;
 
 import expat.model.ModelMaterial;
 import expat.model.ModelPlayer;
@@ -18,23 +18,6 @@ public class ModelBuildingAction {
     private ArrayList<ModelBuilding> buildings;
     private ArrayList<ModelConnection> connections;
     private boolean startStage = false;
-
-    /**
-     * to be used during game, materials will be checked alongside with connection and building positions.
-     *
-     * @param player
-     * @param buildingType
-     * @param buildings
-     * @param connections
-     */
-    public ModelBuildingAction(ModelPlayer player, String buildingType, ArrayList<ModelBuilding> buildings, ArrayList<ModelConnection> connections) {
-        this.player = player;
-        this.buildingType = buildingType;
-        this.buildings = buildings;
-        this.connections = connections;
-        // TODO: depending on buildingType, show possible locations for types
-        // TODO: switch case and COST!, COST is not handled by building, so need to do i here.
-    }
 
     /**
      * To be used at Start of Game,
@@ -333,3 +316,20 @@ public class ModelBuildingAction {
     }
 
 }
+
+
+
+
+    /*
+    switch(type) {
+        case "Road":
+            connection.buildRoad(buildingType, player);
+            break;
+        case "Settlement":
+            building.buildSettlement(player);
+            break;
+        case "Town":
+            building.buildTown(player);
+            break;
+    }
+    */

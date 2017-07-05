@@ -1,7 +1,10 @@
 package expat.control.panes;
 
+import expat.control.procedure.MainGameController;
+import expat.control.procedure.PreGameController;
 import expat.model.ModelApp;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
@@ -36,25 +39,40 @@ public class MainStageController {
     PaneMatesController paneMatesController;
     @FXML
     PanePlayerController panePlayerController;
-    private ModelApp app;
 
+    private PreGameController preGame;
+    private MainGameController mainGame;
+    private ModelApp app;
+    private boolean isInPreGameMode = true;
+
+
+    //TODO: drawGameSettings as bottom-action should get reconsidered because File - New Game would be more intuitive
 
     /**
      * Runs after initialization of all controllers, initializes an app and starts model logic.
      * Is called by FXMLLoader and can't be changed.
      */
     public void initialize() {
-        app = new ModelApp(){{
-            startPreGame();
-        }};
+        app = new ModelApp();
         initializeControllers();
+
+        preGame.gameSettings();
     }
 
     private void initializeControllers(){
-        paneBoardController.init(this,app);
-        paneActionController.init(this,app);
-        panePlayerController.init(this, app);
-        paneMatesController.init(app);
+        //control-model
+        preGame = new PreGameController(app);
+        mainGame = new MainGameController(app);
+
+        //control-view
+        paneBoardController.init(this, mainGame, preGame);
+        paneActionController.init(this, mainGame, preGame);
+        panePlayerController.init(mainGame);
+        paneMatesController.init(mainGame);
+
+        //link the control-view with the control-model
+        mainGame.linkToPanes(this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
+        preGame.linkToPanes(this, paneActionController, paneBoardController, paneMatesController, panePlayerController);
     }
 
     /**
@@ -69,25 +87,31 @@ public class MainStageController {
     }
 
     /**
-     * Refreshes lower middle part of the screen, where the different game steps are displayed.
-     */
-    public void refreshActionStep() {
-        paneActionController.refreshStep();
-    }
-
-    /**
-     * Refreshes left side of the screen, where infos about the current player are displayed.
-     */
-    public void refreshGameInformations() {
-        panePlayerController.refresh();
-        paneMatesController.setMatesInformation();
-    }
-
-    /**
      * Enables buttons for next step and end turn again, after paneActionController waitet for Raider to be moved.
      */
     public void raiderMoved() {
         paneActionController.raiderMoved();
+    }
+
+
+    public void selectGameControllerForFinishPlacingElement(int[] coords, String type){
+        if(isInPreGameMode){
+            preGame.finishBoardElementPlacing(coords, type);
+        }
+        else{
+            mainGame.finishBoardElementPlacing(coords, type);
+        }
+    }
+
+    public void switchGameMode(){
+        isInPreGameMode = false;
+        mainGame.startTurnStep();
+        paneActionController.activateTurnNavigation();
+    }
+
+    public void changeCursorOverAll(Cursor cursor){
+        scrollPaneCenter.setCursor(cursor);
+        paneActionController.middleActionPane.setCursor(cursor);
     }
 }
 

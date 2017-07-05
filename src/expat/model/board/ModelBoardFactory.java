@@ -48,7 +48,7 @@ public class ModelBoardFactory {
         ModelHexFactory hexFactory = new ModelHexFactory();
         hexes = hexFactory.generateHexes(xSize,ySize);
         ModelBuildingFactory buildingFactory = new ModelBuildingFactory(xSize,ySize,hexes);
-        buildings = buildingFactory.generateBuildings();
+        buildings = buildingFactory.generateAllBuildings();
         ModelConnectionFactory connectionFactory = new ModelConnectionFactory(xSize,ySize,hexes);
         connections = connectionFactory.generateConnections();
         ModelRaider raider= new ModelRaider(hexes[4][3]); //TODO: Implement raider functionality

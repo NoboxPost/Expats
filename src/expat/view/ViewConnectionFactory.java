@@ -3,6 +3,7 @@ package expat.view;
 import expat.control.panes.PaneBoardController;
 import expat.model.buildings.ModelConnection;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  */
 public class ViewConnectionFactory {
     private ViewCoordinateCalculator viewCoordinateCalculator;
-    PaneBoardController paneBoardController;
+    private PaneBoardController paneBoardController;
     private int hexSize;
 
     public ViewConnectionFactory(int hexSize, PaneBoardController paneBoardController) {
@@ -30,7 +31,7 @@ public class ViewConnectionFactory {
         ArrayList<ViewConnection> viewConnections = new ArrayList<>();
         for (ModelConnection modelConnection : modelConnections) {
             int[] modelBuildingCoords = modelConnection.getCoords();
-            if (!modelConnection.getOnWater()) {
+            if (!modelConnection.getOnWater() && modelConnection.getOwner() != null) {
                 ViewConnection viewConnection = generateRoad(modelBuildingCoords[0], modelBuildingCoords[1]);
                 Double[] coords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
                 if (modelConnection.getOrientation().equals("up")) {
@@ -40,18 +41,58 @@ public class ViewConnectionFactory {
                 }
                 viewConnection.setLayoutX(coords[0]);
                 viewConnection.setLayoutY(coords[1]);
-                if (modelConnection.getOwner()!=null) { //TODO: auskommentieren.
+                if (modelConnection.getOwner()!=null) {
                     viewConnection.setEffect(generatePlayerColorEffect(modelConnection.getOwner().getColor()));
                 }
-                viewConnection.setOnMouseReleased(paneBoardController::connectionClicked);
                 viewConnections.add(viewConnection);
             }
-
         }
-
-
         return viewConnections;
     }
+
+    public ViewConnection generateConnectionPlacingSpot(String orientation, int[] coords) {
+        ViewConnection viewConnection;
+        viewConnection = generateRoad(coords[0], coords[1]);
+
+        Double[] placingCoords = viewCoordinateCalculator.calcBuildingCoords(coords);
+        if (orientation.equals("up")) {
+            viewConnection.setRotate(-60);
+        } else if (orientation.equals("down")) {
+            viewConnection.setRotate(60);
+        }
+        viewConnection.setLayoutX(placingCoords[0]);
+        viewConnection.setLayoutY(placingCoords[1]);
+        viewConnection.setCursor(Cursor.HAND);
+        viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
+
+        return viewConnection;
+    }
+
+    public ArrayList<ViewConnection> generateConnectionPlacingSpots(ArrayList<ModelConnection> modelConnections) {
+        ArrayList<ViewConnection> viewConnections = new ArrayList<>();
+        for (ModelConnection modelConnection : modelConnections) {
+            int[] modelBuildingCoords = modelConnection.getCoords();
+            ViewConnection viewConnection;
+            if (modelConnection.getOwner() == null){
+                if (!modelConnection.getOnWater()) {
+                    viewConnection = generateRoad(modelBuildingCoords[0], modelBuildingCoords[1]);
+                    Double[] coords = viewCoordinateCalculator.calcBuildingCoords(modelBuildingCoords);
+                    if (modelConnection.getOrientation().equals("up")) {
+                        viewConnection.setRotate(-60);
+                    } else if (modelConnection.getOrientation().equals("down")) {
+                        viewConnection.setRotate(60);
+                    }
+                    viewConnection.setLayoutX(coords[0]);
+                    viewConnection.setLayoutY(coords[1]);
+                    viewConnection.setCursor(Cursor.HAND);
+                    viewConnection.setOnMouseReleased(paneBoardController::connectionSpotClicked);
+                    viewConnections.add(viewConnection);
+                }
+            }
+        }
+        return viewConnections;
+    }
+
 
     /**
      * @param color
@@ -105,9 +146,10 @@ public class ViewConnectionFactory {
     private ViewConnection generateRoad(int xCoord, int yCoord) {
         Image img = new Image("expat/img/Connection.png");
         ViewConnection viewConnection = new ViewConnection(img, xCoord, yCoord);
-        viewConnection.setCursor(Cursor.HAND);
         viewConnection.setX(-hexSize * 0.2);
         viewConnection.setY(-hexSize * 0.1);
         return viewConnection;
     }
+
+
 }

@@ -17,8 +17,8 @@
                 </HBox>
                 <AnchorPane fx:id="rightActionPane" prefHeight="150.0" prefWidth="300.0">
                     <children>
-                        <Button fx:id="btnNextStep" layoutX="40.0" layoutY="35.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="155.0" text="Nächster Schritt" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0" />
-                        <Button fx:id="btnEndTurn" layoutX="195.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnEndTurnClicked" text="Runde Beenden" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Button fx:id="btnNextStep" layoutX="40.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnNextStepClicked" prefHeight="100.0" prefWidth="155.0" text="next step" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0" />
+                        <Button fx:id="btnEndTurn" layoutX="195.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnEndTurnClicked" prefHeight="100.0" prefWidth="155.0" text="end turn" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
             </children>

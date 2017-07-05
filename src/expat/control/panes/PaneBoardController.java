@@ -1,7 +1,10 @@
 package expat.control.panes;
 
-import expat.model.ModelApp;
+import expat.control.procedure.MainGameController;
+import expat.control.procedure.PreGameController;
 import expat.model.board.ModelBoard;
+import expat.model.buildings.ModelBuilding;
+import expat.model.buildings.ModelConnection;
 import expat.view.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+
+import java.util.ArrayList;
 
 
 /**
@@ -30,12 +35,22 @@ public class PaneBoardController {
     private double SCALE_NUMBER = 1.05;
     private double mousePositionX;
     private double mousePositionY;
-    private ModelApp app;
     private Group buildingGroup;
     private Group raiderGroup;
     private Group hexGroup;
     private Group diceButtonGroup;
     private Group connectionGroup;
+    private Group buildingPlacingSpotGroup;
+    private Group connectionPlacingSpotGroup;
+
+    private MainGameController mainGameController;
+    private PreGameController preGameController;
+
+    public void init(MainStageController controllerMainStage, MainGameController mainGameController, PreGameController preGameController) {
+        this.controllerMainStage = controllerMainStage;
+        this.mainGameController = mainGameController;
+        this.preGameController = preGameController;
+    }
 
     /**
      *Run by FXMLLoader attaches ScrollHandler so zooming is possible.
@@ -53,7 +68,7 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().removeAll();
 
         generateHexGroup(modelBoard);
-        generateDiceButtonGroup(modelBoard);
+        generateDiceButtonDisabledGroup(modelBoard);
         generateConnectionGroup(modelBoard);
         generateRaiderGroup(modelBoard);
         generateBuildingGroup(modelBoard);
@@ -81,7 +96,7 @@ public class PaneBoardController {
             anchorPaneBoard.getChildren().remove(hexGroup);
         }
 
-        ViewHexFactory viewHexFactory = new ViewHexFactory(HEXSIZE);
+        ViewHexGenerator viewHexFactory = new ViewHexGenerator(HEXSIZE);
 
         hexGroup = new Group();
         hexGroup.getChildren().addAll(viewHexFactory.generateViewHexList(modelBoard.getHexes()));
@@ -94,7 +109,7 @@ public class PaneBoardController {
      *
      * @param modelBoard  takes the ModelBoard so method can acquire the diceNumber form every hex.
      */
-    public void generateDiceButtonGroup(ModelBoard modelBoard){
+    public void generateDiceButtonEnabledGroup(ModelBoard modelBoard){
         if (diceButtonGroup!=null) {
             anchorPaneBoard.getChildren().remove(diceButtonGroup);
         }
@@ -102,7 +117,19 @@ public class PaneBoardController {
         ViewDiceButtonFactory viewDiceButtonFactory = new ViewDiceButtonFactory(HEXSIZE, this);
 
         diceButtonGroup = new Group();
-        diceButtonGroup.getChildren().addAll(viewDiceButtonFactory.generateDiceButtons(modelBoard.getHexes()));
+        diceButtonGroup.getChildren().addAll(viewDiceButtonFactory.generateDiceButtonsEnabled(modelBoard.getHexes()));
+        anchorPaneBoard.getChildren().add(diceButtonGroup);
+    }
+
+    public void generateDiceButtonDisabledGroup(ModelBoard modelBoard){
+        if (diceButtonGroup!=null) {
+            anchorPaneBoard.getChildren().remove(diceButtonGroup);
+        }
+
+        ViewDiceButtonFactory viewDiceButtonFactory = new ViewDiceButtonFactory(HEXSIZE, this);
+
+        diceButtonGroup = new Group();
+        diceButtonGroup.getChildren().addAll(viewDiceButtonFactory.generateDiceButtonsDisabled(modelBoard.getHexes()));
         anchorPaneBoard.getChildren().add(diceButtonGroup);
     }
 
@@ -124,6 +151,21 @@ public class PaneBoardController {
         anchorPaneBoard.getChildren().add(buildingGroup);
     }
 
+    public void generateBuildingPlacingSpotGroup(ArrayList<ModelBuilding> buildingsAPlayerCouldBuild){
+        if (buildingPlacingSpotGroup!=null) {
+            anchorPaneBoard.getChildren().remove(buildingPlacingSpotGroup);
+        }
+        ViewBuildingFactory viewBuildingFactory = new ViewBuildingFactory(HEXSIZE,this);
+
+        buildingPlacingSpotGroup = new Group();
+
+        for(ModelBuilding buildingAPlayerCouldBuild : buildingsAPlayerCouldBuild){
+            buildingPlacingSpotGroup.getChildren().add(viewBuildingFactory.generateBuildingPlacingSpot(buildingAPlayerCouldBuild.getCoords()));
+        }
+
+        anchorPaneBoard.getChildren().add(buildingPlacingSpotGroup);
+    }
+
     /**
      * Generates all Connections representing the ModelBuildings given as field of parameter ModelBoard.
      * Attaches all Connections as ViewBuilding which is an extended ImageView, directly to the anchorPaneBoard.
@@ -140,6 +182,21 @@ public class PaneBoardController {
         connectionGroup = new Group();
         connectionGroup.getChildren().addAll(viewConnectionFactory.generateConnections(modelBoard.getConnections()));
         anchorPaneBoard.getChildren().add(connectionGroup);
+    }
+
+    public void generateConnectionPlacingSpotGroup(ArrayList<ModelConnection> connectionsAPlayerCouldBuild){
+        if (connectionPlacingSpotGroup!=null) {
+            anchorPaneBoard.getChildren().remove(connectionPlacingSpotGroup);
+        }
+        ViewConnectionFactory viewConnectionFactory = new ViewConnectionFactory(HEXSIZE,this);
+
+        connectionPlacingSpotGroup = new Group();
+
+        for(ModelConnection connectionAPlayerCouldBuild : connectionsAPlayerCouldBuild){
+            connectionPlacingSpotGroup.getChildren().add(viewConnectionFactory.generateConnectionPlacingSpot(connectionAPlayerCouldBuild.getOrientation(), connectionAPlayerCouldBuild.getCoords()));
+        }
+
+        anchorPaneBoard.getChildren().add(connectionPlacingSpotGroup);
     }
 
     /**
@@ -164,10 +221,9 @@ public class PaneBoardController {
      *
      * @param event ActonEvent
      */
-    public void hexClicked(ActionEvent event) {
+    public void btnHexNumberClicked(ActionEvent event) {
         ViewDiceNumber button = (ViewDiceNumber) event.getSource();
-        app.moveRaider(button.getCoords());
-        refreshBoardElements(app.getBoard());
+        mainGameController.finishMoveRaider(button.getCoords());
         controllerMainStage.raiderMoved();
     }
 
@@ -177,40 +233,15 @@ public class PaneBoardController {
      *
      * @param event MouseEvent
      */
-    public void emptyBuildingSpotClicked(MouseEvent event){
+    public void buildingSpotClicked(MouseEvent event){
         ViewBuilding building = (ViewBuilding)event.getSource();
-        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(building.getBuildingCoord(),"Building");
-        refreshBoardElements(app.getBoard());
-        controllerMainStage.refreshActionStep();
-        controllerMainStage.refreshGameInformations();
+        controllerMainStage.selectGameControllerForFinishPlacingElement(building.getBuildingCoord(),"Building");
     }
-    /**
-     * Is called by ViewConnection as onMouseReleased event.
-     * Gets the coordinates stored in event source and hands them over to the corresponding method in the ModelApp
-     *
-     * @param event MouseEvent
-     */
-    public void connectionClicked(MouseEvent event){
+
+
+    public void connectionSpotClicked(MouseEvent event){
         ViewConnection connection = (ViewConnection) event.getSource();
-        app.finishesBuildingActionAndChangesToNextPlayerIfNeeded(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
-        refreshBoardElements(app.getBoard());
-        controllerMainStage.refreshActionStep();
-        controllerMainStage.refreshGameInformations();
-    }
-
-
-    /**
-     *
-     * Takes MainStageController, the MainController, and the ModelApp. MainController is used as reference so other controllers can be called.
-     * App is used as a reference so events can be handed over to ModelApp.
-     *
-     * @param controllerMainStage
-     * @param app
-     */
-    public void init(MainStageController controllerMainStage, ModelApp app) {
-        this.controllerMainStage = controllerMainStage;
-        this.app = app;
-        drawBoard(app.getBoard());
+        controllerMainStage.selectGameControllerForFinishPlacingElement(connection.getConnectionCoords(),"Connection"); //TODO: If Ships are implemented, we need to check types.
     }
 
     /**

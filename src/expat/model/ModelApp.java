@@ -3,9 +3,8 @@ package expat.model;
 import expat.model.board.ModelBoard;
 import expat.model.board.ModelBoardFactory;
 import expat.model.board.ModelHex;
-import expat.model.procedure.ModelDiceRoller;
-import expat.model.procedure.ModelFirstBuildingActionSequence;
-import expat.model.procedure.ModelTradeAction;
+import expat.model.procedure.ModelPreGameBuildingListCrawler;
+import expat.model.procedure.*;
 
 import java.util.LinkedList;
 
@@ -15,7 +14,7 @@ import java.util.LinkedList;
  * therefore it's a collection of:
  * - all the FXML-controlles
  * - the board
- * - all the players
+ * - all the allPlayers
  * <p>
  * this class is built intentionally like the player procedure
  * - dice and material distribution
@@ -31,19 +30,22 @@ public class ModelApp {
     private ModelBoard board;
     private ModelDiceRoller diceRoller;
     private ModelPlayerGenerator playerGenerator;
+    private ModelPreGamePlayerHandler modelPreGamePlayerHandler;
+    private ModelMainGamePlayerHandler modelMainGamePlayerHandler;
+    private ModelDroppingPlayerHandler modelRaiderPlayerHandler;
+    private ModelPreGameBuildingListCrawler modelBuildingListCrawler;
+    private ModelMainGamePlayerBuildingAbilitiesCalculator modelMainGamePlayerBuildingAbilitiesCalculator;
 
-
-    private LinkedList<ModelPlayer> players = new LinkedList<>();
-    private LinkedList<ModelPlayer> playersMustDrop = new LinkedList<>();
+    private LinkedList<ModelPlayer> allPlayers = new LinkedList<>();
+    private LinkedList<ModelPlayer> playersThatMustDrop;
     private ModelTradeAction tradeAction;
 
     //procedure
-    private int diceNumber;
-    private ModelPlayer nowPlaying;
-    private String currentStep;
+    //TODO: currentDiceNumber = like currentPlayer move to Model DiceRoller and make a getter
+    private ModelPlayer currentPlayer;
+    private int currentDiceNumber;
     private ModelMaterial nowPlayingDicedMaterial;
-    private int firstBuildingStep = 0;
-    private ModelFirstBuildingActionSequence firstBuildingActionSequence;
+    private ModelBuildingAction modelBuildingAction;
 
 
     /**
@@ -54,130 +56,79 @@ public class ModelApp {
     }
 
 
-    //TODO: Initialization
-    private void initializeGame(){
+    //TODO: x & y size should be in game-creation actionpane
+    private void initializeGame() {
         ModelBoardFactory boardGenerator = new ModelBoardFactory(9, 7);
         board = boardGenerator.generateBoard();
 
         diceRoller = new ModelDiceRoller();
         playerGenerator = new ModelPlayerGenerator();
+        modelMainGamePlayerBuildingAbilitiesCalculator = new ModelMainGamePlayerBuildingAbilitiesCalculator();
     }
 
     /**
      * Generates a new Player with a ModelPlayerGenerator and add it to the player queue.
      */
-    public void generatePlayer() {
-        ModelPlayer player = playerGenerator.newPlayer();
-        players.add(player);
+    public void generatePlayer(int numberOfPlayers) {
+        for (int i = 0; i < numberOfPlayers; i++) {
+            ModelPlayer player = playerGenerator.newPlayer();
+            allPlayers.add(player);
+        }
     }
 
-    /**
-     * handles the beginning of the game
-     * <p>
-     * - players choose the position of their first two settlements
-     * - they get the materials from all flanking hexes
-     */
-    public void startPreGame() {
-        generatePlayer();
-        generatePlayer();
-
-        firstBuildingActionSequence = new ModelFirstBuildingActionSequence(players, board);
-        nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-        currentStep = "FirstBuildingStep";
-    }
-
-    /**
-     * last player-step where player can build new buildings.
-     */
-    public void buildingStep() {
-        currentStep = "BuildingStep";
-    }
-
-
-    /**
-     * is the first player-step that distributes materials
-     * <p>
-     * 1. dice
-     * 2. material distribution
-     */
-    public void resourceStep() {
-        currentStep = "ResourceStep";
-        diceNumber = 0;
-        diceRoller = null;
+    public void generatePlayerHandler() {
+        modelPreGamePlayerHandler = new ModelPreGamePlayerHandler(allPlayers);
+        modelMainGamePlayerHandler = new ModelMainGamePlayerHandler(allPlayers);
     }
 
     /**
      * Rolls the dice and initiates distribution of materials. If dice number is 7 no materials will be distributed.
      */
     public void rollDice() {
-        diceRoller = new ModelDiceRoller();
-        diceNumber = diceRoller.getRolledDices();
-        if (diceNumber != 7) {
+        currentDiceNumber = diceRoller.rollDices();
+    }
+
+
+    //Todo: nextPlayer in modelApp is redundant, all you'd need are the handlers
+    public void nextPreGamePlayer() {
+        modelPreGamePlayerHandler.nextPlayer();
+        currentPlayer = modelPreGamePlayerHandler.getCurrentPreGamePlayer();
+    }
+
+    public void nextMainGamePlayer() {
+        modelMainGamePlayerHandler.nextPlayer();
+        currentPlayer = modelMainGamePlayerHandler.getCurrentMainGamePlayer();
+    }
+
+    public void currentMainGamePlayer(){
+        currentPlayer = modelMainGamePlayerHandler.getCurrentMainGamePlayer();
+    }
+
+    public void nextDroppingPlayer(){
+        currentPlayer = modelRaiderPlayerHandler.nextPlayer();
+    }
+
+    public void distributeMaterial() {
+        if (currentDiceNumber != 7) {
             ModelMaterial materialBefore = new ModelMaterial();
-            materialBefore.addMaterial(nowPlaying.getMaterial());
-            board.resourceOnDiceEvent(diceNumber);
+            materialBefore.addMaterial(currentPlayer.getMaterial());
+            board.resourceOnDiceEvent(currentDiceNumber);
             nowPlayingDicedMaterial = new ModelMaterial();
-            nowPlayingDicedMaterial.addMaterial(nowPlaying.getMaterial());
+            nowPlayingDicedMaterial.addMaterial(currentPlayer.getMaterial());
             nowPlayingDicedMaterial.reduceMaterial(materialBefore);
         } else {
             nowPlayingDicedMaterial = new ModelMaterial();
         }
     }
 
-    /**
-     * is the second player-step that handles trading
-     * <p>
-     * 1. domestic trade (playertrade)
-     * 2. sea trade (2:1, 3:1, 4:1)
-     */
-    public void tradeStep() {
-        currentStep = "TradeStep";
-    }
-
-    /**
-     * is the third player-step that handles special events
-     * <p>
-     * 1. rolled 7 (no resources, >7 cards drop, raider move, resource robbery)
-     * 2. play development cards (knights, development, victory)
-     */
-    public void specialStep() {
-        if (!currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            for (ModelPlayer player : players) {
-                if (player.getMaterial().getSumOfAllMaterials() > 7) {
-                    playersMustDrop.add(player);
-                }
-            }
-        } else if (currentStep.equals("SpecialStep") && playersMustDrop.isEmpty()) {
-            board.activateRaider();
+    public boolean currentPlayerIsTheWinner() {
+        if (currentPlayer.getVictoryPoints() >= 10) {
+            return true;
+        } else {
+            return false;
         }
-        currentStep = "SpecialStep";
-        diceNumber = 0;
     }
 
-    /**
-     * Reduces the amount of material dropped after after raider event (dice =7) according to given int array with differences to be added.
-     *
-     * @param endDifference
-     */
-    public void playerDroppedMaterial(int[] endDifference) {
-        playersMustDrop.poll().addMaterial(new ModelMaterial(endDifference));
-    }
-
-    /**
-     * Changes player, so next player can doo all steps.
-     */
-    public void nextPlayer() {
-        board.abortBuildingAction();
-        players.add(players.poll());
-        nowPlaying = players.peek();
-    }
-
-    /**
-     * handles the end of the game , currently unused.
-     */
-    public void gameOver() {
-        //TODO: implement game over condition
-    }
 
     /**
      * Initiates a new ModelTradingAction for the current player.
@@ -192,33 +143,7 @@ public class ModelApp {
      * @param type of trading action
      */
     public void newTradeAction(String type) {
-        tradeAction = new ModelTradeAction(type, nowPlaying);
-    }
-
-    /**
-     * Injects integer array representing
-     *
-     * @param materialResultSender
-     */
-    public void finishTradeAction(int[] materialResultSender) {
-        tradeAction.finishTradeAction(materialResultSender);
-        tradeAction = null;
-    }
-
-    /**
-     * Frees the reference to a ModelTradeAction, if player decides to abort the step or end his turn prior to ending the action.
-     */
-    public void resetTrade() {
-        tradeAction = null;
-    }
-
-    /**
-     * Createsa a new ModelBuildingAction with parameter firstStage = true, so building and connections won't cost anything.
-     *
-     * @param type
-     */
-    public void firstBuildingAction(String type) {
-        board.firstBuildingAction(type, nowPlaying);
+        tradeAction = new ModelTradeAction(type, currentPlayer);
     }
 
 
@@ -227,61 +152,27 @@ public class ModelApp {
      *
      * @param type
      */
-    public void newBuildingAction(String type) {
-        board.newBuildingAction(type, nowPlaying);
+    public void initiatePlacingAction(String type, Boolean isInPreGame) {
+        board.newBuildingAction(type, currentPlayer, isInPreGame);
     }
 
-    /**
-     * In first part, it will check state of game, firstStage, so building will not cost anything or otherwise normal building.
-     * During first stage it will automaticaly sets next player active, so all can build their first buildings and connections.
-     *
-     * @param coords coordinates of building which will be built.
-     * @param type
-     */
-    public void finishesBuildingActionAndChangesToNextPlayerIfNeeded(int[] coords, String type) {
-        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
-        }
-        if (firstBuildingStep >= 2 || (countBuildingsForCurrentPlayer() == firstBuildingStep && type.equals("Building") || countConnectionsForCurrentPlayer() == firstBuildingStep && type.equals("Connection"))) {
-            if (board.finishBuildingAction(coords, type)) {
-                if (type.equals("Building")) {
-                    nowPlaying.changeVictoryPoints(1);
-                }
-            }
-        }
-        boolean allOnSameFirstBuildingStep = true;
-        if (firstBuildingStep < 2) {
-            for (ModelPlayer player : players) {
-                if ((board.countBuildingsOwned(player) == firstBuildingStep + 1 && board.countConnectionsOwned(player) == firstBuildingStep + 1)) {
+    public int amountPlayerMustDrop(){
+        int amountToBeDropped = 0;
 
-                } else {
-                    allOnSameFirstBuildingStep = false;
-                }
-            }
-            if (allOnSameFirstBuildingStep) {
-                firstBuildingStep += 1;
-                if (firstBuildingActionSequence.nextPlayer()) {
-                    nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-                } else {
-                    nextPlayer();
-                }
-            }
-            if (firstBuildingStep >= 2) {
-                resourceStep();
-            }
+        for (int i = 0; i < 5; i++) {
+            amountToBeDropped += currentPlayer.getMaterial().getMaterialAmount()[i];
         }
-        if ((countConnectionsForCurrentPlayer() == firstBuildingStep + 1 && countBuildingsForCurrentPlayer() == firstBuildingStep + 1) && firstBuildingStep < 2) {
-            if (firstBuildingActionSequence.nextPlayer()) {
-                nowPlaying = firstBuildingActionSequence.getCurrentPlayer();
-            } else {
-                nextPlayer();
-            }
-        }
+
+        amountToBeDropped /= 2;
+
+        return amountToBeDropped;
     }
+
+    public void generatePlayersThatMustDrop(){
+        modelRaiderPlayerHandler = new ModelDroppingPlayerHandler(modelMainGamePlayerHandler.getPlayers());
+        playersThatMustDrop = modelRaiderPlayerHandler.getPlayersThatMustDrop();
+    }
+
 
     /**
      * Hands given coordinates over to board so raider can be moved to corresponding hex.
@@ -308,7 +199,7 @@ public class ModelApp {
      * @return sum of buildings
      */
     public int countBuildingsForCurrentPlayer() {
-        return board.countBuildingsOwned(nowPlaying);
+        return board.countBuildingsOwned(currentPlayer);
     }
 
     /**
@@ -317,7 +208,7 @@ public class ModelApp {
      * @return sum of connections
      */
     public int countConnectionsForCurrentPlayer() {
-        return board.countConnectionsOwned(nowPlaying);
+        return board.countConnectionsOwned(currentPlayer);
     }
 
     /**
@@ -325,8 +216,8 @@ public class ModelApp {
      *
      * @return
      */
-    public LinkedList<ModelPlayer> getPlayersMustDrop() {
-        return playersMustDrop;
+    public LinkedList<ModelPlayer> getPlayersThatMustDrop() {
+        return playersThatMustDrop;
     }
 
     /**
@@ -334,8 +225,8 @@ public class ModelApp {
      *
      * @return
      */
-    public String getCurrentStep() {
-        return currentStep;
+    public int getCurrentDiceNumber() {
+        return currentDiceNumber;
     }
 
     /**
@@ -343,17 +234,8 @@ public class ModelApp {
      *
      * @return
      */
-    public int getDiceNumber() {
-        return diceNumber;
-    }
-
-    /**
-     * getter
-     *
-     * @return
-     */
-    public int[] getDiceNumbersSeparately() {
-        return diceRoller.getRolledDicesSeperately();
+    public int[] getCurrentDiceNumbersSeparately() {
+        return diceRoller.getRolledDicesSeparately();
     }
 
     /**
@@ -370,15 +252,6 @@ public class ModelApp {
      *
      * @return
      */
-    public int getFirstBuildingStep() {
-        return firstBuildingStep;
-    }
-
-    /**
-     * getter
-     *
-     * @return
-     */
     public ModelMaterial getNowPlayingDicedMaterial() {
         return nowPlayingDicedMaterial;
     }
@@ -388,8 +261,8 @@ public class ModelApp {
      *
      * @return
      */
-    public ModelPlayer getNowPlaying() {
-        return nowPlaying;
+    public ModelPlayer getCurrentPlayer() {
+        return currentPlayer;
     }
 
     /**
@@ -397,19 +270,27 @@ public class ModelApp {
      *
      * @return
      */
-    public ModelTradeAction getTradeAction() {
-        return tradeAction;
+    public LinkedList<ModelPlayer> getAllPlayers() {
+        return allPlayers;
+    }
+
+
+    public void finishPlacingAction(int[] coords, String type) {
+        if (board.finishBuildingAction(coords, type)) {
+            if (type.equals("Building")) {
+                currentPlayer.changeVictoryPoints(1);
+            }
+        }
     }
 
     /**
-     * getter
+     * gets modelMainGamePlayerBuildingAbilitiesCalculator
      *
-     * @return
+     * @return value of modelMainGamePlayerBuildingAbilitiesCalculator
      */
-    public LinkedList<ModelPlayer> getPlayers() {
-        return players;
+    public ModelMainGamePlayerBuildingAbilitiesCalculator getModelMainGamePlayerBuildingAbilitiesCalculator() {
+        return modelMainGamePlayerBuildingAbilitiesCalculator;
     }
-
 }
 
 

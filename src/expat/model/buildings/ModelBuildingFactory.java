@@ -1,7 +1,6 @@
 package expat.model.buildings;
 
 import expat.model.ModelCoordinateCalculator;
-import expat.model.board.ModelBoard;
 import expat.model.board.ModelHex;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ModelBuildingFactory {
                 for (int y = 1; y < yHexSize - 1; y++) {
                     if (!hexes[x][y].getType().equals("Water")) {
                         boolean[] positionsToFill = checkPositionsToFill(x, y);
-                        generateEmptyBuildingSpots(positionsToFill, x, y);
+                        generateAllBuildings(positionsToFill, x, y);
                     }
                 }
             }
@@ -48,7 +47,7 @@ public class ModelBuildingFactory {
      * @param xHexCoord coordinate of the corresponding hex
      * @param yHexCoord coordinate of the corresponding hex.
      */
-    public void generateEmptyBuildingSpots(boolean[] positionsToFill, int xHexCoord, int yHexCoord) {
+    public void generateAllBuildings(boolean[] positionsToFill, int xHexCoord, int yHexCoord) {
         int[] BuildingCoords = coordinateCalculator.hexCoordToBuildingCoord(hexes[xHexCoord][yHexCoord]);
         if (positionsToFill[0]) {
             ModelBuilding middleLeftBuilding = new ModelBuilding(BuildingCoords[0], BuildingCoords[1] + 2);
@@ -211,7 +210,7 @@ public class ModelBuildingFactory {
     /**
      * @return
      */
-    public ArrayList<ModelBuilding> generateBuildings() {
+    public ArrayList<ModelBuilding> generateAllBuildings() {
         generateEmptyBuildingSpotsForAllHexes();
         return modelBuildings;
     }

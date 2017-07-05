@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
  */
 public class ViewRaiderFactory {
     private ViewCoordinateCalculator viewCoordinateCalculator;
-    PaneBoardController paneBoardController;
+    private PaneBoardController paneBoardController;
     private int hexSize;
 
     public ViewRaiderFactory(int hexSize, PaneBoardController paneBoardController) {

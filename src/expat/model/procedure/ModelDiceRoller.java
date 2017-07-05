@@ -16,14 +16,15 @@ import java.util.Random;
 public class ModelDiceRoller {
     private int rand1;
     private int rand2;
+    private Random random;
 
     /**
      * Constructor for diceRoll, so next roll can be generated
      */
     public ModelDiceRoller() {
-        Random rand = new Random();
-        rand1 = rand.nextInt(6) + 1;
-        rand2 = rand.nextInt(6) + 1;
+        random = new Random();
+        rand1 = random.nextInt(6) + 1;
+        rand2 = random.nextInt(6) + 1;
     }
 
     /**
@@ -31,7 +32,10 @@ public class ModelDiceRoller {
      *
      * @return int dice numebr
      */
-    public int getRolledDices(){
+    public int rollDices(){
+        rand1 = random.nextInt(6) + 1;
+        rand2 = random.nextInt(6) + 1;
+
         return (rand1+rand2);
     }
 
@@ -40,7 +44,7 @@ public class ModelDiceRoller {
      *
      * @return
      */
-    public int[] getRolledDicesSeperately(){
+    public int[] getRolledDicesSeparately(){
         return(new int[]{rand1, rand2});
     }
 }
