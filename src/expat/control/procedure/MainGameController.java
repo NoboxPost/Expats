@@ -29,6 +29,7 @@ public class MainGameController extends GameController {
     @Override
     public void startTurnStep(){
         currentStep = "startTurn";
+
         app.nextMainGamePlayer();
         rollDiceStep();
     }
@@ -147,7 +148,6 @@ public class MainGameController extends GameController {
         refreshBoardElements();
         paneBoardController.drawBoard(app.getBoard());
         buildingStep();
-        refreshPlayerInformation();
     }
 
     public void finishDropping(int[] droppingDifference){

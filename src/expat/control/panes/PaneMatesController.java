@@ -1,10 +1,7 @@
 package expat.control.panes;
 
 
-import expat.control.procedure.GameController;
 import expat.control.procedure.MainGameController;
-import expat.control.procedure.PreGameController;
-import expat.model.ModelApp;
 import expat.model.ModelPlayer;
 
 import javafx.fxml.FXML;
@@ -35,15 +32,38 @@ public class PaneMatesController {
     /**
      * Sets Textareas with informations about enemy players acquired from the app.
      */
-    public void refresh(LinkedList<ModelPlayer> players){
+    public void refresh(LinkedList<ModelPlayer> allPlayersUnsorted, ModelPlayer currentPlayers){
+
         String allPlayerStats = "";
-        for (ModelPlayer element : players) {
-            if (element != players.getFirst()) {
-                allPlayerStats += (element.getPlayerName() + "\n");
-                allPlayerStats += ("Victorypoints: " + element.getWinPointsString() + "\n");
-                allPlayerStats += ("Number of Cards: " + element.getMaterial().getSumOfAllMaterials() + "\n\n");
+        for (ModelPlayer player : allPlayersUnsorted) {
+            if (player != currentPlayers) {
+                allPlayerStats += (player.getPlayerName() + "\n");
+                allPlayerStats += ("Victorypoints: " + player.getWinPointsString() + "\n");
+                allPlayerStats += ("Number of Cards: " + player.getMaterial().getSumOfAllMaterials() + "\n\n");
             }
         }
         matesVictoryPointsTextArea.setText(allPlayerStats);
+
+
+        LinkedList<ModelPlayer> allPlayersSorted = sortForHighestDecreasing(allPlayersUnsorted);
+
+
+
+    }
+
+    public static LinkedList<ModelPlayer> sortForHighestDecreasing(LinkedList<ModelPlayer> sortingList) {
+
+
+        int temp;
+        for (int i = 1; i < sortingList.size(); i++) {
+            temp = sortingList.get(i).getVictoryPoints();
+            int j = i;
+            while (j > 0 && sortingList.get(j - 1).getVictoryPoints() > temp) {
+                ModelPlayer sortingList.get(j) = sortingList.get(j - 1);
+                j--;
+            }
+            sortingList.get(j).getVictoryPoints() = temp;
+        }
+        return sortingList;
     }
 }

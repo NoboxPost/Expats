@@ -34,7 +34,7 @@ public abstract class GameController {
     }
 
     public void refreshMatesInformation(){
-        paneMatesController.refresh(app.getAllPlayers());
+        paneMatesController.refresh(app.getAllPlayers(), app.getCurrentPlayer());
     }
 
     public void refreshBoardElements(){
