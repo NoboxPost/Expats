@@ -143,7 +143,7 @@ public class MainGameController extends GameController {
     @Override
     public void finishBoardElementPlacing(int[] coords, String type) {
         app.finishPlacingAction(coords, type);
-        paneActionController.activateTurnNavigation();
+        paneActionController.setTurnNavigationActive();
         refreshBoardElements();
         paneBoardController.drawBoard(app.getBoard());
         buildingStep();
@@ -159,5 +159,12 @@ public class MainGameController extends GameController {
         app.getCurrentPlayer().addMaterial(new ModelMaterial(tradingDifference));
         refreshPlayerInformation();
         tradeChoiceStep();
+    }
+
+    public void cancelBuildingAction(){
+        paneActionController.setTurnNavigationActive();
+        refreshBoardElements();
+        paneBoardController.drawBoard(app.getBoard());
+        buildingStep();
     }
 }

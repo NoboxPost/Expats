@@ -14,7 +14,6 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -290,7 +289,7 @@ public class PaneActionController {
     }
 
     private void btnCancelBuildingAction(ActionEvent actionEvent) {
-        mainGameController.buildingStep();
+        mainGameController.cancelBuildingAction();
     }
 
     /**
@@ -299,7 +298,7 @@ public class PaneActionController {
      * @param event onMouseReleased
      */
     public void generateMainRoadPlaces(MouseEvent event) {
-        deactivateTurnNavigation();
+        setTurnNavigationInactive();
         mainGameController.initiateBoardElementPlacing("Road");
         Image roadImage = roadImageView.getImage();
         controllerMainStage.changeCursorOverAll(new ImageCursor(roadImage, 0, 0));
@@ -311,7 +310,7 @@ public class PaneActionController {
      * @param event onMouseReleased
      */
     public void generateMainSettlementPlaces(MouseEvent event) {
-        deactivateTurnNavigation();
+        setTurnNavigationInactive();
         mainGameController.initiateBoardElementPlacing("Settlement");
         Image settlementImage = settlementImageView.getImage();
         controllerMainStage.changeCursorOverAll(new ImageCursor(settlementImage, 0, 0));
@@ -323,21 +322,35 @@ public class PaneActionController {
      * @param event onMouseReleased
      */
     public void generateMainTownPlaces(MouseEvent event) {
-        deactivateTurnNavigation();
+        setTurnNavigationInactive();
         mainGameController.initiateBoardElementPlacing("Town");
         Image townImage = townImageView.getImage();
         controllerMainStage.changeCursorOverAll(new ImageCursor(townImage, 0, 0));
     }
 
-    public void activateTurnNavigation(){
+
+    //todo: change to switch function
+    public void setTurnNavigationVisible(){
         btnNextStep.setVisible(true);
         btnEndTurn.setVisible(true);
     }
 
-    public void deactivateTurnNavigation(){
+    public void setTurnNavigationInvisible(){
         btnNextStep.setVisible(false);
         btnEndTurn.setVisible(false);
     }
+
+    public void setTurnNavigationActive(){
+        btnNextStep.setDisable(false);
+        btnEndTurn.setDisable(false);
+    }
+
+    public void setTurnNavigationInactive(){
+        btnNextStep.setDisable(true);
+        btnEndTurn.setDisable(true);
+    }
+
+
 
 
     /**

@@ -106,7 +106,7 @@ public class MainStageController {
     public void switchGameMode(){
         isInPreGameMode = false;
         mainGame.startTurnStep();
-        paneActionController.activateTurnNavigation();
+        paneActionController.setTurnNavigationVisible();
     }
 
     public void changeCursorOverAll(Cursor cursor){
