@@ -112,9 +112,8 @@ public class ViewPaneTradeCommon extends HBox {
         refresh();
     }
 
-    /**
-     *
-     */
+
+
     public void refresh() {
         for (int i = 0; i < 5; i++) {
             lblsMaterial[i].setText("" + materialAtEndArray[i]);
@@ -127,6 +126,7 @@ public class ViewPaneTradeCommon extends HBox {
             btnTrade.setDisable(true);
         }
     }
+
 
     /**
      * @return
