@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * the main scene that works as collection-pool for all included scenes and also starts the App
+ * the main scene that works as collection for all included scenes
  * <p>
  * created on 22.03.2017
  *
