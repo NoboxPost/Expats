@@ -38,7 +38,6 @@ public class ModelApp {
 
     private LinkedList<ModelPlayer> allPlayers = new LinkedList<>();
     private LinkedList<ModelPlayer> playersThatMustDrop;
-    private ModelTradeAction tradeAction;
 
     //procedure
     //TODO: currentDiceNumber = like currentPlayer move to Model DiceRoller and make a getter
@@ -129,24 +128,6 @@ public class ModelApp {
         }
     }
 
-
-    /**
-     * Initiates a new ModelTradingAction for the current player.
-     * Trade types will be:
-     * GeneralTrade 4:1
-     * PlayerToPlayerTrade ?:?
-     * GeneralPortTrade 3:1
-     * SpecificPortTrade 2:1
-     * <p>
-     * Currently only GeneralTrade is implementetd //TODO:Change if other types are implemented.
-     *
-     * @param type of trading action
-     */
-    public void newTradeAction(String type) {
-        tradeAction = new ModelTradeAction(type, currentPlayer);
-    }
-
-
     /**
      * Initiates
      *
@@ -190,25 +171,6 @@ public class ModelApp {
             }
             board.getRaider().setAllowMovement(false);
         }
-    }
-
-
-    /**
-     * counts all buildings for current player
-     *
-     * @return sum of buildings
-     */
-    public int countBuildingsForCurrentPlayer() {
-        return board.countBuildingsOwned(currentPlayer);
-    }
-
-    /**
-     * counts all connections for current player
-     *
-     * @return sum of connections
-     */
-    public int countConnectionsForCurrentPlayer() {
-        return board.countConnectionsOwned(currentPlayer);
     }
 
     /**

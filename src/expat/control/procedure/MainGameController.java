@@ -106,7 +106,6 @@ public class MainGameController extends GameController {
     }
 
     public void commonTradeStep(){
-        app.newTradeAction("CommonTrade");
         paneActionController.drawCommonTradeStep(app.getCurrentPlayer().getMaterial().getMaterialAmount());
     }
 

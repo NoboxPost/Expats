@@ -45,12 +45,13 @@ public class PaneMatesController {
         matesVictoryPointsTextArea.setText(allPlayerStats);
 
 
-        LinkedList<ModelPlayer> allPlayersSorted = sortForHighestDecreasing(allPlayersUnsorted);
+        //LinkedList<ModelPlayer> allPlayersSorted = sortForHighestDecreasing(allPlayersUnsorted);
 
 
 
     }
 
+    /*
     public static LinkedList<ModelPlayer> sortForHighestDecreasing(LinkedList<ModelPlayer> sortingList) {
 
 
@@ -65,5 +66,9 @@ public class PaneMatesController {
             sortingList.get(j).getVictoryPoints() = temp;
         }
         return sortingList;
+
     }
+    */
+
+
 }
